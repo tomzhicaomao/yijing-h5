@@ -11,6 +11,32 @@ const baguaMap = {
   5: '兑', 6: '坎', 7: '艮', 8: '乾'
 };
 
+// 八卦符号 Unicode
+const baguaSymbols = {
+  1: '☷', // 坤
+  2: '☴', // 巽
+  3: '☲', // 离
+  4: '☳', // 震
+  5: '☱', // 兑
+  6: '☵', // 坎
+  7: '☶', // 艮
+  8: '☰'  // 乾
+};
+
+// 64卦符号表 (上卦+下卦)
+const hexagramSymbols = {};
+
+// 生成64卦符号
+function initHexagramSymbols() {
+  for (let shang = 1; shang <= 8; shang++) {
+    for (let xia = 1; xia <= 8; xia++) {
+      const id = shang * 8 + xia - 8;
+      hexagramSymbols[id] = baguaSymbols[shang] + baguaSymbols[xia];
+    }
+  }
+}
+initHexagramSymbols();
+
 // 八卦符号：yin=0 为断（阴），yin=1 为连（阳）
 const baguaYinMap = {
   1: [0,0,0], // 坤
@@ -121,7 +147,8 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
   const trans = modernTranslations[hexagram.id] || {};
   
   // 显示卦信息
-  document.getElementById('guaName').textContent = hexagram.name;
+  const symbol = hexagramSymbols[hexagram.id] || '☰☷';
+  document.getElementById('guaName').textContent = symbol + ' ' + hexagram.name;
   
   // 卦辞
   document.getElementById('guaCi').textContent = hexagram.gua_ci;
