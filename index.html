@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>易经占卜</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 沉浸式背景 -->
+  <div class="immersive-bg">
+    <div class="stars" id="stars"></div>
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring"></div>
+    <div class="orbit-ring"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- 顶部导航 -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="app-logo">☰</div>
+        <h1 class="app-title">易经占卜</h1>
+        <p class="app-subtitle">Taiji Wisdom</p>
+      </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="app-content">
+      <!-- 每日运势 -->
+      <section class="daily-card">
+        <div class="daily-header">
+          <div class="daily-title">
+            <span class="daily-icon">✦</span>
+            <span>今日运势</span>
+          </div>
+          <div class="daily-badge" onclick="dailyDivination()">
+            点击占卜
+          </div>
+        </div>
+        <div id="dailyResult" class="daily-result hidden">
+          <div class="daily-gua" id="dailyGuaName">—</div>
+          <div class="daily-brief" id="dailyGuaBrief">—</div>
+        </div>
+      </section>
+
+      <!-- 起卦输入 -->
+      <section class="divination-card">
+        <h2 class="divination-title">起卦</h2>
+        <div class="input-grid">
+          <div class="input-wrapper">
+            <label>数一</label>
+            <input type="number" id="num1" min="100" max="999" placeholder="—">
+          </div>
+          <div class="input-wrapper">
+            <label>数二</label>
+            <input type="number" id="num2" min="100" max="999" placeholder="—">
+          </div>
+          <div class="input-wrapper">
+            <label>数三</label>
+            <input type="number" id="num3" min="100" max="999" placeholder="—">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button id="startBtn" class="btn btn-primary">起卦</button>
+          <button id="randomBtn" class="btn btn-secondary">随机</button>
+        </div>
+      </section>
+
+      <!-- 结果展示 -->
+      <section id="result" class="result-card hidden">
+        <div class="result-header">
+          <div class="gua-symbol-large">
+            <div id="guaImage" class="gua-lines"></div>
+          </div>
+          <h2 id="guaName" class="gua-name">—</h2>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">卦辞</h3>
+          <div class="text-content">
+            <p id="guaCi" class="text-ancient">—</p>
+            <p id="guaCiModern" class="text-modern">—</p>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">动爻</h3>
+          <div class="text-content">
+            <p id="dongYao" class="text-ancient">—</p>
+            <p id="dongYaoModern" class="text-modern">—</p>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">六爻详解</h3>
+          <div id="allYaoList" class="yao-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 底部操作 -->
+    <div id="actionBar" class="action-bar hidden">
+      <button id="resetBtn" class="btn-reset">
+        <span>↻</span> 重新起卦
+      </button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // 生成星空背景
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const count = 60;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.width = Math.random() * 2 + 1 + 'px';
+        star.style.height = star.style.width;
+        star.style.animationDelay = Math.random() * 4 + 's';
+        star.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    createStars();
+  </script>
+</body>
+</html>
