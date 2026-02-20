@@ -4,39 +4,42 @@
       "id": 1,
       "name": "乾",
       "gua_ci": "元亨利貞",
+      "gua_ci_modern": "大吉大利，万事顺利",
       "yao": [
-        {"position": 1, "yao_ci": "潛龍勿用"},
-        {"position": 2, "yao_ci": "見龍在田，利見大人"},
-        {"position": 3, "yao_ci": "君子終日乾乾，夕惕若；厲，无咎"},
-        {"position": 4, "yao_ci": "或躍在淵，无咎"},
-        {"position": 5, "yao_ci": "飛龍在天，利見大人"},
-        {"position": 6, "yao_ci": "亢龍，有悔"}
+        {"position": 1, "yao_ci": "潛龍勿用", "yao_ci_modern": "巨龙潜伏在深渊，暂时不要施展才能"},
+        {"position": 2, "yao_ci": "見龍在田，利見大人", "yao_ci_modern": "巨龙出现在田野，有利于拜见大人物"},
+        {"position": 3, "yao_ci": "君子終日乾乾，夕惕若；厲，无咎", "yao_ci_modern": "君子整天勤奋不懈，晚上依然警惕谨慎，虽有危险但没有灾难"},
+        {"position": 4, "yao_ci": "或躍在淵，无咎", "yao_ci_modern": "或跳跃于深渊，没有灾难"},
+        {"position": 5, "yao_ci": "飛龍在天，利見大人", "yao_ci_modern": "飞龙在天，有利于拜见大人物"},
+        {"position": 6, "yao_ci": "亢龍，有悔", "yao_ci_modern": "飞得太高的龙，会有后悔的事情"}
       ]
     },
     {
       "id": 2,
       "name": "坤",
       "gua_ci": "元亨，利牝馬之貞",
+      "gua_ci_modern": "非常吉利，利于像母马一样柔顺坚守",
       "yao": [
-        {"position": 1, "yao_ci": "履霜，堅冰至"},
-        {"position": 2, "yao_ci": "直方大，不習无不利"},
-        {"position": 3, "yao_ci": "含章可貞，或從王事，无成有終"},
-        {"position": 4, "yao_ci": "括囊，无咎无譽"},
-        {"position": 5, "yao_ci": "黃裳，元吉"},
-        {"position": 6, "yao_ci": "龍戰于野，其血玄黃"}
+        {"position": 1, "yao_ci": "履霜，堅冰至", "yao_ci_modern": "踩到霜就知道寒冷将至，坚冰即将到来"},
+        {"position": 2, "yao_ci": "直方大，不習无不利", "yao_ci_modern": "正直、方正、宽大，即使不熟悉也不会不利"},
+        {"position": 3, "yao_ci": "含章可貞，或從王事，无成有終", "yao_ci_modern": "蕴含美德可以坚守，或跟随帝王做事，虽无大成但有好的结局"},
+        {"position": 4, "yao_ci": "括囊，无咎无譽", "yao_ci_modern": "扎紧口袋，没有灾难也没有荣誉"},
+        {"position": 5, "yao_ci": "黃裳，元吉", "yao_ci_modern": "黄色的裙子，大吉大利"},
+        {"position": 6, "yao_ci": "龍戰于野，其血玄黃", "yao_ci_modern": "龙在野外战斗，血流成河呈玄黄色"}
       ]
     },
     {
       "id": 3,
       "name": "屯",
       "gua_ci": "元亨利貞，勿用有攸往，利建侯",
+      "gua_ci_modern": "大吉大利，不要急于前往，利于建立功业",
       "yao": [
-        {"position": 1, "yao_ci": "磐桓，利居貞，利建侯"},
-        {"position": 2, "yao_ci": "屯如邅如，乘馬班如，匪寇婚媾"},
-        {"position": 3, "yao_ci": "即鹿无虞，惟入于林中，君子幾不如舍"},
-        {"position": 4, "yao_ci": "乘馬班如，求婚媾，往吉无不利"},
-        {"position": 5, "yao_ci": "屯其膏，小貞吉，大貞凶"},
-        {"position": 6, "yao_ci": "乘馬班如，泣血漣如"}
+        {"position": 1, "yao_ci": "磐桓，利居貞，利建侯", "yao_ci_modern": "徘徊不前，利于坚守居住，利于建立侯位"},
+        {"position": 2, "yao_ci": "屯如邅如，乘馬班如，匪寇婚媾", "yao_ci_modern": "聚而不前，骑在马上徘徊，不是盗寇而是求婚"},
+        {"position": 3, "yao_ci": "即鹿无虞，惟入于林中，君子幾不如舍", "yao_ci_modern": "追逐山鹿没有向导，只会进入林中，君子与其追逐不如放弃"},
+        {"position": 4, "yao_ci": "乘馬班如，求婚媾，往吉无不利", "yao_ci_modern": "骑在马上徘徊，求婚前往，吉祥没有不利的"},
+        {"position": 5, "yao_ci": "屯其膏，小貞吉，大貞凶", "yao_ci_modern": "积聚油脂，小的坚守则吉，大的坚守则凶"},
+        {"position": 6, "yao_ci": "乘馬班如，泣血漣如", "yao_ci_modern": "骑在马上徘徊，泪流满面"}
       ]
     },
     {
