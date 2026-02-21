@@ -186,6 +186,11 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
   document.getElementById('actionBar').classList.remove('hidden');
   document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
   
+  // 保存历史记录
+  if (typeof saveHistory === 'function') {
+    saveHistory(hexagram, xiaGua, shangGua, dongYao);
+  }
+  
   // 添加解卦区域
   addInterpretation(hexagram, dongYao);
 }

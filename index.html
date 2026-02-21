@@ -24,6 +24,9 @@
         <div class="app-logo">☰</div>
         <h1 class="app-title">易经占卜</h1>
         <p class="app-subtitle">Taiji Wisdom</p>
+        <div class="user-bar" id="userBar" style="margin-top:10px;">
+          <button class="btn btn-secondary" onclick="showLogin()" id="loginBtn">登录</button>
+        </div>
       </div>
     </header>
 
@@ -129,6 +132,161 @@
     }
     
     createStars();
+  </script>
+  
+  <!-- 登录/注册弹窗 -->
+  <div id="loginModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">登录</h3>
+        <span class="modal-close" onclick="closeLogin()">×</span>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="username" class="input-field" placeholder="用户名">
+        <input type="password" id="password" class="input-field" placeholder="密码" style="margin-top:10px;">
+        <button class="btn btn-primary" onclick="doLogin()" style="margin-top:20px;width:100%;">登录</button>
+        <p style="text-align:center;margin-top:15px;color:#A0A0B8;">
+          <span id="toggleText">没有账号？</span>
+          <a href="#" onclick="toggleRegister()" style="color:#C9A227;">点击注册</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 历史记录弹窗 -->
+  <div id="historyModal" class="modal hidden">
+    <div class="modal-content" style="max-height:80vh;overflow-y:auto;">
+      <div class="modal-header">
+        <h3>占卜历史</h3>
+        <span class="modal-close" onclick="closeHistory()">×</span>
+      </div>
+      <div class="modal-body">
+        <div id="historyList"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 历史按钮 -->
+  <div class="history-btn" onclick="showHistory()" id="historyBtn" style="display:none;">
+    📜
+  </div>
+  
+  <style>
+    .modal { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:100;display:flex;align-items:center;justify-content:center; }
+    .modal-content { background:#1A1A2E;padding:24px;border-radius:16px;width:90%;max-width:360px;border:1px solid rgba(201,162,39,0.3); }
+    .modal-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:20px; }
+    .modal-header h3 { color:#C9A227;font-size:1.2rem; }
+    .modal-close { font-size:1.5rem;cursor:pointer;color:#A0A0B8; }
+    .input-field { width:100%;height:48px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:0 16px;color:#fff;font-size:1rem; }
+    .history-btn { position:fixed;bottom:100px;right:20px;width:50px;height:50px;background:#C9A227;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:50; }
+    .history-item { background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;margin-bottom:10px;border-left:3px solid #C9A227; }
+    .history-date { color:#6C6C8A;font-size:0.8rem; }
+    .history-gua { color:#E8C547;font-size:1rem;margin:5px 0; }
+  </style>
+  
+  <script>
+    // 用户系统
+    let currentUser = null;
+    const USERS_KEY = 'yijing_users';
+    const HISTORY_KEY = 'yijing_history';
+    
+    function initUser() {
+      const savedUser = localStorage.getItem('yijing_current_user');
+      if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        updateUserUI();
+      }
+    }
+    
+    function updateUserUI() {
+      const userBar = document.getElementById('userBar');
+      const historyBtn = document.getElementById('historyBtn');
+      if (currentUser) {
+        userBar.innerHTML = '<span style="color:#C9A227;">' + currentUser.username + '</span> <button class="btn btn-secondary" onclick="logout()" style="margin-left:10px;padding:8px 16px;">退出</button>';
+        historyBtn.style.display = 'flex';
+      } else {
+        userBar.innerHTML = '<button class="btn btn-secondary" onclick="showLogin()">登录</button>';
+        historyBtn.style.display = 'none';
+      }
+    }
+    
+    function showLogin() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+    
+    function closeLogin() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+    
+    let isRegister = false;
+    function toggleRegister() {
+      isRegister = !isRegister;
+      document.getElementById('modalTitle').textContent = isRegister ? '注册' : '登录';
+      document.getElementById('toggleText').textContent = isRegister ? '已有账号？' : '没有账号？';
+    }
+    
+    function doLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      if (!username || !password) { alert('请输入用户名和密码'); return; }
+      
+      const users = JSON.parse(localStorage.getItem(USERS_KEY) || '{}');
+      
+      if (isRegister) {
+        if (users[username]) { alert('用户名已存在'); return; }
+        users[username] = { password: btoa(password), created: Date.now() };
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        alert('注册成功，请登录');
+        isRegister = false;
+        document.getElementById('modalTitle').textContent = '登录';
+        document.getElementById('toggleText').textContent = '没有账号？';
+      } else {
+        if (!users[username] || users[username].password !== btoa(password)) { alert('用户名或密码错误'); return; }
+        currentUser = { username: username };
+        localStorage.setItem('yijing_current_user', JSON.stringify(currentUser));
+        updateUserUI();
+        closeLogin();
+      }
+    }
+    
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('yijing_current_user');
+      updateUserUI();
+    }
+    
+    // 历史记录
+    function saveHistory(hexagram, xiaGua, shangGua, dongYao) {
+      if (!currentUser) return;
+      const history = JSON.parse(localStorage.getItem(HISTORY_KEY + '_' + currentUser.username) || '[]');
+      history.unshift({
+        id: hexagram.id,
+        name: hexagram.name,
+        symbol: hexagramSymbols[hexagram.id] || '☰☷',
+        date: new Date().toLocaleString('zh-CN'),
+        timestamp: Date.now()
+      });
+      if (history.length > 50) history.pop();
+      localStorage.setItem(HISTORY_KEY + '_' + currentUser.username, JSON.stringify(history));
+    }
+    
+    function showHistory() {
+      if (!currentUser) { showLogin(); return; }
+      const history = JSON.parse(localStorage.getItem(HISTORY_KEY + '_' + currentUser.username) || '[]');
+      const list = document.getElementById('historyList');
+      if (history.length === 0) {
+        list.innerHTML = '<p style="text-align:center;color:#6C6C8A;">暂无占卜记录</p>';
+      } else {
+        list.innerHTML = history.map(h => '<div class="history-item"><div class="history-date">' + h.date + '</div><div class="history-gua">' + h.symbol + ' ' + h.name + '</div></div>').join('');
+      }
+      document.getElementById('historyModal').classList.remove('hidden');
+    }
+    
+    function closeHistory() {
+      document.getElementById('historyModal').classList.add('hidden');
+    }
+    
+    initUser();
   </script>
 </body>
 </html>
