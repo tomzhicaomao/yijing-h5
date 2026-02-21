@@ -185,6 +185,85 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
   document.getElementById('result').classList.remove('hidden');
   document.getElementById('actionBar').classList.remove('hidden');
   document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+  
+  // 添加解卦区域
+  addInterpretation(hexagram, dongYao);
+}
+
+// 解卦分析
+function addInterpretation(hexagram, dongYao) {
+  let existing = document.getElementById('interpretation');
+  if (existing) existing.remove();
+  
+  const interpretations = getHexagramInterpretation(hexagram.id, dongYao);
+  
+  const div = document.createElement('div');
+  div.id = 'interpretation';
+  div.className = 'result-card';
+  div.innerHTML = `
+    <div class="result-header">
+      <div class="gua-name" style="font-size:1.2rem;margin-bottom:10px;">📖 解卦分析</div>
+    </div>
+    <div class="content-section">
+      <div class="section-title">整体运势</div>
+      <div class="text-content">
+        <div class="text-modern">${interpretations.overall}</div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="section-title">事业发展</div>
+      <div class="text-content">
+        <div class="text-modern">${interpretations.career}</div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="section-title">财运分析</div>
+      <div class="text-content">
+        <div class="text-modern">${interpretations.fortune}</div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="section-title">爱情运势</div>
+      <div class="text-content">
+        <div class="text-modern">${interpretations.love}</div>
+      </div>
+    </div>
+    <div class="content-section">
+      <div class="section-title">健康提示</div>
+      <div class="text-content">
+        <div class="text-modern">${interpretations.health}</div>
+      </div>
+    </div>
+    ${dongYao ? `
+    <div class="content-section">
+      <div class="section-title">变爻启示（第${dongYao}爻）</div>
+      <div class="text-content">
+        <div class="text-modern">${interpretations.change}</div>
+      </div>
+    </div>
+    ` : ''}
+  `;
+  
+  document.getElementById('result').appendChild(div);
+}
+
+function getHexagramInterpretation(id, dongYao) {
+  const interpretations = {
+    1: { overall: "乾卦象征天，代表刚健有力、纯阳至正之气。运势如飞龙在天，大吉大利，各方面都将迎来上升期。", career: "事业正处于上升通道，有贵人相助，宜把握时机积极进取，敢于承担重要任务。", fortune: "财运亨通，有意外之财的可能，但需注意合理分配，避免过度花费在享乐上。", love: "感情运势旺盛，单身者有望遇到优质对象，已有伴侣者关系更加甜蜜。", health: "身体状态良好，精力充沛，适合运动锻炼，但注意不要过度劳累。", change: "飞龙在天，利见大人。把握机遇，可成就大事。" },
+    2: { overall: "坤卦象征地，代表柔顺、厚重、包容之气。运势平稳，需要以柔克刚，顺势而为。", career: "工作需要稳扎稳打，不可急于求成。多倾听他人意见，团队合作能带来更好结果。", fortune: "财运平稳，支出需有计划，适合进行长期储蓄投资。", love: "感情需要耐心经营，以真诚和包容对待对方。", health: "注意脾胃健康，饮食规律，适当散步调和身心。", change: "龙战于野，其血玄黄。需防竞争小人，以退为进。" },
+    3: { overall: "屯卦象征事物初生之状态，虽有困难但前景光明。需要耐心筹备，不可冒进。", career: "创业或新项目会遇到阻碍，但这是积累经验的必要过程。", fortune: "财运初起步，投入需谨慎，小额尝试为宜。", love: "感情发展需耐心，不可急于确定关系。", health: "注意预防感冒，保持充足睡眠。", change: "乘马班如，求婚媾。把握机遇，吉祥无不利。" }
+  };
+  
+  const default_interp = {
+    overall: "此卦提醒您保持中正平和的心态，顺势而为，静待时机。",
+    career: "脚踏实地做好眼前工作，积累经验等待机会。",
+    fortune: "财运平稳，建议稳健理财，避免投机。",
+    love: "以真诚待人，顺其自然发展。",
+    health: "保持规律作息，适当运动。",
+    change: "变爻带来转变，顺势而动可获吉祥。"
+  };
+  
+  return interpretations[id] || default_interp;
 }
 
 function getYaoName(pos) {

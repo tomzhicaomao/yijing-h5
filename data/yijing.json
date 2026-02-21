@@ -6,12 +6,36 @@
       "gua_ci": "元亨利貞",
       "gua_ci_modern": "大吉大利，万事顺利",
       "yao": [
-        {"position": 1, "yao_ci": "潛龍勿用", "yao_ci_modern": "巨龙潜伏在深渊，暂时不要施展才能"},
-        {"position": 2, "yao_ci": "見龍在田，利見大人", "yao_ci_modern": "巨龙出现在田野，有利于拜见大人物"},
-        {"position": 3, "yao_ci": "君子終日乾乾，夕惕若；厲，无咎", "yao_ci_modern": "君子整天勤奋不懈，晚上依然警惕谨慎，虽有危险但没有灾难"},
-        {"position": 4, "yao_ci": "或躍在淵，无咎", "yao_ci_modern": "或跳跃于深渊，没有灾难"},
-        {"position": 5, "yao_ci": "飛龍在天，利見大人", "yao_ci_modern": "飞龙在天，有利于拜见大人物"},
-        {"position": 6, "yao_ci": "亢龍，有悔", "yao_ci_modern": "飞得太高的龙，会有后悔的事情"}
+        {
+          "position": 1,
+          "yao_ci": "潛龍勿用",
+          "yao_ci_modern": "巨龙潜伏在深渊，暂时不要施展才能"
+        },
+        {
+          "position": 2,
+          "yao_ci": "見龍在田，利見大人",
+          "yao_ci_modern": "巨龙出现在田野，有利于拜见大人物"
+        },
+        {
+          "position": 3,
+          "yao_ci": "君子終日乾乾，夕惕若；厲，无咎",
+          "yao_ci_modern": "君子整天勤奋不懈，晚上依然警惕谨慎，虽有危险但没有灾难"
+        },
+        {
+          "position": 4,
+          "yao_ci": "或躍在淵，无咎",
+          "yao_ci_modern": "或跳跃于深渊，没有灾难"
+        },
+        {
+          "position": 5,
+          "yao_ci": "飛龍在天，利見大人",
+          "yao_ci_modern": "飞龙在天，有利于拜见大人物"
+        },
+        {
+          "position": 6,
+          "yao_ci": "亢龍，有悔",
+          "yao_ci_modern": "飞得太高的龙，会有后悔的事情"
+        }
       ]
     },
     {
@@ -20,12 +44,36 @@
       "gua_ci": "元亨，利牝馬之貞",
       "gua_ci_modern": "非常吉利，利于像母马一样柔顺坚守",
       "yao": [
-        {"position": 1, "yao_ci": "履霜，堅冰至", "yao_ci_modern": "踩到霜就知道寒冷将至，坚冰即将到来"},
-        {"position": 2, "yao_ci": "直方大，不習无不利", "yao_ci_modern": "正直、方正、宽大，即使不熟悉也不会不利"},
-        {"position": 3, "yao_ci": "含章可貞，或從王事，无成有終", "yao_ci_modern": "蕴含美德可以坚守，或跟随帝王做事，虽无大成但有好的结局"},
-        {"position": 4, "yao_ci": "括囊，无咎无譽", "yao_ci_modern": "扎紧口袋，没有灾难也没有荣誉"},
-        {"position": 5, "yao_ci": "黃裳，元吉", "yao_ci_modern": "黄色的裙子，大吉大利"},
-        {"position": 6, "yao_ci": "龍戰于野，其血玄黃", "yao_ci_modern": "龙在野外战斗，血流成河呈玄黄色"}
+        {
+          "position": 1,
+          "yao_ci": "履霜，堅冰至",
+          "yao_ci_modern": "踩到霜就知道寒冷将至，坚冰即将到来"
+        },
+        {
+          "position": 2,
+          "yao_ci": "直方大，不習无不利",
+          "yao_ci_modern": "正直、方正、宽大，即使不熟悉也不会不利"
+        },
+        {
+          "position": 3,
+          "yao_ci": "含章可貞，或從王事，无成有終",
+          "yao_ci_modern": "蕴含美德可以坚守，或跟随帝王做事，虽无大成但有好的结局"
+        },
+        {
+          "position": 4,
+          "yao_ci": "括囊，无咎无譽",
+          "yao_ci_modern": "扎紧口袋，没有灾难也没有荣誉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "黃裳，元吉",
+          "yao_ci_modern": "黄色的裙子，大吉大利"
+        },
+        {
+          "position": 6,
+          "yao_ci": "龍戰于野，其血玄黃",
+          "yao_ci_modern": "龙在野外战斗，血流成河呈玄黄色"
+        }
       ]
     },
     {
@@ -34,12 +82,36 @@
       "gua_ci": "元亨利貞，勿用有攸往，利建侯",
       "gua_ci_modern": "大吉大利，不要急于前往，利于建立功业",
       "yao": [
-        {"position": 1, "yao_ci": "磐桓，利居貞，利建侯", "yao_ci_modern": "徘徊不前，利于坚守居住，利于建立侯位"},
-        {"position": 2, "yao_ci": "屯如邅如，乘馬班如，匪寇婚媾", "yao_ci_modern": "聚而不前，骑在马上徘徊，不是盗寇而是求婚"},
-        {"position": 3, "yao_ci": "即鹿无虞，惟入于林中，君子幾不如舍", "yao_ci_modern": "追逐山鹿没有向导，只会进入林中，君子与其追逐不如放弃"},
-        {"position": 4, "yao_ci": "乘馬班如，求婚媾，往吉无不利", "yao_ci_modern": "骑在马上徘徊，求婚前往，吉祥没有不利的"},
-        {"position": 5, "yao_ci": "屯其膏，小貞吉，大貞凶", "yao_ci_modern": "积聚油脂，小的坚守则吉，大的坚守则凶"},
-        {"position": 6, "yao_ci": "乘馬班如，泣血漣如", "yao_ci_modern": "骑在马上徘徊，泪流满面"}
+        {
+          "position": 1,
+          "yao_ci": "磐桓，利居貞，利建侯",
+          "yao_ci_modern": "徘徊不前，利于坚守居住，利于建立侯位"
+        },
+        {
+          "position": 2,
+          "yao_ci": "屯如邅如，乘馬班如，匪寇婚媾",
+          "yao_ci_modern": "聚而不前，骑在马上徘徊，不是盗寇而是求婚"
+        },
+        {
+          "position": 3,
+          "yao_ci": "即鹿无虞，惟入于林中，君子幾不如舍",
+          "yao_ci_modern": "追逐山鹿没有向导，只会进入林中，君子与其追逐不如放弃"
+        },
+        {
+          "position": 4,
+          "yao_ci": "乘馬班如，求婚媾，往吉无不利",
+          "yao_ci_modern": "骑在马上徘徊，求婚前往，吉祥没有不利的"
+        },
+        {
+          "position": 5,
+          "yao_ci": "屯其膏，小貞吉，大貞凶",
+          "yao_ci_modern": "积聚油脂，小的坚守则吉，大的坚守则凶"
+        },
+        {
+          "position": 6,
+          "yao_ci": "乘馬班如，泣血漣如",
+          "yao_ci_modern": "骑在马上徘徊，泪流满面"
+        }
       ]
     },
     {
@@ -47,77 +119,220 @@
       "name": "蒙",
       "gua_ci": "亨，匪我求童蒙，童蒙求我，初筮告，再三瀆，瀆則不告，利貞",
       "yao": [
-        {"position": 1, "yao_ci": "發蒙，利用刑人，用說桎梏，以往吝"},
-        {"position": 2, "yao_ci": "包蒙吉，納婦吉，子克家"},
-        {"position": 3, "yao_ci": "勿用取女，見金夫，不有躬，无攸利"},
-        {"position": 4, "yao_ci": "困蒙，吝"},
-        {"position": 5, "yao_ci": "童蒙，吉"},
-        {"position": 6, "yao_ci": "擊蒙，不利為寇，利御寇"}
-      ]
+        {
+          "position": 1,
+          "yao_ci": "發蒙，利用刑人，用說桎梏，以往吝",
+          "yao_ci_modern": "启发蒙昧，利用刑法惩罚人，用来解脱枷锁，如果前往会有遗憾"
+        },
+        {
+          "position": 2,
+          "yao_ci": "包蒙吉，納婦吉，子克家",
+          "yao_ci_modern": "包容蒙昧者吉祥，娶妻吉祥，儿子能持家"
+        },
+        {
+          "position": 3,
+          "yao_ci": "勿用取女，見金夫，不有躬，无攸利",
+          "yao_ci_modern": "不要娶这个女子为妻，她见了美男子就失身，没有好处"
+        },
+        {
+          "position": 4,
+          "yao_ci": "困蒙，吝",
+          "yao_ci_modern": "被蒙昧所困，会有遗憾"
+        },
+        {
+          "position": 5,
+          "yao_ci": "童蒙，吉",
+          "yao_ci_modern": "童蒙吉祥"
+        },
+        {
+          "position": 6,
+          "yao_ci": "擊蒙，不利為寇，利御寇",
+          "yao_ci_modern": "攻击蒙昧者，不适合做盗寇，适合抵御盗寇"
+        }
+      ],
+      "gua_ci_modern": "亨通，不是我去求童蒙，而是童蒙来求我。初次占卜会告知，再三占卜就是亵渎，亵渎就不告知了，利于坚守正道。"
     },
     {
       "id": 5,
       "name": "需",
       "gua_ci": "有孚，光亨，貞吉，利涉大川",
       "yao": [
-        {"position": 1, "yao_ci": "需于郊，利用恆，无咎"},
-        {"position": 2, "yao_ci": "需于沙，小有言，終吉"},
-        {"position": 3, "yao_ci": "需于泥，致寇至"},
-        {"position": 4, "yao_ci": "需于血，出自穴"},
-        {"position": 5, "yao_ci": "需于酒食，貞吉"},
-        {"position": 6, "yao_ci": "入于穴，有不速之客三人來，敬之終吉"}
-      ]
+        {
+          "position": 1,
+          "yao_ci": "需于郊，利用恆，无咎",
+          "yao_ci_modern": "在郊外等待，利于保持恒心，没有灾难"
+        },
+        {
+          "position": 2,
+          "yao_ci": "需于沙，小有言，終吉",
+          "yao_ci_modern": "在沙地等待，虽有小的言语是非，但最终吉祥"
+        },
+        {
+          "position": 3,
+          "yao_ci": "需于泥，致寇至",
+          "yao_ci_modern": "在泥地等待，会招致寇盗到来"
+        },
+        {
+          "position": 4,
+          "yao_ci": "需于血，出自穴",
+          "yao_ci_modern": "在血泊中等待，从洞穴中出来"
+        },
+        {
+          "position": 5,
+          "yao_ci": "需于酒食，貞吉",
+          "yao_ci_modern": "在酒食中等待，坚守正道吉祥"
+        },
+        {
+          "position": 6,
+          "yao_ci": "入于穴，有不速之客三人來，敬之終吉",
+          "yao_ci_modern": "进入洞穴，有三个不速之客到来，尊敬他们最终吉祥"
+        }
+      ],
+      "gua_ci_modern": "有诚信，光明亨通，坚守正道吉祥，利于渡过大河。"
     },
     {
       "id": 6,
       "name": "讼",
       "gua_ci": "有孚窒惕，中吉，終凶，利見大人，不利涉大川",
       "yao": [
-        {"position": 1, "yao_ci": "不永所事，小有言，終吉"},
-        {"position": 2, "yao_ci": "不克讼，歸而逋，其邑人三百户，无眚"},
-        {"position": 3, "yao_ci": "食舊德，貞厲，終吉，或從王事无成"},
-        {"position": 4, "yao_ci": "不克讼，復即命，渝安貞，吉"},
-        {"position": 5, "yao_ci": "讼元吉"},
-        {"position": 6, "yao_ci": "或錫之鞶帶，終朝三褫之"}
-      ]
+        {
+          "position": 1,
+          "yao_ci": "不永所事，小有言，終吉",
+          "yao_ci_modern": "不要长久纠缠于诉讼之事，虽有小的言语是非，最终吉祥"
+        },
+        {
+          "position": 2,
+          "yao_ci": "不克讼，歸而逋，其邑人三百户，无眚",
+          "yao_ci_modern": "诉讼不能胜诉，逃回家乡，他的城邑三百户，没有灾害"
+        },
+        {
+          "position": 3,
+          "yao_ci": "食舊德，貞厲，終吉，或從王事无成",
+          "yao_ci_modern": "享用旧的德行，坚守正固有危险，最终吉祥，或者跟随帝王做事没有成就"
+        },
+        {
+          "position": 4,
+          "yao_ci": "不克讼，復即命，渝安貞，吉",
+          "yao_ci_modern": "诉讼不能胜诉，回到家中安于正道，吉祥"
+        },
+        {
+          "position": 5,
+          "yao_ci": "讼元吉",
+          "yao_ci_modern": "诉讼大吉大利"
+        },
+        {
+          "position": 6,
+          "yao_ci": "或錫之鞶帶，終朝三褫之",
+          "yao_ci_modern": "或者被赐予玉带，一天之内被剥夺三次"
+        }
+      ],
+      "gua_ci_modern": "有诚信但需警惕，中期吉祥，最终凶险，利于拜见大人物，不适合渡过大河。"
     },
     {
       "id": 7,
       "name": "師",
       "gua_ci": "貞丈人吉，无咎",
       "yao": [
-        {"position": 1, "yao_ci": "師出以律，否臧凶"},
-        {"position": 2, "yao_ci": "在師中吉，无咎，王三錫命"},
-        {"position": 3, "yao_ci": "師或輿尸，凶"},
-        {"position": 4, "yao_ci": "師左次，无咎"},
-        {"position": 5, "yao_ci": "田有禽，利執言，无咎，長子帥師，弟子輿尸，貞凶"},
-        {"position": 6, "yao_ci": "大君有命，開國承家，小人勿用"}
-      ]
+        {
+          "position": 1,
+          "yao_ci": "師出以律，否臧凶",
+          "yao_ci_modern": "军队出发要严明纪律，否则凶险"
+        },
+        {
+          "position": 2,
+          "yao_ci": "在師中吉，无咎，王三錫命",
+          "yao_ci_modern": "在军队中吉祥，没有灾难，王三次赐予命令"
+        },
+        {
+          "position": 3,
+          "yao_ci": "師或輿尸，凶",
+          "yao_ci_modern": "军队可能载尸而归，凶险"
+        },
+        {
+          "position": 4,
+          "yao_ci": "師左次，无咎",
+          "yao_ci_modern": "军队后退防守，没有灾难"
+        },
+        {
+          "position": 5,
+          "yao_ci": "田有禽，利執言，无咎，長子帥師，弟子輿尸，貞凶",
+          "yao_ci_modern": "田野有禽兽，利于执言没有灾难，长子统帅军队，弟子载尸而归，坚守正固有凶险"
+        },
+        {
+          "position": 6,
+          "yao_ci": "大君有命，開國承家，小人勿用",
+          "yao_ci_modern": "天子有命令，开创国家继承家业，小人不能重用"
+        }
+      ],
+      "gua_ci_modern": "坚守正道，老人吉祥，没有灾难。"
     },
     {
       "id": 8,
       "name": "比",
       "gua_ci": "吉，原筮元永貞，无咎，不寧方來，後夫凶",
       "yao": [
-        {"position": 1, "yao_ci": "有孚比之，无咎，有孚盈缶，終來有他吉"},
-        {"position": 2, "yao_ci": "比之自內，貞吉"},
-        {"position": 3, "yao_ci": "比之匪人"},
-        {"position": 4, "yao_ci": "外比之，貞吉"},
-        {"position": 5, "yao_ci": "顯比，王用三驅，失前禽，邑人不誡，吉"},
-        {"position": 6, "yao_ci": "比之无首，凶"}
-      ]
+        {
+          "position": 1,
+          "yao_ci": "有孚比之，无咎，有孚盈缶，終來有他吉",
+          "yao_ci_modern": "有诚信，亲近他没有灾难，有诚信像盈满的容器，最终有其他吉祥"
+        },
+        {
+          "position": 2,
+          "yao_ci": "比之自內，貞吉",
+          "yao_ci_modern": "从内部亲近，坚守正道吉祥"
+        },
+        {
+          "position": 3,
+          "yao_ci": "比之匪人",
+          "yao_ci_modern": "亲近不适当的人"
+        },
+        {
+          "position": 4,
+          "yao_ci": "外比之，貞吉",
+          "yao_ci_modern": "亲近外部的人，坚守正固有危险"
+        },
+        {
+          "position": 5,
+          "yao_ci": "顯比，王用三驅，失前禽，邑人不誡，吉",
+          "yao_ci_modern": "显现诚信，吉祥"
+        },
+        {
+          "position": 6,
+          "yao_ci": "比之无首，凶",
+          "yao_ci_modern": "没有亲近任何人，首领没有成就"
+        }
+      ],
+      "gua_ci_modern": "吉祥，原来的卜问得到长久的坚守正道，没有灾难，不愿来的人会凶险。"
     },
     {
       "id": 9,
       "name": "小畜",
       "gua_ci": "亨，密雲不雨，自我西郊",
       "yao": [
-        {"position": 1, "yao_ci": "復自道，何其咎，吉"},
-        {"position": 2, "yao_ci": "牽復，吉"},
-        {"position": 3, "yao_ci": "輿說輻，夫妻反目"},
-        {"position": 4, "yao_ci": "有孚，血去惕出，无咎"},
-        {"position": 5, "yao_ci": "有孚攣如，富以其鄰"},
-        {"position": 6, "yao_ci": "既雨既處，尚德載，婦貞厲，月幾望，君子征凶"}
+        {
+          "position": 1,
+          "yao_ci": "復自道，何其咎，吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "牽復，吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "輿說輻，夫妻反目"
+        },
+        {
+          "position": 4,
+          "yao_ci": "有孚，血去惕出，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "有孚攣如，富以其鄰"
+        },
+        {
+          "position": 6,
+          "yao_ci": "既雨既處，尚德載，婦貞厲，月幾望，君子征凶"
+        }
       ]
     },
     {
@@ -125,12 +340,30 @@
       "name": "履",
       "gua_ci": "履虎尾，不咥人，亨",
       "yao": [
-        {"position": 1, "yao_ci": "素履往，无咎"},
-        {"position": 2, "yao_ci": "履道坦坦，幽人貞吉"},
-        {"position": 3, "yao_ci": "眇能視，跛能履，履虎尾咥人凶，武人為于大君"},
-        {"position": 4, "yao_ci": "履虎尾，愬愬終吉"},
-        {"position": 5, "yao_ci": "夬履，貞厲"},
-        {"position": 6, "yao_ci": "視履考祥，其旋元吉"}
+        {
+          "position": 1,
+          "yao_ci": "素履往，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "履道坦坦，幽人貞吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "眇能視，跛能履，履虎尾咥人凶，武人為于大君"
+        },
+        {
+          "position": 4,
+          "yao_ci": "履虎尾，愬愬終吉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "夬履，貞厲"
+        },
+        {
+          "position": 6,
+          "yao_ci": "視履考祥，其旋元吉"
+        }
       ]
     },
     {
@@ -138,12 +371,30 @@
       "name": "泰",
       "gua_ci": "小往大來，吉亨",
       "yao": [
-        {"position": 1, "yao_ci": "拔茅茹以其彙，征吉"},
-        {"position": 2, "yao_ci": "包荒，用馮河，不遐遺，朋亡，得尚于中行"},
-        {"position": 3, "yao_ci": "无平不陂，无往不復，艱貞无咎，勿恤其孚，于食有福"},
-        {"position": 4, "yao_ci": "翩翩不富以其鄰，不戒以孚"},
-        {"position": 5, "yao_ci": "帝乙歸妹，以祉元吉"},
-        {"position": 6, "yao_ci": "城復于隍，勿用師，自邑告命，貞吝"}
+        {
+          "position": 1,
+          "yao_ci": "拔茅茹以其彙，征吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "包荒，用馮河，不遐遺，朋亡，得尚于中行"
+        },
+        {
+          "position": 3,
+          "yao_ci": "无平不陂，无往不復，艱貞无咎，勿恤其孚，于食有福"
+        },
+        {
+          "position": 4,
+          "yao_ci": "翩翩不富以其鄰，不戒以孚"
+        },
+        {
+          "position": 5,
+          "yao_ci": "帝乙歸妹，以祉元吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "城復于隍，勿用師，自邑告命，貞吝"
+        }
       ]
     },
     {
@@ -151,12 +402,30 @@
       "name": "否",
       "gua_ci": "否之匪人，不利君子貞，大往小來",
       "yao": [
-        {"position": 1, "yao_ci": "拔茅茹以其彙，貞吉亨"},
-        {"position": 2, "yao_ci": "包承，小人吉，大人否亨"},
-        {"position": 3, "yao_ci": "包羞"},
-        {"position": 4, "yao_ci": "有命无咎，疇離祉"},
-        {"position": 5, "yao_ci": "休否，大人吉，其亡其亡，擊于苞桑"},
-        {"position": 6, "yao_ci": "傾否，先否後喜"}
+        {
+          "position": 1,
+          "yao_ci": "拔茅茹以其彙，貞吉亨"
+        },
+        {
+          "position": 2,
+          "yao_ci": "包承，小人吉，大人否亨"
+        },
+        {
+          "position": 3,
+          "yao_ci": "包羞"
+        },
+        {
+          "position": 4,
+          "yao_ci": "有命无咎，疇離祉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "休否，大人吉，其亡其亡，擊于苞桑"
+        },
+        {
+          "position": 6,
+          "yao_ci": "傾否，先否後喜"
+        }
       ]
     },
     {
@@ -164,12 +433,30 @@
       "name": "同人",
       "gua_ci": "同人于野，亨，利涉大川，利君子貞",
       "yao": [
-        {"position": 1, "yao_ci": "同人于門，无咎"},
-        {"position": 2, "yao_ci": "同人于宗，吝"},
-        {"position": 3, "yao_ci": "伏戎于莽，升其高陵，三歲不興"},
-        {"position": 4, "yao_ci": "乘其墉，弗克攻，吉"},
-        {"position": 5, "yao_ci": "同人先號咷而後笑，大師克相遇"},
-        {"position": 6, "yao_ci": "同人于郊，无悔"}
+        {
+          "position": 1,
+          "yao_ci": "同人于門，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "同人于宗，吝"
+        },
+        {
+          "position": 3,
+          "yao_ci": "伏戎于莽，升其高陵，三歲不興"
+        },
+        {
+          "position": 4,
+          "yao_ci": "乘其墉，弗克攻，吉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "同人先號咷而後笑，大師克相遇"
+        },
+        {
+          "position": 6,
+          "yao_ci": "同人于郊，无悔"
+        }
       ]
     },
     {
@@ -177,12 +464,30 @@
       "name": "大有",
       "gua_ci": "元亨",
       "yao": [
-        {"position": 1, "yao_ci": "无交害，匪咎，艱則无咎"},
-        {"position": 2, "yao_ci": "大車以載，有攸往，无咎"},
-        {"position": 3, "yao_ci": "公用亨于天子，小人弗克"},
-        {"position": 4, "yao_ci": "匪其彭，无咎"},
-        {"position": 5, "yao_ci": "厥孚交如，威如，吉"},
-        {"position": 6, "yao_ci": "自天祐之，吉无不利"}
+        {
+          "position": 1,
+          "yao_ci": "无交害，匪咎，艱則无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "大車以載，有攸往，无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "公用亨于天子，小人弗克"
+        },
+        {
+          "position": 4,
+          "yao_ci": "匪其彭，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "厥孚交如，威如，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "自天祐之，吉无不利"
+        }
       ]
     },
     {
@@ -190,12 +495,30 @@
       "name": "謙",
       "gua_ci": "亨，君子有終",
       "yao": [
-        {"position": 1, "yao_ci": "謙謙君子，用涉大川，吉"},
-        {"position": 2, "yao_ci": "鳴謙，貞吉"},
-        {"position": 3, "yao_ci": "勞謙君子，有終吉"},
-        {"position": 4, "yao_ci": "无不利，撝謙"},
-        {"position": 5, "yao_ci": "不富以其鄰，利用侵伐，无不利"},
-        {"position": 6, "yao_ci": "鳴謙，利用行師征邑國"}
+        {
+          "position": 1,
+          "yao_ci": "謙謙君子，用涉大川，吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "鳴謙，貞吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "勞謙君子，有終吉"
+        },
+        {
+          "position": 4,
+          "yao_ci": "无不利，撝謙"
+        },
+        {
+          "position": 5,
+          "yao_ci": "不富以其鄰，利用侵伐，无不利"
+        },
+        {
+          "position": 6,
+          "yao_ci": "鳴謙，利用行師征邑國"
+        }
       ]
     },
     {
@@ -203,12 +526,30 @@
       "name": "豫",
       "gua_ci": "利建侯行師",
       "yao": [
-        {"position": 1, "yao_ci": "鳴豫，凶"},
-        {"position": 2, "yao_ci": "介于石，不終日，貞吉"},
-        {"position": 3, "yao_ci": "盱豫悔，遲有悔"},
-        {"position": 4, "yao_ci": "由豫，大有得，勿疑朋盍簪"},
-        {"position": 5, "yao_ci": "貞疾，恒不死"},
-        {"position": 6, "yao_ci": "冥豫成，有渝无咎"}
+        {
+          "position": 1,
+          "yao_ci": "鳴豫，凶"
+        },
+        {
+          "position": 2,
+          "yao_ci": "介于石，不終日，貞吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "盱豫悔，遲有悔"
+        },
+        {
+          "position": 4,
+          "yao_ci": "由豫，大有得，勿疑朋盍簪"
+        },
+        {
+          "position": 5,
+          "yao_ci": "貞疾，恒不死"
+        },
+        {
+          "position": 6,
+          "yao_ci": "冥豫成，有渝无咎"
+        }
       ]
     },
     {
@@ -216,12 +557,30 @@
       "name": "隨",
       "gua_ci": "元亨利貞，无咎",
       "yao": [
-        {"position": 1, "yao_ci": "官有渝，貞吉，出門交有功"},
-        {"position": 2, "yao_ci": "係小子，失丈夫"},
-        {"position": 3, "yao_ci": "係丈夫，失小子，隨有求得"},
-        {"position": 4, "yao_ci": "隨有獲，貞凶，有孚在道以明，何咎"},
-        {"position": 5, "yao_ci": "孚于嘉，吉"},
-        {"position": 6, "yao_ci": "拘係之，乃從維之，王用亨于西山"}
+        {
+          "position": 1,
+          "yao_ci": "官有渝，貞吉，出門交有功"
+        },
+        {
+          "position": 2,
+          "yao_ci": "係小子，失丈夫"
+        },
+        {
+          "position": 3,
+          "yao_ci": "係丈夫，失小子，隨有求得"
+        },
+        {
+          "position": 4,
+          "yao_ci": "隨有獲，貞凶，有孚在道以明，何咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "孚于嘉，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "拘係之，乃從維之，王用亨于西山"
+        }
       ]
     },
     {
@@ -229,12 +588,30 @@
       "name": "蠱",
       "gua_ci": "元亨，利涉大川，先甲三日，後甲三日",
       "yao": [
-        {"position": 1, "yao_ci": "幹父之蠱，有子考无咎，厲終吉"},
-        {"position": 2, "yao_ci": "幹母之蠱，不可貞"},
-        {"position": 3, "yao_ci": "幹父之蠱，小有悔，无大咎"},
-        {"position": 4, "yao_ci": "裕父之蠱，往見吝"},
-        {"position": 5, "yao_ci": "幹父之蠱，用譽"},
-        {"position": 6, "yao_ci": "不事王侯，高尚其事"}
+        {
+          "position": 1,
+          "yao_ci": "幹父之蠱，有子考无咎，厲終吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "幹母之蠱，不可貞"
+        },
+        {
+          "position": 3,
+          "yao_ci": "幹父之蠱，小有悔，无大咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "裕父之蠱，往見吝"
+        },
+        {
+          "position": 5,
+          "yao_ci": "幹父之蠱，用譽"
+        },
+        {
+          "position": 6,
+          "yao_ci": "不事王侯，高尚其事"
+        }
       ]
     },
     {
@@ -242,12 +619,30 @@
       "name": "臨",
       "gua_ci": "元亨利貞，至于八月有凶",
       "yao": [
-        {"position": 1, "yao_ci": "咸臨，貞吉"},
-        {"position": 2, "yao_ci": "咸臨，吉无不利"},
-        {"position": 3, "yao_ci": "甘臨，无攸利，既憂之，无咎"},
-        {"position": 4, "yao_ci": "至臨，无咎"},
-        {"position": 5, "yao_ci": "知臨，大君之宜，吉"},
-        {"position": 6, "yao_ci": "敦臨，吉无咎"}
+        {
+          "position": 1,
+          "yao_ci": "咸臨，貞吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "咸臨，吉无不利"
+        },
+        {
+          "position": 3,
+          "yao_ci": "甘臨，无攸利，既憂之，无咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "至臨，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "知臨，大君之宜，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "敦臨，吉无咎"
+        }
       ]
     },
     {
@@ -255,12 +650,30 @@
       "name": "觀",
       "gua_ci": "盥而不荐，有孚顒若",
       "yao": [
-        {"position": 1, "yao_ci": "童觀，小人无咎，君子吝"},
-        {"position": 2, "yao_ci": "窺觀，利女貞"},
-        {"position": 3, "yao_ci": "觀我生，進退"},
-        {"position": 4, "yao_ci": "觀國之光，利用賓于王"},
-        {"position": 5, "yao_ci": "觀我生，君子无咎"},
-        {"position": 6, "yao_ci": "觀其生，君子无咎"}
+        {
+          "position": 1,
+          "yao_ci": "童觀，小人无咎，君子吝"
+        },
+        {
+          "position": 2,
+          "yao_ci": "窺觀，利女貞"
+        },
+        {
+          "position": 3,
+          "yao_ci": "觀我生，進退"
+        },
+        {
+          "position": 4,
+          "yao_ci": "觀國之光，利用賓于王"
+        },
+        {
+          "position": 5,
+          "yao_ci": "觀我生，君子无咎"
+        },
+        {
+          "position": 6,
+          "yao_ci": "觀其生，君子无咎"
+        }
       ]
     },
     {
@@ -268,12 +681,30 @@
       "name": "噬嗑",
       "gua_ci": "亨，利用獄",
       "yao": [
-        {"position": 1, "yao_ci": "屨校滅趾，无咎"},
-        {"position": 2, "yao_ci": "噬肤滅鼻，无咎"},
-        {"position": 3, "yao_ci": "噬腊肉，遇毒，小吝无咎"},
-        {"position": 4, "yao_ci": "噬乾胏，得金矢，利艱貞，吉"},
-        {"position": 5, "yao_ci": "噬乾肉，得黃金，貞厲无咎"},
-        {"position": 6, "yao_ci": "何校滅耳，凶"}
+        {
+          "position": 1,
+          "yao_ci": "屨校滅趾，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "噬肤滅鼻，无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "噬腊肉，遇毒，小吝无咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "噬乾胏，得金矢，利艱貞，吉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "噬乾肉，得黃金，貞厲无咎"
+        },
+        {
+          "position": 6,
+          "yao_ci": "何校滅耳，凶"
+        }
       ]
     },
     {
@@ -281,12 +712,30 @@
       "name": "賁",
       "gua_ci": "亨，小利有攸往",
       "yao": [
-        {"position": 1, "yao_ci": "賁其趾，舍車而徒"},
-        {"position": 2, "yao_ci": "賁其須"},
-        {"position": 3, "yao_ci": "賁如濡如，永貞吉"},
-        {"position": 4, "yao_ci": "賁如皤如，白馬翰如，匪寇婚媾"},
-        {"position": 5, "yao_ci": "賁于丘園，束帛戔戔，吝終吉"},
-        {"position": 6, "yao_ci": "白賁，无咎"}
+        {
+          "position": 1,
+          "yao_ci": "賁其趾，舍車而徒"
+        },
+        {
+          "position": 2,
+          "yao_ci": "賁其須"
+        },
+        {
+          "position": 3,
+          "yao_ci": "賁如濡如，永貞吉"
+        },
+        {
+          "position": 4,
+          "yao_ci": "賁如皤如，白馬翰如，匪寇婚媾"
+        },
+        {
+          "position": 5,
+          "yao_ci": "賁于丘園，束帛戔戔，吝終吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "白賁，无咎"
+        }
       ]
     },
     {
@@ -294,12 +743,30 @@
       "name": "剝",
       "gua_ci": "不利有攸往",
       "yao": [
-        {"position": 1, "yao_ci": "剝床以足，蔑貞凶"},
-        {"position": 2, "yao_ci": "剝床以辨，蔑貞凶"},
-        {"position": 3, "yao_ci": "剝之无咎"},
-        {"position": 4, "yao_ci": "剝床以膚，凶"},
-        {"position": 5, "yao_ci": "貫魚以宮人寵，无不利"},
-        {"position": 6, "yao_ci": "碩果不食，君子得輿，小人剝廬"}
+        {
+          "position": 1,
+          "yao_ci": "剝床以足，蔑貞凶"
+        },
+        {
+          "position": 2,
+          "yao_ci": "剝床以辨，蔑貞凶"
+        },
+        {
+          "position": 3,
+          "yao_ci": "剝之无咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "剝床以膚，凶"
+        },
+        {
+          "position": 5,
+          "yao_ci": "貫魚以宮人寵，无不利"
+        },
+        {
+          "position": 6,
+          "yao_ci": "碩果不食，君子得輿，小人剝廬"
+        }
       ]
     },
     {
@@ -307,12 +774,30 @@
       "name": "復",
       "gua_ci": "亨，出入无疾，朋來无咎，反復其道，七日來復，利有攸往",
       "yao": [
-        {"position": 1, "yao_ci": "不遠復，无祗悔，元吉"},
-        {"position": 2, "yao_ci": "休復，吉"},
-        {"position": 3, "yao_ci": "頻復，厲无咎"},
-        {"position": 4, "yao_ci": "中行獨復"},
-        {"position": 5, "yao_ci": "敦復，无悔"},
-        {"position": 6, "yao_ci": "迷復，凶，有災眚，用行師，終有大敗，以其國君凶，至于十年不克征"}
+        {
+          "position": 1,
+          "yao_ci": "不遠復，无祗悔，元吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "休復，吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "頻復，厲无咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "中行獨復"
+        },
+        {
+          "position": 5,
+          "yao_ci": "敦復，无悔"
+        },
+        {
+          "position": 6,
+          "yao_ci": "迷復，凶，有災眚，用行師，終有大敗，以其國君凶，至于十年不克征"
+        }
       ]
     },
     {
@@ -320,12 +805,30 @@
       "name": "无妄",
       "gua_ci": "元亨利貞，其匪正有眚，不利有攸往",
       "yao": [
-        {"position": 1, "yao_ci": "无妄往，吉"},
-        {"position": 2, "yao_ci": "不耕獲，不菑畬，則利有攸往"},
-        {"position": 3, "yao_ci": "无妄之災，或系之牛，行人之得，邑人之災"},
-        {"position": 4, "yao_ci": "可貞，无咎"},
-        {"position": 5, "yao_ci": "无妄之疾，勿藥有喜"},
-        {"position": 6, "yao_ci": "无妄行，有眚，无攸利"}
+        {
+          "position": 1,
+          "yao_ci": "无妄往，吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "不耕獲，不菑畬，則利有攸往"
+        },
+        {
+          "position": 3,
+          "yao_ci": "无妄之災，或系之牛，行人之得，邑人之災"
+        },
+        {
+          "position": 4,
+          "yao_ci": "可貞，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "无妄之疾，勿藥有喜"
+        },
+        {
+          "position": 6,
+          "yao_ci": "无妄行，有眚，无攸利"
+        }
       ]
     },
     {
@@ -333,12 +836,30 @@
       "name": "大畜",
       "gua_ci": "利貞，不家食吉，利涉大川",
       "yao": [
-        {"position": 1, "yao_ci": "有厲利已"},
-        {"position": 2, "yao_ci": "輿說輹"},
-        {"position": 3, "yao_ci": "良馬逐，利艱貞，曰閑輿衛，利有攸往"},
-        {"position": 4, "yao_ci": "童牛之牿，元吉"},
-        {"position": 5, "yao_ci": "豶豕之牙，吉"},
-        {"position": 6, "yao_ci": "何天之衢，亨"}
+        {
+          "position": 1,
+          "yao_ci": "有厲利已"
+        },
+        {
+          "position": 2,
+          "yao_ci": "輿說輹"
+        },
+        {
+          "position": 3,
+          "yao_ci": "良馬逐，利艱貞，曰閑輿衛，利有攸往"
+        },
+        {
+          "position": 4,
+          "yao_ci": "童牛之牿，元吉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "豶豕之牙，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "何天之衢，亨"
+        }
       ]
     },
     {
@@ -346,12 +867,30 @@
       "name": "頤",
       "gua_ci": "貞吉，觀頤，自求口實",
       "yao": [
-        {"position": 1, "yao_ci": "舍爾靈龜，觀我朵頤，凶"},
-        {"position": 2, "yao_ci": "顛頤，拂經于丘，頤征凶"},
-        {"position": 3, "yao_ci": "拂頤，貞凶，十年勿用，无攸利"},
-        {"position": 4, "yao_ci": "顛頤吉，虎視眈眈，其欲逐逐，无咎"},
-        {"position": 5, "yao_ci": "拂經，居貞吉，不可涉大川"},
-        {"position": 6, "yao_ci": "由頤，厲吉，利涉大川"}
+        {
+          "position": 1,
+          "yao_ci": "舍爾靈龜，觀我朵頤，凶"
+        },
+        {
+          "position": 2,
+          "yao_ci": "顛頤，拂經于丘，頤征凶"
+        },
+        {
+          "position": 3,
+          "yao_ci": "拂頤，貞凶，十年勿用，无攸利"
+        },
+        {
+          "position": 4,
+          "yao_ci": "顛頤吉，虎視眈眈，其欲逐逐，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "拂經，居貞吉，不可涉大川"
+        },
+        {
+          "position": 6,
+          "yao_ci": "由頤，厲吉，利涉大川"
+        }
       ]
     },
     {
@@ -359,12 +898,30 @@
       "name": "大過",
       "gua_ci": "棟橈，利有攸往，亨",
       "yao": [
-        {"position": 1, "yao_ci": "藉用白茅，无咎"},
-        {"position": 2, "yao_ci": "枯楊生稊，老夫得其女妻，无不利"},
-        {"position": 3, "yao_ci": "棟橈，凶"},
-        {"position": 4, "yao_ci": "棟隆，吉，有它吝"},
-        {"position": 5, "yao_ci": "枯楊生華，老婦得其士夫，无咎无譽"},
-        {"position": 6, "yao_ci": "過涉滅頂，凶，无咎"}
+        {
+          "position": 1,
+          "yao_ci": "藉用白茅，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "枯楊生稊，老夫得其女妻，无不利"
+        },
+        {
+          "position": 3,
+          "yao_ci": "棟橈，凶"
+        },
+        {
+          "position": 4,
+          "yao_ci": "棟隆，吉，有它吝"
+        },
+        {
+          "position": 5,
+          "yao_ci": "枯楊生華，老婦得其士夫，无咎无譽"
+        },
+        {
+          "position": 6,
+          "yao_ci": "過涉滅頂，凶，无咎"
+        }
       ]
     },
     {
@@ -372,12 +929,30 @@
       "name": "坎",
       "gua_ci": "習坎，有孚，維心亨，行有尚",
       "yao": [
-        {"position": 1, "yao_ci": "習坎，入于坎窞，凶"},
-        {"position": 2, "yao_ci": "坎有險，求小得"},
-        {"position": 3, "yao_ci": "來之坎坎，險且枕，入于坎窞，勿用"},
-        {"position": 4, "yao_ci": "樽酒簋貳，用缶，納約自牖，終无咎"},
-        {"position": 5, "yao_ci": "坎不盈，祗既平，无咎"},
-        {"position": 6, "yao_ci": "係用徽纆，寘于叢棘，三歲不得，凶"}
+        {
+          "position": 1,
+          "yao_ci": "習坎，入于坎窞，凶"
+        },
+        {
+          "position": 2,
+          "yao_ci": "坎有險，求小得"
+        },
+        {
+          "position": 3,
+          "yao_ci": "來之坎坎，險且枕，入于坎窞，勿用"
+        },
+        {
+          "position": 4,
+          "yao_ci": "樽酒簋貳，用缶，納約自牖，終无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "坎不盈，祗既平，无咎"
+        },
+        {
+          "position": 6,
+          "yao_ci": "係用徽纆，寘于叢棘，三歲不得，凶"
+        }
       ]
     },
     {
@@ -385,12 +960,30 @@
       "name": "離",
       "gua_ci": "利貞，亨，畜牝牛吉",
       "yao": [
-        {"position": 1, "yao_ci": "履錯然，敬之无咎"},
-        {"position": 2, "yao_ci": "黃離，元吉"},
-        {"position": 3, "yao_ci": "日昃之離，不鼓缶而歌，則大耋之嗟，凶"},
-        {"position": 4, "yao_ci": "突如其來如，焚如，死如，棄如"},
-        {"position": 5, "yao_ci": "出涕沱若，戚嗟若，吉"},
-        {"position": 6, "yao_ci": "王用出征，有嘉折首，獲匪其醜，无咎"}
+        {
+          "position": 1,
+          "yao_ci": "履錯然，敬之无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "黃離，元吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "日昃之離，不鼓缶而歌，則大耋之嗟，凶"
+        },
+        {
+          "position": 4,
+          "yao_ci": "突如其來如，焚如，死如，棄如"
+        },
+        {
+          "position": 5,
+          "yao_ci": "出涕沱若，戚嗟若，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "王用出征，有嘉折首，獲匪其醜，无咎"
+        }
       ]
     },
     {
@@ -398,12 +991,30 @@
       "name": "咸",
       "gua_ci": "亨利貞，取女吉",
       "yao": [
-        {"position": 1, "yao_ci": "咸其拇"},
-        {"position": 2, "yao_ci": "咸其腓，凶，居吉"},
-        {"position": 3, "yao_ci": "咸其股，執其隨，往吝"},
-        {"position": 4, "yao_ci": "貞吉悔亡，憧憧往來，朋從爾思"},
-        {"position": 5, "yao_ci": "咸其脢，无悔"},
-        {"position": 6, "yao_ci": "咸其輔頰舌"}
+        {
+          "position": 1,
+          "yao_ci": "咸其拇"
+        },
+        {
+          "position": 2,
+          "yao_ci": "咸其腓，凶，居吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "咸其股，執其隨，往吝"
+        },
+        {
+          "position": 4,
+          "yao_ci": "貞吉悔亡，憧憧往來，朋從爾思"
+        },
+        {
+          "position": 5,
+          "yao_ci": "咸其脢，无悔"
+        },
+        {
+          "position": 6,
+          "yao_ci": "咸其輔頰舌"
+        }
       ]
     },
     {
@@ -411,12 +1022,30 @@
       "name": "恆",
       "gua_ci": "亨无咎，利貞，利有攸往",
       "yao": [
-        {"position": 1, "yao_ci": "浚恆，貞凶，无攸利"},
-        {"position": 2, "yao_ci": "悔亡"},
-        {"position": 3, "yao_ci": "不恆其德，或承之羞，貞吝"},
-        {"position": 4, "yao_ci": "田无禽"},
-        {"position": 5, "yao_ci": "恆其德，貞，君子吉，小人否"},
-        {"position": 6, "yao_ci": "振恆，凶"}
+        {
+          "position": 1,
+          "yao_ci": "浚恆，貞凶，无攸利"
+        },
+        {
+          "position": 2,
+          "yao_ci": "悔亡"
+        },
+        {
+          "position": 3,
+          "yao_ci": "不恆其德，或承之羞，貞吝"
+        },
+        {
+          "position": 4,
+          "yao_ci": "田无禽"
+        },
+        {
+          "position": 5,
+          "yao_ci": "恆其德，貞，君子吉，小人否"
+        },
+        {
+          "position": 6,
+          "yao_ci": "振恆，凶"
+        }
       ]
     },
     {
@@ -424,12 +1053,30 @@
       "name": "遯",
       "gua_ci": "亨，小利貞",
       "yao": [
-        {"position": 1, "yao_ci": "遯尾，厲，勿用有攸往"},
-        {"position": 2, "yao_ci": "執之用黃牛之革，莫之勝說"},
-        {"position": 3, "yao_ci": "係遯，有疾厲，畜臣妾吉"},
-        {"position": 4, "yao_ci": "好遯君子吉，小人否"},
-        {"position": 5, "yao_ci": "嘉遯，貞吉"},
-        {"position": 6, "yao_ci": "肥遯，无不利"}
+        {
+          "position": 1,
+          "yao_ci": "遯尾，厲，勿用有攸往"
+        },
+        {
+          "position": 2,
+          "yao_ci": "執之用黃牛之革，莫之勝說"
+        },
+        {
+          "position": 3,
+          "yao_ci": "係遯，有疾厲，畜臣妾吉"
+        },
+        {
+          "position": 4,
+          "yao_ci": "好遯君子吉，小人否"
+        },
+        {
+          "position": 5,
+          "yao_ci": "嘉遯，貞吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "肥遯，无不利"
+        }
       ]
     },
     {
@@ -437,12 +1084,30 @@
       "name": "大壯",
       "gua_ci": "利貞",
       "yao": [
-        {"position": 1, "yao_ci": "壯于趾，征凶，有孚"},
-        {"position": 2, "yao_ci": "貞吉"},
-        {"position": 3, "yao_ci": "小人用壯，君子用罔，貞厲，翩翩不及其君，利用侵伐，无不利"},
-        {"position": 4, "yao_ci": "貞吉悔亡，翩翩不富以其鄰，不戒以孚"},
-        {"position": 5, "yao_ci": "喪羊于易，无悔"},
-        {"position": 6, "yao_ci": "羝羊觸藩，不能退，不能遂"}
+        {
+          "position": 1,
+          "yao_ci": "壯于趾，征凶，有孚"
+        },
+        {
+          "position": 2,
+          "yao_ci": "貞吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "小人用壯，君子用罔，貞厲，翩翩不及其君，利用侵伐，无不利"
+        },
+        {
+          "position": 4,
+          "yao_ci": "貞吉悔亡，翩翩不富以其鄰，不戒以孚"
+        },
+        {
+          "position": 5,
+          "yao_ci": "喪羊于易，无悔"
+        },
+        {
+          "position": 6,
+          "yao_ci": "羝羊觸藩，不能退，不能遂"
+        }
       ]
     },
     {
@@ -450,12 +1115,30 @@
       "name": "晉",
       "gua_ci": "康侯用錫馬蕃庶，晝日三接",
       "yao": [
-        {"position": 1, "yao_ci": "晉如摧如，貞吉，罔孚裕无咎"},
-        {"position": 2, "yao_ci": "晉如愁如，貞吉，受茲介福于其王母"},
-        {"position": 3, "yao_ci": "眾允，悔亡"},
-        {"position": 4, "yao_ci": "晉如鼫鼠，貞厲"},
-        {"position": 5, "yao_ci": "悔亡，失得勿恤，往吉无不利"},
-        {"position": 6, "yao_ci": "晉其角，維用伐邑，厲吉无咎，貞吝"}
+        {
+          "position": 1,
+          "yao_ci": "晉如摧如，貞吉，罔孚裕无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "晉如愁如，貞吉，受茲介福于其王母"
+        },
+        {
+          "position": 3,
+          "yao_ci": "眾允，悔亡"
+        },
+        {
+          "position": 4,
+          "yao_ci": "晉如鼫鼠，貞厲"
+        },
+        {
+          "position": 5,
+          "yao_ci": "悔亡，失得勿恤，往吉无不利"
+        },
+        {
+          "position": 6,
+          "yao_ci": "晉其角，維用伐邑，厲吉无咎，貞吝"
+        }
       ]
     },
     {
@@ -463,12 +1146,30 @@
       "name": "明夷",
       "gua_ci": "利艱貞",
       "yao": [
-        {"position": 1, "yao_ci": "明夷于飛，垂其翼，君子于行，三日不食，有攸往，主人有言"},
-        {"position": 2, "yao_ci": "明夷，夷于左股，用拯馬壯，吉"},
-        {"position": 3, "yao_ci": "明夷于南狩，得其大首，不可疾貞"},
-        {"position": 4, "yao_ci": "入于左腹，獲明夷之心，于出門庭"},
-        {"position": 5, "yao_ci": "箕子之明夷，利貞"},
-        {"position": 6, "yao_ci": "不明晦，初登于天，後入于地"}
+        {
+          "position": 1,
+          "yao_ci": "明夷于飛，垂其翼，君子于行，三日不食，有攸往，主人有言"
+        },
+        {
+          "position": 2,
+          "yao_ci": "明夷，夷于左股，用拯馬壯，吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "明夷于南狩，得其大首，不可疾貞"
+        },
+        {
+          "position": 4,
+          "yao_ci": "入于左腹，獲明夷之心，于出門庭"
+        },
+        {
+          "position": 5,
+          "yao_ci": "箕子之明夷，利貞"
+        },
+        {
+          "position": 6,
+          "yao_ci": "不明晦，初登于天，後入于地"
+        }
       ]
     },
     {
@@ -476,12 +1177,30 @@
       "name": "家人",
       "gua_ci": "利女貞",
       "yao": [
-        {"position": 1, "yao_ci": "門有家，悔亡"},
-        {"position": 2, "yao_ci": "无攸遂，在中饋，貞吉"},
-        {"position": 3, "yao_ci": "家人嗃嗃，悔厲吉，婦子嘻嘻，終吝"},
-        {"position": 4, "yao_ci": "富家，大吉"},
-        {"position": 5, "yao_ci": "王假有家，勿恤吉"},
-        {"position": 6, "yao_ci": "有孚威如，終吉"}
+        {
+          "position": 1,
+          "yao_ci": "門有家，悔亡"
+        },
+        {
+          "position": 2,
+          "yao_ci": "无攸遂，在中饋，貞吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "家人嗃嗃，悔厲吉，婦子嘻嘻，終吝"
+        },
+        {
+          "position": 4,
+          "yao_ci": "富家，大吉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "王假有家，勿恤吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "有孚威如，終吉"
+        }
       ]
     },
     {
@@ -489,12 +1208,30 @@
       "name": "睽",
       "gua_ci": "小事吉",
       "yao": [
-        {"position": 1, "yao_ci": "悔亡，喪馬勿逐自復，見惡人无咎"},
-        {"position": 2, "yao_ci": "遇主于巷，无咎"},
-        {"position": 3, "yao_ci": "見輿曳，其牛掣，其人天且劓，无初有終"},
-        {"position": 4, "yao_ci": "睽孤遇元夫，交孚，厲无咎"},
-        {"position": 5, "yao_ci": "悔亡，厥宗噬肤，往何咎"},
-        {"position": 6, "yao_ci": "睽孤見豕負塗，載鬼一車，先張之弧，後說之弧，匪寇婚媾，往遇雨則吉"}
+        {
+          "position": 1,
+          "yao_ci": "悔亡，喪馬勿逐自復，見惡人无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "遇主于巷，无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "見輿曳，其牛掣，其人天且劓，无初有終"
+        },
+        {
+          "position": 4,
+          "yao_ci": "睽孤遇元夫，交孚，厲无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "悔亡，厥宗噬肤，往何咎"
+        },
+        {
+          "position": 6,
+          "yao_ci": "睽孤見豕負塗，載鬼一車，先張之弧，後說之弧，匪寇婚媾，往遇雨則吉"
+        }
       ]
     },
     {
@@ -502,12 +1239,30 @@
       "name": "蹇",
       "gua_ci": "利西南，不利東北，利見大人，貞吉",
       "yao": [
-        {"position": 1, "yao_ci": "往蹇來譽"},
-        {"position": 2, "yao_ci": "王臣蹇蹇，匪躬之故"},
-        {"position": 3, "yao_ci": "往蹇來反"},
-        {"position": 4, "yao_ci": "往蹇來連"},
-        {"position": 5, "yao_ci": "大蹇朋來"},
-        {"position": 6, "yao_ci": "往蹇來碩，吉，利見大人"}
+        {
+          "position": 1,
+          "yao_ci": "往蹇來譽"
+        },
+        {
+          "position": 2,
+          "yao_ci": "王臣蹇蹇，匪躬之故"
+        },
+        {
+          "position": 3,
+          "yao_ci": "往蹇來反"
+        },
+        {
+          "position": 4,
+          "yao_ci": "往蹇來連"
+        },
+        {
+          "position": 5,
+          "yao_ci": "大蹇朋來"
+        },
+        {
+          "position": 6,
+          "yao_ci": "往蹇來碩，吉，利見大人"
+        }
       ]
     },
     {
@@ -515,12 +1270,30 @@
       "name": "解",
       "gua_ci": "利西南，无所往，其來復吉，有攸往，夙吉",
       "yao": [
-        {"position": 1, "yao_ci": "无咎"},
-        {"position": 2, "yao_ci": "田獲三狐，得黃矢，貞吉"},
-        {"position": 3, "yao_ci": "負且乘，致寇至，貞吝"},
-        {"position": 4, "yao_ci": "解而拇，朋至斯孚"},
-        {"position": 5, "yao_ci": "君子維有解，吉，有孚于小人"},
-        {"position": 6, "yao_ci": "公用射隼于高墉之上，獲之，无不利"}
+        {
+          "position": 1,
+          "yao_ci": "无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "田獲三狐，得黃矢，貞吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "負且乘，致寇至，貞吝"
+        },
+        {
+          "position": 4,
+          "yao_ci": "解而拇，朋至斯孚"
+        },
+        {
+          "position": 5,
+          "yao_ci": "君子維有解，吉，有孚于小人"
+        },
+        {
+          "position": 6,
+          "yao_ci": "公用射隼于高墉之上，獲之，无不利"
+        }
       ]
     },
     {
@@ -528,12 +1301,30 @@
       "name": "損",
       "gua_ci": "有孚，元吉，无咎可貞，利有攸往，曷之用，二簋可用享",
       "yao": [
-        {"position": 1, "yao_ci": "已事遄往，无咎，酌損之"},
-        {"position": 2, "yao_ci": "利貞，征凶，弗損益之"},
-        {"position": 3, "yao_ci": "三人行則損一人，一人行則得其友"},
-        {"position": 4, "yao_ci": "損其疾，使遄有喜，无咎"},
-        {"position": 5, "yao_ci": "或益之十朋之龜，弗克違，元吉"},
-        {"position": 6, "yao_ci": "弗損益之，无咎，貞吉，利有攸往，得臣无家"}
+        {
+          "position": 1,
+          "yao_ci": "已事遄往，无咎，酌損之"
+        },
+        {
+          "position": 2,
+          "yao_ci": "利貞，征凶，弗損益之"
+        },
+        {
+          "position": 3,
+          "yao_ci": "三人行則損一人，一人行則得其友"
+        },
+        {
+          "position": 4,
+          "yao_ci": "損其疾，使遄有喜，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "或益之十朋之龜，弗克違，元吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "弗損益之，无咎，貞吉，利有攸往，得臣无家"
+        }
       ]
     },
     {
@@ -541,12 +1332,30 @@
       "name": "益",
       "gua_ci": "利有攸往，利涉大川",
       "yao": [
-        {"position": 1, "yao_ci": "利用為大作，元吉，无咎"},
-        {"position": 2, "yao_ci": "或益之十朋之龜，弗克違，永貞吉，子惠迪吉"},
-        {"position": 3, "yao_ci": "益之用凶事，无咎，有孚中行，告公用圭"},
-        {"position": 4, "yao_ci": "中行告公從，利用為依遷國"},
-        {"position": 5, "yao_ci": "有孚惠心，勿問元吉，有孚惠我德"},
-        {"position": 6, "yao_ci": "莫益之，或擊之，立心勿恒，凶"}
+        {
+          "position": 1,
+          "yao_ci": "利用為大作，元吉，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "或益之十朋之龜，弗克違，永貞吉，子惠迪吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "益之用凶事，无咎，有孚中行，告公用圭"
+        },
+        {
+          "position": 4,
+          "yao_ci": "中行告公從，利用為依遷國"
+        },
+        {
+          "position": 5,
+          "yao_ci": "有孚惠心，勿問元吉，有孚惠我德"
+        },
+        {
+          "position": 6,
+          "yao_ci": "莫益之，或擊之，立心勿恒，凶"
+        }
       ]
     },
     {
@@ -554,12 +1363,30 @@
       "name": "夬",
       "gua_ci": "揚于王庭，孚號有厲，告自邑，不利即戎，利有攸往",
       "yao": [
-        {"position": 1, "yao_ci": "壯于前趾，往不勝為咎"},
-        {"position": 2, "yao_ci": "惕號，莫夜有戎，勿恤"},
-        {"position": 3, "yao_ci": "壯于頄，有凶，君子夬夬獨行遇雨，若濡有慍，无咎"},
-        {"position": 4, "yao_ci": "臀无膚，其行次且，牽羊悔亡，嗡嗡不贏"},
-        {"position": 5, "yao_ci": "莧陸夬夬，中行无咎"},
-        {"position": 6, "yao_ci": "无號，終有凶"}
+        {
+          "position": 1,
+          "yao_ci": "壯于前趾，往不勝為咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "惕號，莫夜有戎，勿恤"
+        },
+        {
+          "position": 3,
+          "yao_ci": "壯于頄，有凶，君子夬夬獨行遇雨，若濡有慍，无咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "臀无膚，其行次且，牽羊悔亡，嗡嗡不贏"
+        },
+        {
+          "position": 5,
+          "yao_ci": "莧陸夬夬，中行无咎"
+        },
+        {
+          "position": 6,
+          "yao_ci": "无號，終有凶"
+        }
       ]
     },
     {
@@ -567,12 +1394,30 @@
       "name": "姤",
       "gua_ci": "女壯，勿用取女",
       "yao": [
-        {"position": 1, "yao_ci": "繫于金柅，貞吉，有攸往，見凶，羸豕孚蹢躅"},
-        {"position": 2, "yao_ci": "包有魚，无咎，不利賓"},
-        {"position": 3, "yao_ci": "臀无膚，其行次且，厲，无大咎"},
-        {"position": 4, "yao_ci": "包无魚，起凶"},
-        {"position": 5, "yao_ci": "以杞包瓜，含章，有隕自天"},
-        {"position": 6, "yao_ci": "姤其角，吝，无咎"}
+        {
+          "position": 1,
+          "yao_ci": "繫于金柅，貞吉，有攸往，見凶，羸豕孚蹢躅"
+        },
+        {
+          "position": 2,
+          "yao_ci": "包有魚，无咎，不利賓"
+        },
+        {
+          "position": 3,
+          "yao_ci": "臀无膚，其行次且，厲，无大咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "包无魚，起凶"
+        },
+        {
+          "position": 5,
+          "yao_ci": "以杞包瓜，含章，有隕自天"
+        },
+        {
+          "position": 6,
+          "yao_ci": "姤其角，吝，无咎"
+        }
       ]
     },
     {
@@ -580,12 +1425,30 @@
       "name": "萃",
       "gua_ci": "亨，王假有廟，利見大人，亨利貞，用大牲吉，利有攸往",
       "yao": [
-        {"position": 1, "yao_ci": "有孚不終，乃亂乃萃，若號一握為笑，勿恤，往无咎"},
-        {"position": 2, "yao_ci": "引吉，无咎，孚乃利用禴"},
-        {"position": 3, "yao_ci": "萃如嗟如，无攸利，往无咎，小吝"},
-        {"position": 4, "yao_ci": "大吉无咎"},
-        {"position": 5, "yao_ci": "萃有位，无咎，匪孚，元永貞，悔亡"},
-        {"position": 6, "yao_ci": "齎咨涕洟，无咎"}
+        {
+          "position": 1,
+          "yao_ci": "有孚不終，乃亂乃萃，若號一握為笑，勿恤，往无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "引吉，无咎，孚乃利用禴"
+        },
+        {
+          "position": 3,
+          "yao_ci": "萃如嗟如，无攸利，往无咎，小吝"
+        },
+        {
+          "position": 4,
+          "yao_ci": "大吉无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "萃有位，无咎，匪孚，元永貞，悔亡"
+        },
+        {
+          "position": 6,
+          "yao_ci": "齎咨涕洟，无咎"
+        }
       ]
     },
     {
@@ -593,12 +1456,30 @@
       "name": "升",
       "gua_ci": "元亨，用見大人，勿恤，南征吉",
       "yao": [
-        {"position": 1, "yao_ci": "允升，大吉"},
-        {"position": 2, "yao_ci": "孚升利用禴，无咎"},
-        {"position": 3, "yao_ci": "升虛邑"},
-        {"position": 4, "yao_ci": "王用亨于岐山，吉无咎"},
-        {"position": 5, "yao_ci": "貞吉，升階"},
-        {"position": 6, "yao_ci": "冥升，利于不息之貞"}
+        {
+          "position": 1,
+          "yao_ci": "允升，大吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "孚升利用禴，无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "升虛邑"
+        },
+        {
+          "position": 4,
+          "yao_ci": "王用亨于岐山，吉无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "貞吉，升階"
+        },
+        {
+          "position": 6,
+          "yao_ci": "冥升，利于不息之貞"
+        }
       ]
     },
     {
@@ -606,12 +1487,30 @@
       "name": "困",
       "gua_ci": "亨，貞大人吉，无咎，有言不信",
       "yao": [
-        {"position": 1, "yao_ci": "臀困于株木，入于幽谷，三歲不覿"},
-        {"position": 2, "yao_ci": "困于酒食，朱紱方來，利用亨祀，征凶，无咎"},
-        {"position": 3, "yao_ci": "困于石，據于蒺蔾，入于其宮，不見其妻，凶"},
-        {"position": 4, "yao_ci": "來徐徐，困于金車，吝，有終"},
-        {"position": 5, "yao_ci": "劓刖，困于赤紱，乃徐有說，利用祭祀"},
-        {"position": 6, "yao_ci": "困于葛藟，于臲卼，曰動悔有悔，征吉"}
+        {
+          "position": 1,
+          "yao_ci": "臀困于株木，入于幽谷，三歲不覿"
+        },
+        {
+          "position": 2,
+          "yao_ci": "困于酒食，朱紱方來，利用亨祀，征凶，无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "困于石，據于蒺蔾，入于其宮，不見其妻，凶"
+        },
+        {
+          "position": 4,
+          "yao_ci": "來徐徐，困于金車，吝，有終"
+        },
+        {
+          "position": 5,
+          "yao_ci": "劓刖，困于赤紱，乃徐有說，利用祭祀"
+        },
+        {
+          "position": 6,
+          "yao_ci": "困于葛藟，于臲卼，曰動悔有悔，征吉"
+        }
       ]
     },
     {
@@ -619,12 +1518,30 @@
       "name": "井",
       "gua_ci": "改邑不改井，无喪无得，往來井井，汔至亦未繘井，羸其瓶，凶",
       "yao": [
-        {"position": 1, "yao_ci": "井泥不食，舊井无禽"},
-        {"position": 2, "yao_ci": "井谷射鮒，甕敝漏"},
-        {"position": 3, "yao_ci": "井渫不食，為我心惻，可用汲，王明並受其福"},
-        {"position": 4, "yao_ci": "井甃，无咎"},
-        {"position": 5, "yao_ci": "井冽寒泉，食"},
-        {"position": 6, "yao_ci": "井收勿幕，有孚元吉"}
+        {
+          "position": 1,
+          "yao_ci": "井泥不食，舊井无禽"
+        },
+        {
+          "position": 2,
+          "yao_ci": "井谷射鮒，甕敝漏"
+        },
+        {
+          "position": 3,
+          "yao_ci": "井渫不食，為我心惻，可用汲，王明並受其福"
+        },
+        {
+          "position": 4,
+          "yao_ci": "井甃，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "井冽寒泉，食"
+        },
+        {
+          "position": 6,
+          "yao_ci": "井收勿幕，有孚元吉"
+        }
       ]
     },
     {
@@ -632,12 +1549,30 @@
       "name": "革",
       "gua_ci": "己日乃孚，元亨利貞，悔亡",
       "yao": [
-        {"position": 1, "yao_ci": "鞏用黃牛之革"},
-        {"position": 2, "yao_ci": "己日乃革之，征吉，无咎"},
-        {"position": 3, "yao_ci": "征凶，貞厲，革言三就，有孚"},
-        {"position": 4, "yao_ci": "悔亡，有孚改命，吉"},
-        {"position": 5, "yao_ci": "大人虎變，未占有孚"},
-        {"position": 6, "yao_ci": "君子豹變，小人革面，征凶，居貞吉"}
+        {
+          "position": 1,
+          "yao_ci": "鞏用黃牛之革"
+        },
+        {
+          "position": 2,
+          "yao_ci": "己日乃革之，征吉，无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "征凶，貞厲，革言三就，有孚"
+        },
+        {
+          "position": 4,
+          "yao_ci": "悔亡，有孚改命，吉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "大人虎變，未占有孚"
+        },
+        {
+          "position": 6,
+          "yao_ci": "君子豹變，小人革面，征凶，居貞吉"
+        }
       ]
     },
     {
@@ -645,12 +1580,30 @@
       "name": "鼎",
       "gua_ci": "元吉，亨",
       "yao": [
-        {"position": 1, "yao_ci": "鼎顛趾，利出否，得妾以其子，无咎"},
-        {"position": 2, "yao_ci": "鼎有實，我仇有疾，不我能即，吉"},
-        {"position": 3, "yao_ci": "鼎耳革，其行塞，雉膏不食，方雨虧悔，終吉"},
-        {"position": 4, "yao_ci": "鼎折足，覆公餗，其形渥，凶"},
-        {"position": 5, "yao_ci": "鼎黃耳金鉉，利貞"},
-        {"position": 6, "yao_ci": "鼎玉鉉，大吉，无不利"}
+        {
+          "position": 1,
+          "yao_ci": "鼎顛趾，利出否，得妾以其子，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "鼎有實，我仇有疾，不我能即，吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "鼎耳革，其行塞，雉膏不食，方雨虧悔，終吉"
+        },
+        {
+          "position": 4,
+          "yao_ci": "鼎折足，覆公餗，其形渥，凶"
+        },
+        {
+          "position": 5,
+          "yao_ci": "鼎黃耳金鉉，利貞"
+        },
+        {
+          "position": 6,
+          "yao_ci": "鼎玉鉉，大吉，无不利"
+        }
       ]
     },
     {
@@ -658,12 +1611,30 @@
       "name": "震",
       "gua_ci": "亨，震來虩虩，笑言啞啞，震驚百里，不喪匕鬯",
       "yao": [
-        {"position": 1, "yao_ci": "震來虩虩，後笑言啞啞，吉"},
-        {"position": 2, "yao_ci": "震來厲，億喪貝，躋于九陵，勿逐，七日得"},
-        {"position": 3, "yao_ci": "震蘇蘇，震行无眚"},
-        {"position": 4, "yao_ci": "震遂泥"},
-        {"position": 5, "yao_ci": "震往來厲，億无喪有事"},
-        {"position": 6, "yao_ci": "震索索，視矍矍，征凶，震不于其躬，于其鄰，无咎，婚媾有言"}
+        {
+          "position": 1,
+          "yao_ci": "震來虩虩，後笑言啞啞，吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "震來厲，億喪貝，躋于九陵，勿逐，七日得"
+        },
+        {
+          "position": 3,
+          "yao_ci": "震蘇蘇，震行无眚"
+        },
+        {
+          "position": 4,
+          "yao_ci": "震遂泥"
+        },
+        {
+          "position": 5,
+          "yao_ci": "震往來厲，億无喪有事"
+        },
+        {
+          "position": 6,
+          "yao_ci": "震索索，視矍矍，征凶，震不于其躬，于其鄰，无咎，婚媾有言"
+        }
       ]
     },
     {
@@ -671,12 +1642,30 @@
       "name": "艮",
       "gua_ci": "艮其背，不獲其身，行其庭，不見其人，无咎",
       "yao": [
-        {"position": 1, "yao_ci": "艮其趾，无咎，利永貞"},
-        {"position": 2, "yao_ci": "艮其腓，不拯其隨，其心不快"},
-        {"position": 3, "yao_ci": "艮其限，列其夤，厲薰心"},
-        {"position": 4, "yao_ci": "艮其身，无咎"},
-        {"position": 5, "yao_ci": "艮其輔，言有序，悔亡"},
-        {"position": 6, "yao_ci": "敦艮，吉"}
+        {
+          "position": 1,
+          "yao_ci": "艮其趾，无咎，利永貞"
+        },
+        {
+          "position": 2,
+          "yao_ci": "艮其腓，不拯其隨，其心不快"
+        },
+        {
+          "position": 3,
+          "yao_ci": "艮其限，列其夤，厲薰心"
+        },
+        {
+          "position": 4,
+          "yao_ci": "艮其身，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "艮其輔，言有序，悔亡"
+        },
+        {
+          "position": 6,
+          "yao_ci": "敦艮，吉"
+        }
       ]
     },
     {
@@ -684,12 +1673,30 @@
       "name": "漸",
       "gua_ci": "女歸吉，利貞",
       "yao": [
-        {"position": 1, "yao_ci": "鴻漸于干，小子厲，有言，无咎"},
-        {"position": 2, "yao_ci": "鴻漸于磐，飲食衎衎，吉"},
-        {"position": 3, "yao_ci": "鴻漸于陸，夫征不復，婦孕不育，凶"},
-        {"position": 4, "yao_ci": "鴻漸于木，或得其桷，无咎"},
-        {"position": 5, "yao_ci": "鴻漸于陵，婦三歲不孕，終莫之勝，吉"},
-        {"position": 6, "yao_ci": "鴻漸于陸，其羽可用為儀，吉"}
+        {
+          "position": 1,
+          "yao_ci": "鴻漸于干，小子厲，有言，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "鴻漸于磐，飲食衎衎，吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "鴻漸于陸，夫征不復，婦孕不育，凶"
+        },
+        {
+          "position": 4,
+          "yao_ci": "鴻漸于木，或得其桷，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "鴻漸于陵，婦三歲不孕，終莫之勝，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "鴻漸于陸，其羽可用為儀，吉"
+        }
       ]
     },
     {
@@ -697,12 +1704,30 @@
       "name": "歸妹",
       "gua_ci": "征凶，无攸利",
       "yao": [
-        {"position": 1, "yao_ci": "歸妹以娣，跛能履，征吉"},
-        {"position": 2, "yao_ci": "眇能視，利幽人之貞"},
-        {"position": 3, "yao_ci": "歸妹以須，反歸以娣"},
-        {"position": 4, "yao_ci": "歸妹愆期，遲歸有時"},
-        {"position": 5, "yao_ci": "帝乙歸妹，其君之袂不如其娣之袂良，月幾望，吉"},
-        {"position": 6, "yao_ci": "女承筐无實，士刲羊无血，无攸利"}
+        {
+          "position": 1,
+          "yao_ci": "歸妹以娣，跛能履，征吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "眇能視，利幽人之貞"
+        },
+        {
+          "position": 3,
+          "yao_ci": "歸妹以須，反歸以娣"
+        },
+        {
+          "position": 4,
+          "yao_ci": "歸妹愆期，遲歸有時"
+        },
+        {
+          "position": 5,
+          "yao_ci": "帝乙歸妹，其君之袂不如其娣之袂良，月幾望，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "女承筐无實，士刲羊无血，无攸利"
+        }
       ]
     },
     {
@@ -710,12 +1735,30 @@
       "name": "豐",
       "gua_ci": "亨，王假之，勿憂，宜日中",
       "yao": [
-        {"position": 1, "yao_ci": "遇其配主，雖旬无咎，往有尚"},
-        {"position": 2, "yao_ci": "豐其蔀，日中見斗，往得疑疾，有孚發若，吉"},
-        {"position": 3, "yao_ci": "豐其沛，日中見沫，折其右肱，无咎"},
-        {"position": 4, "yao_ci": "豐其蔀，日中見斗，遇其夷主，吉"},
-        {"position": 5, "yao_ci": "來章，有慶譽，吉"},
-        {"position": 6, "yao_ci": "豐其屋，蔀其家，窺其戶，闃其无人，三歲不覿，凶"}
+        {
+          "position": 1,
+          "yao_ci": "遇其配主，雖旬无咎，往有尚"
+        },
+        {
+          "position": 2,
+          "yao_ci": "豐其蔀，日中見斗，往得疑疾，有孚發若，吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "豐其沛，日中見沫，折其右肱，无咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "豐其蔀，日中見斗，遇其夷主，吉"
+        },
+        {
+          "position": 5,
+          "yao_ci": "來章，有慶譽，吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "豐其屋，蔀其家，窺其戶，闃其无人，三歲不覿，凶"
+        }
       ]
     },
     {
@@ -723,12 +1766,30 @@
       "name": "旅",
       "gua_ci": "小亨，旅貞吉",
       "yao": [
-        {"position": 1, "yao_ci": "旅瑣瑣，斯其所取災"},
-        {"position": 2, "yao_ci": "旅即次，懷其資，得童僕貞"},
-        {"position": 3, "yao_ci": "旅焚其次，喪其童僕，貞厲"},
-        {"position": 4, "yao_ci": "旅于處，得其資斧，我心不快"},
-        {"position": 5, "yao_ci": "射雉一矢亡，終以譽命"},
-        {"position": 6, "yao_ci": "鳥焚其巢，旅人先笑後號咷，喪牛于易，凶"}
+        {
+          "position": 1,
+          "yao_ci": "旅瑣瑣，斯其所取災"
+        },
+        {
+          "position": 2,
+          "yao_ci": "旅即次，懷其資，得童僕貞"
+        },
+        {
+          "position": 3,
+          "yao_ci": "旅焚其次，喪其童僕，貞厲"
+        },
+        {
+          "position": 4,
+          "yao_ci": "旅于處，得其資斧，我心不快"
+        },
+        {
+          "position": 5,
+          "yao_ci": "射雉一矢亡，終以譽命"
+        },
+        {
+          "position": 6,
+          "yao_ci": "鳥焚其巢，旅人先笑後號咷，喪牛于易，凶"
+        }
       ]
     },
     {
@@ -736,12 +1797,30 @@
       "name": "巽",
       "gua_ci": "小亨，利有攸往，利見大人",
       "yao": [
-        {"position": 1, "yao_ci": "進退，利武人之貞"},
-        {"position": 2, "yao_ci": "巽在床下，用史巫紛若，吉无咎"},
-        {"position": 3, "yao_ci": "頻巽，吝"},
-        {"position": 4, "yao_ci": "悔亡，田獲三品"},
-        {"position": 5, "yao_ci": "貞吉悔亡，无不利，无初有終"},
-        {"position": 6, "yao_ci": "巽在床下，喪其資斧，貞凶"}
+        {
+          "position": 1,
+          "yao_ci": "進退，利武人之貞"
+        },
+        {
+          "position": 2,
+          "yao_ci": "巽在床下，用史巫紛若，吉无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "頻巽，吝"
+        },
+        {
+          "position": 4,
+          "yao_ci": "悔亡，田獲三品"
+        },
+        {
+          "position": 5,
+          "yao_ci": "貞吉悔亡，无不利，无初有終"
+        },
+        {
+          "position": 6,
+          "yao_ci": "巽在床下，喪其資斧，貞凶"
+        }
       ]
     },
     {
@@ -749,12 +1828,30 @@
       "name": "兌",
       "gua_ci": "亨，利貞",
       "yao": [
-        {"position": 1, "yao_ci": "和兌，吉"},
-        {"position": 2, "yao_ci": "孚兌，吉，悔亡"},
-        {"position": 3, "yao_ci": "來兌，凶"},
-        {"position": 4, "yao_ci": "商兌未寧，介疾有喜"},
-        {"position": 5, "yao_ci": "孚于剝，有厲"},
-        {"position": 6, "yao_ci": "引兌"}
+        {
+          "position": 1,
+          "yao_ci": "和兌，吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "孚兌，吉，悔亡"
+        },
+        {
+          "position": 3,
+          "yao_ci": "來兌，凶"
+        },
+        {
+          "position": 4,
+          "yao_ci": "商兌未寧，介疾有喜"
+        },
+        {
+          "position": 5,
+          "yao_ci": "孚于剝，有厲"
+        },
+        {
+          "position": 6,
+          "yao_ci": "引兌"
+        }
       ]
     },
     {
@@ -762,12 +1859,30 @@
       "name": "渙",
       "gua_ci": "亨，王假有廟，利涉大川，利貞",
       "yao": [
-        {"position": 1, "yao_ci": "用拯馬壯，吉"},
-        {"position": 2, "yao_ci": "渙奔其机，悔亡"},
-        {"position": 3, "yao_ci": "渙其躬，无悔"},
-        {"position": 4, "yao_ci": "渙其群，元吉，渙有丘，匪夷所思"},
-        {"position": 5, "yao_ci": "渙汗其大號，渙王居，无咎"},
-        {"position": 6, "yao_ci": "渙其血去逖出，无咎"}
+        {
+          "position": 1,
+          "yao_ci": "用拯馬壯，吉"
+        },
+        {
+          "position": 2,
+          "yao_ci": "渙奔其机，悔亡"
+        },
+        {
+          "position": 3,
+          "yao_ci": "渙其躬，无悔"
+        },
+        {
+          "position": 4,
+          "yao_ci": "渙其群，元吉，渙有丘，匪夷所思"
+        },
+        {
+          "position": 5,
+          "yao_ci": "渙汗其大號，渙王居，无咎"
+        },
+        {
+          "position": 6,
+          "yao_ci": "渙其血去逖出，无咎"
+        }
       ]
     },
     {
@@ -775,12 +1890,30 @@
       "name": "節",
       "gua_ci": "亨，苦節不可貞",
       "yao": [
-        {"position": 1, "yao_ci": "不出戶庭，无咎"},
-        {"position": 2, "yao_ci": "不出門庭，凶"},
-        {"position": 3, "yao_ci": "不節若，則嗟若，无咎"},
-        {"position": 4, "yao_ci": "安節，亨"},
-        {"position": 5, "yao_ci": "甘節，吉，往有尚"},
-        {"position": 6, "yao_ci": "苦節，貞凶，悔亡"}
+        {
+          "position": 1,
+          "yao_ci": "不出戶庭，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "不出門庭，凶"
+        },
+        {
+          "position": 3,
+          "yao_ci": "不節若，則嗟若，无咎"
+        },
+        {
+          "position": 4,
+          "yao_ci": "安節，亨"
+        },
+        {
+          "position": 5,
+          "yao_ci": "甘節，吉，往有尚"
+        },
+        {
+          "position": 6,
+          "yao_ci": "苦節，貞凶，悔亡"
+        }
       ]
     },
     {
@@ -788,12 +1921,30 @@
       "name": "中孚",
       "gua_ci": "豚魚吉，利涉大川，利貞",
       "yao": [
-        {"position": 1, "yao_ci": "虞吉，有他不燕"},
-        {"position": 2, "yao_ci": "鳴鶴在陰，其子和之，我有好爵，吾與爾靡之"},
-        {"position": 3, "yao_ci": "得敵，或鼓或罷，或泣或歌"},
-        {"position": 4, "yao_ci": "月幾望，馬匹亡，无咎"},
-        {"position": 5, "yao_ci": "有孚攣如，无咎"},
-        {"position": 6, "yao_ci": "翰音登于天，貞凶"}
+        {
+          "position": 1,
+          "yao_ci": "虞吉，有他不燕"
+        },
+        {
+          "position": 2,
+          "yao_ci": "鳴鶴在陰，其子和之，我有好爵，吾與爾靡之"
+        },
+        {
+          "position": 3,
+          "yao_ci": "得敵，或鼓或罷，或泣或歌"
+        },
+        {
+          "position": 4,
+          "yao_ci": "月幾望，馬匹亡，无咎"
+        },
+        {
+          "position": 5,
+          "yao_ci": "有孚攣如，无咎"
+        },
+        {
+          "position": 6,
+          "yao_ci": "翰音登于天，貞凶"
+        }
       ]
     },
     {
@@ -801,12 +1952,30 @@
       "name": "小過",
       "gua_ci": "亨利貞，可小事，不可大事，飛鳥遺之音，不宜上宜下，大吉",
       "yao": [
-        {"position": 1, "yao_ci": "飛鳥以凶"},
-        {"position": 2, "yao_ci": "過其祖，遇其妣，不及其君，遇其臣，无咎"},
-        {"position": 3, "yao_ci": "弗過防之，從或戕之，凶"},
-        {"position": 4, "yao_ci": "无咎，弗過遇之，往厲必戒，勿用永貞"},
-        {"position": 5, "yao_ci": "密雲不雨，自我西郊，公弋取彼在穴"},
-        {"position": 6, "yao_ci": "弗遇過之，飛鳥離之，凶，是謂災眚"}
+        {
+          "position": 1,
+          "yao_ci": "飛鳥以凶"
+        },
+        {
+          "position": 2,
+          "yao_ci": "過其祖，遇其妣，不及其君，遇其臣，无咎"
+        },
+        {
+          "position": 3,
+          "yao_ci": "弗過防之，從或戕之，凶"
+        },
+        {
+          "position": 4,
+          "yao_ci": "无咎，弗過遇之，往厲必戒，勿用永貞"
+        },
+        {
+          "position": 5,
+          "yao_ci": "密雲不雨，自我西郊，公弋取彼在穴"
+        },
+        {
+          "position": 6,
+          "yao_ci": "弗遇過之，飛鳥離之，凶，是謂災眚"
+        }
       ]
     },
     {
@@ -814,12 +1983,30 @@
       "name": "既濟",
       "gua_ci": "亨小利貞，初吉終亂",
       "yao": [
-        {"position": 1, "yao_ci": "曳其輪，濡其尾，无咎"},
-        {"position": 2, "yao_ci": "婦喪其茀，勿逐，七日得"},
-        {"position": 3, "yao_ci": "高宗伐鬼方，三年克之，小人勿用"},
-        {"position": 4, "yao_ci": "繻有衣袽，終日戒"},
-        {"position": 5, "yao_ci": "東鄰殺牛，不如西鄰之禴祭，實受其福"},
-        {"position": 6, "yao_ci": "濡其首，厲"}
+        {
+          "position": 1,
+          "yao_ci": "曳其輪，濡其尾，无咎"
+        },
+        {
+          "position": 2,
+          "yao_ci": "婦喪其茀，勿逐，七日得"
+        },
+        {
+          "position": 3,
+          "yao_ci": "高宗伐鬼方，三年克之，小人勿用"
+        },
+        {
+          "position": 4,
+          "yao_ci": "繻有衣袽，終日戒"
+        },
+        {
+          "position": 5,
+          "yao_ci": "東鄰殺牛，不如西鄰之禴祭，實受其福"
+        },
+        {
+          "position": 6,
+          "yao_ci": "濡其首，厲"
+        }
       ]
     },
     {
@@ -827,12 +2014,30 @@
       "name": "未濟",
       "gua_ci": "亨，小狐汔濟，濡其尾，无攸利",
       "yao": [
-        {"position": 1, "yao_ci": "濡其尾，吝"},
-        {"position": 2, "yao_ci": "曳其輪，貞吉"},
-        {"position": 3, "yao_ci": "未濟，征凶，利涉大川"},
-        {"position": 4, "yao_ci": "貞吉悔亡，震用伐鬼方，三年有賞于大國"},
-        {"position": 5, "yao_ci": "貞吉无悔，君子之光，有孚吉"},
-        {"position": 6, "yao_ci": "有孚于饮酒，无咎，濡其首，有孚失是"}
+        {
+          "position": 1,
+          "yao_ci": "濡其尾，吝"
+        },
+        {
+          "position": 2,
+          "yao_ci": "曳其輪，貞吉"
+        },
+        {
+          "position": 3,
+          "yao_ci": "未濟，征凶，利涉大川"
+        },
+        {
+          "position": 4,
+          "yao_ci": "貞吉悔亡，震用伐鬼方，三年有賞于大國"
+        },
+        {
+          "position": 5,
+          "yao_ci": "貞吉无悔，君子之光，有孚吉"
+        },
+        {
+          "position": 6,
+          "yao_ci": "有孚于饮酒，无咎，濡其首，有孚失是"
+        }
       ]
     }
   ]
