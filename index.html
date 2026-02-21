@@ -185,10 +185,46 @@
   </style>
   
   <script>
+    // Supabase 配置 - 用户需要填写自己的配置
+    const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    
     // 用户系统
     let currentUser = null;
-    const USERS_KEY = 'yijing_users';
     const HISTORY_KEY = 'yijing_history';
+    
+    // 使用 Supabase 或本地存储
+    const useSupabase = SUPABASE_URL.startsWith('http');
+    
+    async function saveToSupabase(table, data) {
+      if (!useSupabase) return null;
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
+          body: JSON.stringify(data)
+        });
+        return res.ok;
+      } catch (e) { console.error(e); return null; }
+    }
+    
+    async function querySupabase(table, filter) {
+      if (!useSupabase) return [];
+      try {
+        const params = new URLSearchParams(filter);
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+        return res.ok ? await res.json() : [];
+      } catch (e) { console.error(e); return []; }
+    }
     
     function initUser() {
       const savedUser = localStorage.getItem('yijing_current_user');
