@@ -147,18 +147,17 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
   const trans = modernTranslations[hexagram.id] || {};
   
   // 显示卦信息
-  const symbol = hexagramSymbols[hexagram.id] || '☰☷';
-  document.getElementById('guaName').textContent = symbol + ' ' + hexagram.name;
+  document.getElementById('guaName').textContent = hexagram.name;
   
   // 卦辞
   document.getElementById('guaCi').textContent = hexagram.gua_ci;
-  document.getElementById('guaCiModern').textContent = trans.gua_ci_modern || '暂无白话文翻译';
+  document.getElementById('guaCiModern').textContent = trans.gua_ci_modern || '';
   
   // 动爻
   const dongYaoData = hexagram.yao.find(y => y.position === dongYao);
   const dongTrans = trans.yao && trans.yao[dongYao - 1];
   document.getElementById('dongYao').textContent = dongYaoData ? `第${dongYao}爻：${dongYaoData.yao_ci}` : '';
-  document.getElementById('dongYaoModern').textContent = dongTrans ? dongTrans.yao_ci_modern : '暂无白话文翻译';
+  document.getElementById('dongYaoModern').textContent = dongTrans ? dongTrans.yao_ci_modern : '';
   
   // 渲染八卦图形
   const guaImage = document.getElementById('guaImage');
@@ -176,7 +175,7 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
       <div class="yao-ancient">
         <span class="yao-position">${getYaoName(yao.position)}</span>${yao.yao_ci}
       </div>
-      <div class="yao-modern">${yaoTrans ? yaoTrans.yao_ci_modern : '暂无白话文翻译'}</div>
+      <div class="yao-modern">${yaoTrans ? yaoTrans.yao_ci_modern : ''}</div>
     `;
     allYaoList.appendChild(item);
   });

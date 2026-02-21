@@ -334,6 +334,18 @@ body {
   margin-bottom: 24px;
 }
 
+.result-symbol {
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.result-symbol .gua-lines {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .gua-symbol-large {
   width: 100px;
   height: 150px;
