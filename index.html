@@ -76,6 +76,7 @@
       <section id="result" class="result-card hidden">
         <div class="result-header">
           <h2 id="guaName" class="gua-name">—</h2>
+          <div id="guaImage" class="gua-lines-result"></div>
         </div>
 
         <div class="content-section">
@@ -92,10 +93,6 @@
             <p id="dongYao" class="text-ancient">—</p>
             <p id="dongYaoModern" class="text-modern">—</p>
           </div>
-        </div>
-
-        <div class="result-symbol">
-          <div id="guaImage" class="gua-lines"></div>
         </div>
 
         <div class="content-section">
@@ -172,7 +169,7 @@
   
   <!-- 历史记录弹窗 -->
   <div id="historyModal" class="modal hidden">
-    <div class="modal-content" style="max-height:80vh;overflow-y:auto;">
+    <div class="modal-content modal-history" style="max-height:80vh;overflow-y:auto;">
       <div class="modal-header">
         <h3>占卜历史</h3>
         <span class="modal-close" onclick="closeHistory()">×</span>
@@ -343,9 +340,13 @@
     }
     
     function showHistoryDetail(hexagramId, hexagramName) {
-      // 显示该卦的详细信息
-      alert(hexagramName + ' - 详细信息功能开发中');
-      // 这里可以扩展为显示完整的卦象解读
+      // 从 app.js 获取卦象数据并显示
+      if (typeof hexagramSymbols !== 'undefined' && hexagramSymbols[hexagramId]) {
+        const symbol = hexagramSymbols[hexagramId];
+        alert(symbol + ' ' + hexagramName + '\n\n卦象解读功能开发中...\n点击确定返回');
+      } else {
+        alert(hexagramName + ' - 详细信息功能开发中');
+      }
     }
     
     function closeHistory() {

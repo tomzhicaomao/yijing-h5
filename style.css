@@ -340,10 +340,16 @@ body {
   margin-top: 20px;
 }
 
-.result-symbol .gua-lines {
-  display: inline-flex;
+.gua-lines-result {
+  display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.gua-lines-result .gua-line {
+  width: 80px;
 }
 
 .gua-symbol-large {

@@ -163,8 +163,6 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
   const guaImage = document.getElementById('guaImage');
   guaImage.innerHTML = '';
   guaImage.appendChild(renderGuaLines(xiaGua, shangGua));
-  
-  // 全部爻
   const allYaoList = document.getElementById('allYaoList');
   allYaoList.innerHTML = '';
   hexagram.yao.forEach((yao, idx) => {
