@@ -770,6 +770,8 @@
     
     function closeHistoryDetail() {
       $('historyDetailModal').classList.remove('show');
+      showHistoryList();
+      $('historyModal').classList.add('show');
     }
     
     // 起卦
