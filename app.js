@@ -459,7 +459,7 @@ function loadDailyResult() {
   }
 }
 
-// 全局导出
+// 全局导出 - 确保所有函数可被HTML调用
 window.yijingData = null;
 window.getInterp = getHexagramInterpretation;
 
@@ -469,10 +469,12 @@ window.loadData = async function() {
     const data = await response.json();
     window.yijingData = data.hexagrams;
     console.log('已加载 ' + window.yijingData.length + ' 卦');
+    return window.yijingData;
   } catch (error) {
     console.error('加载数据失败:', error);
+    return null;
   }
 };
 
 // 预加载数据
-loadData();
+window.loadData();

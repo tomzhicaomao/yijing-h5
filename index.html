@@ -747,6 +747,12 @@
     
     // 起卦
     function doDivination() {
+      if(!window.yijingData || !window.yijingData.length) {
+        alert('数据加载中，请稍等片刻再试');
+        window.loadData();
+        return;
+      }
+      
       const n1 = parseInt($('num1').value);
       const n2 = parseInt($('num2').value);
       const n3 = parseInt($('num3').value);
@@ -765,6 +771,12 @@
     }
     
     function doRandom() {
+      if(!window.yijingData || !window.yijingData.length) {
+        alert('数据加载中，请稍等片刻再试');
+        window.loadData();
+        return;
+      }
+      
       $('num1').value = Math.floor(Math.random()*900)+100;
       $('num2').value = Math.floor(Math.random()*900)+100;
       $('num3').value = Math.floor(Math.random()*900)+100;
