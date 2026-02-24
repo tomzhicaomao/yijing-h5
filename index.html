@@ -380,7 +380,26 @@
       font-size: 12px;
     }
     
-    .user-name { color: var(--accent); margin-right: 10px; }
+    .user-name { color: var(--accent); margin-right: 8px; }
+    
+    .points-tag {
+      font-size: 12px;
+      color: #e8c547;
+      background: rgba(232, 197, 71, 0.15);
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+    
+    .recharge-btn {
+      background: linear-gradient(135deg, #07c160, #06ad56);
+      color: #fff;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 15px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
     
     /* 浮动按钮 */
     .float-btn {
@@ -498,6 +517,55 @@
     .history-gua { font-size: 16px; color: var(--accent-light); margin-top: 2px; }
     
     .empty-text { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 13px; }
+    
+    /* 充值 */
+    .recharge-balance {
+      text-align: center;
+      font-size: 16px;
+      color: #e8c547;
+      margin-bottom: 20px;
+    }
+    
+    .recharge-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .recharge-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 193, 96, 0.1);
+      border: 1px solid rgba(7, 193, 96, 0.3);
+      border-radius: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .recharge-item:hover {
+      background: rgba(7, 193, 96, 0.2);
+      transform: scale(1.02);
+    }
+    
+    .recharge-amount {
+      font-size: 16px;
+      color: #fff;
+    }
+    
+    .recharge-price {
+      font-size: 18px;
+      color: #07c160;
+      font-weight: 600;
+    }
+    
+    .recharge-tip {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 16px;
+    }
   </style>
 </head>
 <body>
@@ -656,6 +724,34 @@
     </div>
   </div>
 
+  <!-- 充值弹窗 -->
+  <div class="modal" id="rechargeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>💎 充值积分</h3>
+        <div class="modal-close" onclick="closeModal('rechargeModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <div class="recharge-balance">当前积分：<span id="rechargeBalance">0</span></div>
+        <div class="recharge-options">
+          <div class="recharge-item" onclick="doRecharge(10, 1)">
+            <div class="recharge-amount">10 积分</div>
+            <div class="recharge-price">¥1</div>
+          </div>
+          <div class="recharge-item" onclick="doRecharge(30, 3)">
+            <div class="recharge-amount">30 积分</div>
+            <div class="recharge-price">¥3</div>
+          </div>
+          <div class="recharge-item" onclick="doRecharge(100, 9)">
+            <div class="recharge-amount">100 积分</div>
+            <div class="recharge-price">¥9</div>
+          </div>
+        </div>
+        <div class="recharge-tip">💡 演示版本，点击即可充值成功</div>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
   <script>
     // 生成背景
@@ -703,6 +799,16 @@
     // 用户系统
     let currentUser = null;
     const HISTORY_KEY = 'yijing_history';
+    const POINTS_KEY = 'yijing_points';
+    const DEFAULT_POINTS = 10; // 新用户默认赠送10积分
+    
+    function getPoints() {
+      return parseInt(localStorage.getItem(POINTS_KEY)) || 0;
+    }
+    
+    function setPoints(n) {
+      localStorage.setItem(POINTS_KEY, n);
+    }
     
     function initUser() {
       const u = localStorage.getItem('yijing_user');
@@ -710,13 +816,28 @@
         currentUser = JSON.parse(u);
         updateUserUI();
       }
+      // 如果没有积分记录，初始化
+      if(!localStorage.getItem(POINTS_KEY)) {
+        setPoints(DEFAULT_POINTS);
+      }
+      updatePointsUI();
+    }
+    
+    function updatePointsUI() {
+      const pts = getPoints();
+      const ptsEl = $('userPoints');
+      if(ptsEl) {
+        ptsEl.innerHTML = '<span onclick="showRecharge()" style="cursor:pointer;">💎 ' + pts + ' 积分</span>';
+      }
     }
     
     function updateUserUI() {
       if(currentUser) {
-        $('userBar').innerHTML = '<span class="user-name">'+currentUser.username+'</span><button class="user-btn" onclick="logout()">退出</button>';
+        $('userBar').innerHTML = '<span class="user-name">'+currentUser.username+'</span><span id="userPoints" class="points-tag"></span><button class="user-btn" onclick="logout()">退出</button>';
+        updatePointsUI();
       } else {
-        $('userBar').innerHTML = '<button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button>';
+        $('userBar').innerHTML = '<button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button><span id="userPoints" class="points-tag" style="margin-left:10px;"></span>';
+        updatePointsUI();
       }
     }
     
@@ -724,6 +845,22 @@
       currentUser = null;
       localStorage.removeItem('yijing_user');
       updateUserUI();
+    }
+    
+    // 充值
+    function showRecharge() {
+      $('rechargeBalance').textContent = getPoints();
+      $('rechargeModal').classList.add('show');
+    }
+    
+    function doRecharge(points, price) {
+      // 演示版本：直接增加积分
+      // 实际版本：调用微信支付API
+      const current = getPoints();
+      setPoints(current + points);
+      updatePointsUI();
+      $('rechargeBalance').textContent = getPoints();
+      alert('充值成功！+' + points + '积分');
     }
     
     // 登录注册
@@ -851,6 +988,14 @@
     
     // 起卦
     function doDivination() {
+      // 检查积分
+      const pts = getPoints();
+      if(pts < 1) {
+        alert('积分不足！请先充值');
+        showRecharge();
+        return;
+      }
+      
       if(!window.yijingData || !window.yijingData.length) {
         alert('数据加载中，请稍等片刻再试');
         window.loadData();
@@ -869,6 +1014,10 @@
       const dy = ((n3-1)%6)+1;
       
       const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      // 扣除积分
+      setPoints(pts - 1);
+      updatePointsUI();
       
       showResult(hex, xg, sg, dy);
       saveHistory(hex);
@@ -897,6 +1046,14 @@
     
     // 每日
     async function doDaily() {
+      // 检查积分
+      const pts = getPoints();
+      if(pts < 1) {
+        alert('积分不足！请先充值');
+        showRecharge();
+        return;
+      }
+      
       // 等待数据加载
       if(!window.yijingData || !window.yijingData.length) {
         await window.loadData();
@@ -925,6 +1082,10 @@
       const xg = (n1%8)||8;
       const sg = (n2%8)||8;
       const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      // 扣除积分
+      setPoints(pts - 1);
+      updatePointsUI();
       
       const d = {date:today, name:hex.name, id:hex.id, symbol:getSymbol(hex.id), brief:hex.gua_ci?hex.gua_ci.substring(0,20):''};
       localStorage.setItem(key, JSON.stringify(d));
