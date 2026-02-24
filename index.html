@@ -892,13 +892,17 @@
     // 初始化
     initUser();
     
-    // 加载每日
-    const dk = 'yijing_daily';
-    const ds = localStorage.getItem(dk);
-    if(ds) {
-      const d = JSON.parse(ds);
-      if(d.date === new Date().toDateString()) showDaily(d);
-    }
+    // 自动加载数据
+    window.loadData().then(() => {
+      console.log('数据加载完成');
+      // 加载每日
+      const dk = 'yijing_daily';
+      const ds = localStorage.getItem(dk);
+      if(ds) {
+        const d = JSON.parse(ds);
+        if(d.date === new Date().toDateString()) showDaily(d);
+      }
+    });
   </script>
 </body>
 </html>
