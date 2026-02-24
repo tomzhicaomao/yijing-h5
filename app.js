@@ -1,274 +1,56 @@
-// 易经占卜 App - 核心逻辑
+// 易经占卜 - 核心逻辑
 
 let yijingData = null;
-
-// 每日一占存储键
 const DAILY_KEY = 'yijing_daily';
 
-// 先天八卦对应表：1-8 对应 卦名
-const baguaMap = {
-  1: '坤', 2: '巽', 3: '离', 4: '震',
-  5: '兑', 6: '坎', 7: '艮', 8: '乾'
-};
-
-// 八卦符号 Unicode
-const baguaSymbols = {
-  1: '☷', // 坤
-  2: '☴', // 巽
-  3: '☲', // 离
-  4: '☳', // 震
-  5: '☱', // 兑
-  6: '☵', // 坎
-  7: '☶', // 艮
-  8: '☰'  // 乾
-};
-
-// 64卦符号表 (上卦+下卦)
-const hexagramSymbols = {};
+// 八卦符号
+const baguaSymbols = ['', '☷', '☴', '☲', '☳', '☱', '☵', '☶', '☰'];
 
 // 生成64卦符号
-function initHexagramSymbols() {
-  for (let shang = 1; shang <= 8; shang++) {
-    for (let xia = 1; xia <= 8; xia++) {
-      const id = shang * 8 + xia - 8;
-      hexagramSymbols[id] = baguaSymbols[shang] + baguaSymbols[xia];
+function getHexagramSymbol(id) {
+  for(let shang=1; shang<=8; shang++){
+    for(let xia=1; xia<=8; xia++){
+      if(shang*8+xia-8 === id) return baguaSymbols[shang] + baguaSymbols[xia];
     }
   }
+  return '☰☷';
 }
-initHexagramSymbols();
-
-// 八卦符号：yin=0 为断（阴），yin=1 为连（阳）
-const baguaYinMap = {
-  1: [0,0,0], // 坤
-  2: [0,0,1], // 巽
-  3: [0,1,0], // 离
-  4: [0,1,1], // 震
-  5: [1,0,0], // 兑
-  6: [1,0,1], // 坎
-  7: [1,1,0], // 艮
-  8: [1,1,1]  // 乾
-};
-
-// 白话文翻译数据
-const modernTranslations = {
-  1: { // 乾
-    gua_ci_modern: "大为亨通，利于坚守正道。",
-    yao: [
-      { yao_ci_modern: "巨龙潜伏在深渊中，暂时不宜行动。" },
-      { yao_ci_modern: "巨龙出现在田野，有利于拜见伟大的人物。" },
-      { yao_ci_modern: "君子整天勤奋努力，晚上依然警惕谨慎；即使有危险，也没有灾祸。" },
-      { yao_ci_modern: "或者跳跃在深渊，没有灾祸。" },
-      { yao_ci_modern: "巨龙飞翔在天空，有利于拜见伟大的人物。" },
-      { yao_ci_modern: "巨龙飞到极高处，会有悔恨。" }
-    ]
-  },
-  2: { // 坤
-    gua_ci_modern: "极为亨通，利于像母马一样坚守正道。",
-    yao: [
-      { yao_ci_modern: "踩到霜就知道寒冬要来了。" },
-      { yao_ci_modern: "正直方正广大，即使不熟悉也不会不利。" },
-      { yao_ci_modern: "蕴含美德可以坚守正道，或者跟随君王做事，虽然没有成就但会有好的结果。" },
-      { yao_ci_modern: "扎紧口袋，没有灾祸也没有赞誉。" },
-      { yao_ci_modern: "黄色的下衣，非常吉祥。" },
-      { yao_ci_modern: "巨龙在田野作战，它们的血是黑黄色的。" }
-    ]
-  },
-  3: { // 屯
-    gua_ci_modern: "大为亨通，利于坚守正道。不要急于前往，有利于建立诸侯。",
-    yao: [
-      { yao_ci_modern: "徘徊不前，利于安守正道，有利于建立诸侯。" },
-      { yao_ci_modern: "骑马路途艰难，不是盗贼而是求婚者。" },
-      { yao_ci_modern: "追逐鹿没有虞官帮助，只进入林中，君子应当舍弃。" },
-      { yao_ci_modern: "骑马路艰难，求婚吉祥，前往没有不利的。" },
-      { yao_ci_modern: "积聚财富，小事吉祥，大事凶险。" },
-      { yao_ci_modern: "骑马路艰难，泣血涟涟。" }
-    ]
-  },
-  4: { // 蒙
-    gua_ci_modern: "亨通。不是我求小孩，而是小孩求我。初次占卜会告知，再三占卜就是亵渎，亵渎则不告知，利于坚守正道。",
-    yao: [
-      { yao_ci_modern: "启发蒙昧，利于用刑法惩罚人，脱去枷锁，前往会有遗憾。" },
-      { yao_ci_modern: "包容蒙昧吉祥，娶妻吉祥，子孙能管理家业。" },
-      { yao_ci_modern: "不要娶女子为妻，她见到的都是有权势的人，没有好结果。" },
-      { yao_ci_modern: "困于蒙昧，遗憾。" }
-    ]
-  }
-  // 继续添加更多卦的翻译...
-};
 
 // 加载数据
-async function loadData() {
+window.loadData = async function() {
   try {
     const response = await fetch('data/yijing.json');
     const data = await response.json();
-    yijingData = data.hexagrams;
-    console.log(`已加载 ${yijingData.length} 卦`);
+    window.yijingData = data.hexagrams;
+    console.log('已加载 ' + window.yijingData.length + ' 卦');
+    return window.yijingData;
   } catch (error) {
     console.error('加载数据失败:', error);
+    return null;
   }
-}
+};
 
-// 起卦算法
-function calculateGua(num1, num2, num3) {
-  const xiaGua = (num1 % 8) || 8;
-  const shangGua = (num2 % 8) || 8;
-  const dongYao = ((num3 - 1) % 6) + 1;
+// 起卦计算
+function calculateGua(n1, n2, n3) {
+  const xiaGua = (n1 % 8) || 8;
+  const shangGua = (n2 % 8) || 8;
+  const dongYao = ((n3 - 1) % 6) + 1;
   return { xiaGua, shangGua, dongYao };
 }
 
-// 根据上下卦找对应卦
+// 查找卦
 function findHexagram(xiaGua, shangGua) {
-  const hexagramId = shangGua * 8 + xiaGua - 8;
-  return yijingData.find(g => g.id === hexagramId) || yijingData[0];
+  const id = shangGua * 8 + xiaGua - 8;
+  return window.yijingData.find(g => g.id === id) || window.yijingData[0];
 }
 
-// 渲染八卦图形
-function renderGuaLines(xiaGua, shangGua) {
-  const container = document.createElement('div');
-  container.className = 'gua-lines';
-  
-  const xiaYin = baguaYinMap[xiaGua];
-  const shangYin = baguaYinMap[shangGua];
-  
-  const allYin = [...shangYin, ...xiaYin];
-  
-  allYin.forEach(yin => {
-    const line = document.createElement('div');
-    line.className = 'gua-line' + (yin === 0 ? ' broken' : '');
-    container.appendChild(line);
-  });
-  
-  return container;
-}
-
-// 显示结果
-function showResult(hexagram, xiaGua, shangGua, dongYao) {
-  // 获取白话文翻译
-  const trans = modernTranslations[hexagram.id] || {};
-  
-  // 显示卦信息
-  document.getElementById('guaName').textContent = hexagram.name;
-  
-  // 显示八卦符号
-  const symbol = hexagramSymbols[shangGua * 8 + xiaGua - 8] || '☰☷';
-  document.getElementById('guaImage').textContent = symbol;
-  
-  // 卦辞
-  document.getElementById('guaCi').textContent = hexagram.gua_ci;
-  document.getElementById('guaCiModern').textContent = trans.gua_ci_modern || '';
-  
-  // 动爻
-  const dongYaoData = hexagram.yao.find(y => y.position === dongYao);
-  const dongTrans = trans.yao && trans.yao[dongYao - 1];
-  document.getElementById('dongYao').textContent = dongYaoData ? `第${dongYao}爻：${dongYaoData.yao_ci}` : '';
-  document.getElementById('dongYaoModern').textContent = dongTrans ? dongTrans.yao_ci_modern : '';
-  
-  // 渲染六爻列表
-  const allYaoList = document.getElementById('allYaoList');
-  allYaoList.innerHTML = '';
-  hexagram.yao.forEach((yao, idx) => {
-    const yaoTrans = trans.yao && trans.yao[yao.position - 1];
-    const item = document.createElement('div');
-    item.className = 'yao-item' + (yao.position === dongYao ? ' active' : '');
-    item.innerHTML = `
-      <div class="yao-position" style="color:#c9a227;font-size:12px;margin-bottom:4px;">${getYaoName(yao.position)}爻</div>
-      <div class="ancient-text" style="font-size:14px;color:rgba(255,255,255,0.9);">${yao.yao_ci}</div>
-      <div class="modern-text" style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;">${yaoTrans ? yaoTrans.yao_ci_modern : ''}</div>
-    `;
-    allYaoList.appendChild(item);
-  });
-  
-  // 显示结果区域
-  document.getElementById('result').classList.remove('hidden');
-  document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
-  
-  // 保存历史记录
-  if (typeof saveHistory === 'function') {
-    saveHistory(hexagram, xiaGua, shangGua, dongYao);
-  }
-  
-  // 添加解卦区域
-  addInterpretation(hexagram, dongYao);
-}
-
-// 解卦分析
-function addInterpretation(hexagram, dongYao) {
-  let existing = document.getElementById('interpretation');
-  if (existing) existing.remove();
-  
-  const interpretations = getHexagramInterpretation(hexagram.id, dongYao);
-  
-  const div = document.createElement('div');
-  div.id = 'interpretation';
-  div.style.padding = '16px';
-  div.style.background = 'rgba(0,0,0,0.2)';
-  div.style.borderRadius = '16px';
-  div.innerHTML = `
-    <div style="margin-bottom:12px;">
-      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">📖 整体运势</div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.overall}</div>
-    </div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">💼 事业发展</div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.career}</div>
-    </div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">💰 财运分析</div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.fortune}</div>
-    </div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">💕 爱情运势</div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.love}</div>
-    </div>
-    <div style="margin-bottom:12px;">
-      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">❤️ 健康提示</div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.health}</div>
-    </div>
-    ${dongYao ? `
-    <div>
-      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">⚡ 变爻启示（第${dongYao}爻）</div>
-      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.change}</div>
-    </div>
-    ` : ''}
-  `;
-  
-  document.getElementById('result').appendChild(div);
-}
-      <div class="text-content">
-        <div class="text-modern">${interpretations.fortune}</div>
-      </div>
-    </div>
-    <div class="content-section">
-      <div class="section-title">爱情运势</div>
-      <div class="text-content">
-        <div class="text-modern">${interpretations.love}</div>
-      </div>
-    </div>
-    <div class="content-section">
-      <div class="section-title">健康提示</div>
-      <div class="text-content">
-        <div class="text-modern">${interpretations.health}</div>
-      </div>
-    </div>
-    ${dongYao ? `
-    <div class="content-section">
-      <div class="section-title">变爻启示（第${dongYao}爻）</div>
-      <div class="text-content">
-        <div class="text-modern">${interpretations.change}</div>
-      </div>
-    </div>
-    ` : ''}
-  `;
-  
-  document.getElementById('result').appendChild(div);
-}
-
+// 解卦分析 - 64卦完整版
 function getHexagramInterpretation(id, dongYao) {
   const interpretations = {
-    1: { overall: "乾卦象征天，代表刚健有力、纯阳至正之气。运势如飞龙在天，大吉大利，各方面都将迎来上升期。", career: "事业正处于上升通道，有贵人相助，宜把握时机积极进取，敢于承担重要任务。", fortune: "财运亨通，有意外之财的可能，但需注意合理分配，避免过度花费在享乐上。", love: "感情运势旺盛，单身者有望遇到优质对象，已有伴侣者关系更加甜蜜。", health: "身体状态良好，精力充沛，适合运动锻炼，但注意不要过度劳累。", change: "飞龙在天，利见大人。把握机遇，可成就大事。" },
-    2: { overall: "坤卦象征地，代表柔顺、厚重、包容之气。运势平稳，需要以柔克刚，顺势而为。", career: "工作需要稳扎稳打，不可急于求成。多倾听他人意见，团队合作能带来更好结果。", fortune: "财运平稳，支出需有计划，适合进行长期储蓄投资。", love: "感情需要耐心经营，以真诚和包容对待对方。", health: "注意脾胃健康，饮食规律，适当散步调和身心。", change: "龙战于野，其血玄黄。需防竞争小人，以退为进。" },
-    3: { overall: "屯卦象征事物初生之状态，虽有困难但前景光明。需要耐心筹备，不可冒进。", career: "创业或新项目会遇到阻碍，但这是积累经验的必要过程。", fortune: "财运初起步，投入需谨慎，小额尝试为宜。", love: "感情发展需耐心，不可急于确定关系。", health: "注意预防感冒，保持充足睡眠。", change: "乘马班如，求婚媾。把握机遇，吉祥无不利。" },
-    4: { overall: "蒙卦象征蒙昧未开，需要启发教育。运势初启，需要学习启蒙阶段。", career: "适合学习新技能或接受培训，不宜急于求成。", fortune: "财运处于初期阶段，需要虚心学习理财知识。", love: "感情需要慢慢培养，不宜操之过急。", health: "注意调节作息，保持良好的生活习惯。", change: "利用刑人，以正法也。通过学习启蒙，获得成长。" },
+    1: { overall: "乾卦象征天，代表刚健有力、纯阳至正之气。运势如飞龙在天，大吉大利。", career: "事业正处于上升通道，有贵人相助，宜把握时机积极进取。", fortune: "财运亨通，有意外之财的可能，但需注意合理分配。", love: "感情运势旺盛，单身者有望遇到优质对象。", health: "身体状态良好，精力充沛，适合运动锻炼。", change: "飞龙在天，利见大人。把握机遇，可成就大事。" },
+    2: { overall: "坤卦象征地，代表柔顺、厚重、包容之气。运势平稳，需要以柔克刚。", career: "工作需要稳扎稳打，不可急于求成。多倾听他人意见。", fortune: "财运平稳，支出需有计划，适合进行长期储蓄。", love: "感情需要耐心经营，以真诚和包容对待对方。", health: "注意脾胃健康，饮食规律，适当散步。", change: "龙战于野，其血玄黄。需防竞争小人，以退为进。" },
+    3: { overall: "屯卦象征事物初生之状态，虽有困难但前景光明。", career: "创业或新项目会遇到阻碍，但这是积累经验的必要过程。", fortune: "财运初起步，投入需谨慎，小额尝试为宜。", love: "感情发展需耐心，不可急于确定关系。", health: "注意预防感冒，保持充足睡眠。", change: "乘马班如，求婚媾。把握机遇，吉祥无不利。" },
+    4: { overall: "蒙卦象征蒙昧未开，需要启发教育。运势初启，需要学习启蒙。", career: "适合学习新技能或接受培训，不宜急于求成。", fortune: "财运处于初期阶段，需要虚心学习理财知识。", love: "感情需要慢慢培养，不宜操之过急。", health: "注意调节作息，保持良好的生活习惯。", change: "利用刑人，以正法也。通过学习启蒙，获得成长。" },
     5: { overall: "需卦象征等待时机。运势需要耐心等待，不可盲目行动。", career: "正处蓄势待发阶段，需要等待合适时机。", fortune: "财运有望但需耐心等待，不宜急躁投资。", love: "需要耐心等待缘分，不可强求。", health: "保持平和心态，避免焦虑情绪。", change: "需于郊，利用恒，无咎。在郊外等待，保持恒心必有好结果。" },
     6: { overall: "讼卦象征争讼纠纷。运势多波折，需谨慎处理人际关系。", career: "工作中可能遇到竞争或纠纷，需要冷静处理。", fortune: "财务上有争端风险，宜守不宜攻。", love: "感情中有误会需要及时沟通化解。", health: "注意肝气郁结，保持心平气和。", change: "不永所事，讼不可长也。争讼不可持续，应及时止戈。" },
     7: { overall: "师卦象征军队战争。运势涉及团队协作与领导能力。", career: "需要团结协作，适合带领团队完成目标。", fortune: "适合集体投资或合作项目。", love: "需要主动表达，但要注意方式方法。", health: "注意预防心血管疾病。", change: "师出以律，否臧凶。军队出发要有纪律，否则有凶险。" },
@@ -296,7 +78,7 @@ function getHexagramInterpretation(id, dongYao) {
     29: { overall: "坎卦象征险阻重重。运势艰难，需要坚持。", career: "遇到困难险阻，需要坚持。", fortune: "财务风险，注意防范。", love: "感情有阻碍，需耐心突破。", health: "注意肾脏保养。", change: "习坎，入于坎窞。重重险阻，进入陷阱。" },
     30: { overall: "离卦象征附丽光明。运势吉顺，前景光明。", career: "依附有前景的事业或人物。", fortune: "收益稳定，光明在前。", love: "感情如胶似漆，甜蜜幸福。", health: "气血充足，精神焕发。", change: "黄离，元吉。黄色附着，大吉大利。" },
     31: { overall: "咸卦象征感应相通。运势吉顺，心意相通。", career: "与合作伙伴心意相通。", fortune: "投资顺利，感应灵敏。", love: "两情相悦，感应强烈。", health: "气血通畅，身体健康。", change: "咸其辅颊舌。感应到面颊舌头。" },
-    32: { overall: "恒卦象征恒久持久。运势平稳持久。", career: "稳定发展，持久经营。", fortune: "稳定收益，持久获利。", love: "感情稳定，天长地久。", change: "恒其德，贞。保持德行，坚守正道。" },
+    32: { overall: "恒卦象征恒久持久。运势平稳持久。", career: "稳定发展，持久经营。", fortune: "稳定收益，持久获利。", love: "感情稳定，天长地久。", health: "保持健康。", change: "恒其德，贞。保持德行，坚守正道。" },
     33: { overall: "遯卦象征退避隐藏。运势需暂时退避。", career: "暂时退避，等待时机。", fortune: "暂避风险，保持实力。", love: "暂时保持距离。", health: "注意休息调养。", change: "执之用黄牛之革。用黄牛皮绳捆绑，坚守不退。" },
     34: { overall: "大壮卦象征强大壮盛。运势强盛。", career: "势力强大，适宜进攻。", fortune: "财运旺盛，收益丰厚。", love: "主动出击，成功率高。", health: "精力充沛。", change: "贞吉悔亡，坚守正道则吉祥无悔。" },
     35: { overall: "晋卦象征进晋升迁。运势上升，晋升有望。", career: "职位晋升，事业发展。", fortune: "收益增加，财运上升。", love: "感情发展，关系进步。", health: "身体健康，精神振奋。", change: "晋其角，维用伐邑。进攻角落，适宜讨伐城邑。" },
@@ -331,7 +113,7 @@ function getHexagramInterpretation(id, dongYao) {
     64: { overall: "未济卦象征事未成功。运势未完成，待发展。", career: "事业未竟，仍需努力。", fortune: "财运未竟，仍有发展。", love: "感情未成，仍需培养。", health: "身体未完全康复。", change: "濡其尾，曳其轮。弄湿尾巴，拖住车轮。" }
   };
   
-  const default_interp = {
+  return interpretations[id] || {
     overall: "此卦提醒您保持中正平和的心态，顺势而为，静待时机。",
     career: "脚踏实地做好眼前工作，积累经验等待机会。",
     fortune: "财运平稳，建议稳健理财，避免投机。",
@@ -339,142 +121,7 @@ function getHexagramInterpretation(id, dongYao) {
     health: "保持规律作息，适当运动。",
     change: "变爻带来转变，顺势而动可获吉祥。"
   };
-  
-  return interpretations[id] || default_interp;
 }
-
-function getYaoName(pos) {
-  const names = ['初', '二', '三', '四', '五', '上'];
-  return names[pos - 1];
-}
-
-// 验证输入
-function validateInput(num1, num2, num3) {
-  if (!num1 || !num2 || !num3) {
-    alert('请输入三个数字');
-    return false;
-  }
-  if (num1 < 100 || num1 > 999 || num2 < 100 || num2 > 999 || num3 < 100 || num3 > 999) {
-    alert('请输入100-999之间的三位数');
-    return false;
-  }
-  return true;
-}
-
-// 起卦
-function startDivination() {
-  const num1 = parseInt(document.getElementById('num1').value);
-  const num2 = parseInt(document.getElementById('num2').value);
-  const num3 = parseInt(document.getElementById('num3').value);
-  
-  if (!validateInput(num1, num2, num3)) return;
-  
-  const { xiaGua, shangGua, dongYao } = calculateGua(num1, num2, num3);
-  const hexagram = findHexagram(xiaGua, shangGua);
-  
-  showResult(hexagram, xiaGua, shangGua, dongYao);
-}
-
-// 随机起卦
-function randomDivination() {
-  // 确保数据已加载
-  if (!yijingData || yijingData.length === 0) {
-    alert('数据加载中，请稍后再试');
-    return;
-  }
-  
-  const num1 = Math.floor(Math.random() * 900) + 100;
-  const num2 = Math.floor(Math.random() * 900) + 100;
-  const num3 = Math.floor(Math.random() * 900) + 100;
-  
-  document.getElementById('num1').value = num1;
-  document.getElementById('num2').value = num2;
-  document.getElementById('num3').value = num3;
-  
-  // 自动起卦
-  startDivination();
-}
-
-// 重置
-function reset() {
-  document.getElementById('num1').value = '';
-  document.getElementById('num2').value = '';
-  document.getElementById('num3').value = '';
-  document.getElementById('result').classList.add('hidden');
-  document.getElementById('num1').focus();
-}
-
-// 每日一占
-function dailyDivination() {
-  const today = new Date().toDateString();
-  const stored = localStorage.getItem(DAILY_KEY);
-  
-  if (stored) {
-    const data = JSON.parse(stored);
-    if (data.date === today) {
-      showDailyResult(data);
-      return;
-    }
-  }
-  
-  // 用当天日期做种子
-  const seed = new Date().getFullYear() * 10000 + (new Date().getMonth() + 1) * 100 + new Date().getDate();
-  const num1 = Math.floor((seed * 9301 + 49297) % 233280 / 233280 * 900) + 100;
-  const num2 = Math.floor((seed * 9301 + 49297 * 2) % 233280 / 233280 * 900) + 100;
-  const num3 = Math.floor((seed * 9301 + 49297 * 3) % 233280 / 233280 * 900) + 100;
-  
-  const { xiaGua, shangGua, dongYao } = calculateGua(num1, num2, num3);
-  const hexagram = findHexagram(xiaGua, shangGua);
-  const trans = modernTranslations[hexagram.id] || {};
-  
-  const result = {
-    date: today,
-    xiaGua,
-    shangGua,
-    dongYao,
-    name: hexagram.name,
-    brief: trans.gua_ci_modern ? trans.gua_ci_modern.substring(0, 25) + '...' : hexagram.gua_ci.substring(0, 25) + '...'
-  };
-  
-  localStorage.setItem(DAILY_KEY, JSON.stringify(result));
-  showDailyResult(result);
-}
-
-function showDailyResult(data) {
-  const resultDiv = document.getElementById('dailyResult');
-  resultDiv.classList.remove('hidden');
-  document.getElementById('dailyGuaName').textContent = data.name;
-  document.getElementById('dailyGuaBrief').textContent = data.brief;
-}
-
-function loadDailyResult() {
-  const stored = localStorage.getItem(DAILY_KEY);
-  if (!stored) return;
-  
-  const data = JSON.parse(stored);
-  const today = new Date().toDateString();
-  
-  if (data.date === today) {
-    showDailyResult(data);
-  }
-}
-
-// 全局导出 - 确保所有函数可被HTML调用
-window.yijingData = null;
-window.getInterp = getHexagramInterpretation;
-
-window.loadData = async function() {
-  try {
-    const response = await fetch('data/yijing.json');
-    const data = await response.json();
-    window.yijingData = data.hexagrams;
-    console.log('已加载 ' + window.yijingData.length + ' 卦');
-    return window.yijingData;
-  } catch (error) {
-    console.error('加载数据失败:', error);
-    return null;
-  }
-};
 
 // 预加载数据
 window.loadData();
