@@ -13,6 +13,41 @@
   --gradient: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 50%, #16213E 100%);
 }
 
+/* 加载动画 */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(201, 162, 39, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 页面加载淡入 */
+.app-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 卡片悬停效果 */
+.daily-card, .divination-card, .result-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.daily-card:hover, .divination-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 162, 39, 0.15);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -524,6 +559,31 @@ body {
 .btn-reset:hover {
   background: rgba(201, 162, 39, 0.1);
   transform: scale(1.05);
+}
+
+.btn-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 20px;
+}
+
+.btn-share:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.share-section {
+  text-align: center;
+  padding: 20px 0;
 }
 
 /* 隐藏类 */

@@ -99,6 +99,11 @@
           <h3 class="section-title">六爻详解</h3>
           <div id="allYaoList" class="yao-list"></div>
         </div>
+        
+        <!-- 分享按钮 -->
+        <div class="share-section">
+          <button class="btn btn-share" onclick="shareResult()">📤 分享卦象</button>
+        </div>
       </section>
     </main>
 
@@ -270,6 +275,10 @@
       document.getElementById('loginModal').classList.add('hidden');
     }
     
+    function closeRegister() {
+      document.getElementById('registerModal').classList.add('hidden');
+    }
+    
     let isRegister = false;
     function toggleRegister() {
       isRegister = !isRegister;
@@ -282,31 +291,37 @@
       const password = document.getElementById('password').value;
       if (!username || !password) { alert('请输入用户名和密码'); return; }
       
-      if (isRegister) {
-        // 注册 - 存入 Supabase
-        saveToSupabase('users', { username: username, password: btoa(password) }).then(ok => {
-          if (ok) {
-            alert('注册成功，请登录');
-            isRegister = false;
-            document.getElementById('modalTitle').textContent = '登录';
-            document.getElementById('toggleText').textContent = '没有账号？';
-          } else {
-            alert('注册失败，用户名可能已存在');
-          }
-        });
-      } else {
-        // 登录 - 从 Supabase 验证
-        querySupabase('users', `username=eq.${username}`).then(users => {
-          if (users.length === 0 || users[0].password !== btoa(password)) {
-            alert('用户名或密码错误');
-            return;
-          }
-          currentUser = { id: users[0].id, username: username };
-          localStorage.setItem('yijing_current_user', JSON.stringify(currentUser));
-          updateUserUI();
-          closeLogin();
-        });
-      }
+      // 登录 - 从 Supabase 验证
+      querySupabase('users', `username=eq.${username}`).then(users => {
+        if (users.length === 0 || users[0].password !== btoa(password)) {
+          alert('用户名或密码错误');
+          return;
+        }
+        currentUser = { id: users[0].id, username: username };
+        localStorage.setItem('yijing_current_user', JSON.stringify(currentUser));
+        updateUserUI();
+        closeLogin();
+      });
+    }
+    
+    function doRegister() {
+      const username = document.getElementById('regUsername').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const password2 = document.getElementById('regPassword2').value;
+      
+      if (!username || !password) { alert('请输入用户名和密码'); return; }
+      if (password !== password2) { alert('两次密码不一致'); return; }
+      if (password.length < 6) { alert('密码至少6位'); return; }
+      
+      saveToSupabase('users', { username: username, password: btoa(password) }).then(ok => {
+        if (ok) {
+          alert('注册成功，请登录');
+          closeRegister();
+          showLogin();
+        } else {
+          alert('注册失败，用户名可能已存在');
+        }
+      });
     }
     
     function logout() {
@@ -315,29 +330,68 @@
       updateUserUI();
     }
     
-    // 历史记录 - 使用 Supabase
+    // 历史记录 - 同时使用本地存储和Supabase
     function saveHistory(hexagram, xiaGua, shangGua, dongYao) {
-      if (!currentUser) return;
-      saveToSupabase('history', { 
-        user_id: currentUser.id,
+      // 先保存到本地存储
+      const historyItem = {
+        id: Date.now(),
         hexagram_id: hexagram.id,
         hexagram_name: hexagram.name,
-        hexagram_symbol: hexagramSymbols[hexagram.id] || '☰☷'
-      });
+        hexagram_symbol: hexagramSymbols[hexagram.id] || '☰☷',
+        created_at: new Date().toISOString()
+      };
+      
+      // 获取本地历史
+      let localHistory = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      localHistory.unshift(historyItem);
+      // 只保留最近50条
+      localHistory = localHistory.slice(0, 50);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(localHistory));
+      
+      // 如果已登录，同时保存到Supabase
+      if (currentUser) {
+        saveToSupabase('history', { 
+          user_id: currentUser.id,
+          hexagram_id: hexagram.id,
+          hexagram_name: hexagram.name,
+          hexagram_symbol: hexagramSymbols[hexagram.id] || '☰☷'
+        });
+      }
     }
     
     function showHistory() {
-      if (!currentUser) { showLogin(); return; }
-      // 从 Supabase 获取历史记录
-      querySupabase('history', `user_id=eq.${currentUser.id}&order=created_at.desc&limit=20`).then(history => {
-        const list = document.getElementById('historyList');
-        if (!history || history.length === 0) {
-          list.innerHTML = '<p style="text-align:center;color:#6C6C8A;">暂无占卜记录</p>';
-        } else {
-          list.innerHTML = history.map(h => '<div class="history-item" onclick="showHistoryDetail(' + h.hexagram_id + ',\'' + h.hexagram_name + '\')"><div class="history-date">' + new Date(h.created_at).toLocaleString('zh-CN') + '</div><div class="history-gua">' + (h.hexagram_symbol || '☰☷') + ' ' + h.hexagram_name + '</div></div>').join('');
-        }
-        document.getElementById('historyModal').classList.remove('hidden');
-      });
+      // 先显示本地历史
+      const list = document.getElementById('historyList');
+      let localHistory = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      
+      // 无论是否登录，都显示本地历史
+      if (localHistory.length > 0) {
+        list.innerHTML = localHistory.map(h => '<div class="history-item" onclick="showHistoryDetail(' + h.hexagram_id + ',\'' + h.hexagram_name + '\')"><div class="history-date">' + new Date(h.created_at).toLocaleString('zh-CN') + '</div><div class="history-gua">' + (h.hexagram_symbol || '☰☷') + ' ' + h.hexagram_name + '</div></div>').join('');
+      }
+      
+      // 如果已登录，再从Supabase获取同步
+      if (currentUser) {
+        querySupabase('history', `user_id=eq.${currentUser.id}&order=created_at.desc&limit=20`).then(history => {
+          if (history && history.length > 0) {
+            // 合并去重
+            const existingIds = new Set(localHistory.map(h => h.id));
+            const newItems = history.filter(h => !existingIds.has(h.id));
+            if (newItems.length > 0) {
+              const combined = [...newItems.map(h => ({
+                id: h.id,
+                hexagram_id: h.hexagram_id,
+                hexagram_name: h.hexagram_name,
+                hexagram_symbol: h.hexagram_symbol,
+                created_at: h.created_at
+              })), ...localHistory].slice(0, 50);
+              localStorage.setItem(HISTORY_KEY, JSON.stringify(combined));
+              list.innerHTML = combined.map(h => '<div class="history-item" onclick="showHistoryDetail(' + h.hexagram_id + ',\'' + h.hexagram_name + '\')"><div class="history-date">' + new Date(h.created_at).toLocaleString('zh-CN') + '</div><div class="history-gua">' + (h.hexagram_symbol || '☰☷') + ' ' + h.hexagram_name + '</div></div>').join('');
+            }
+          }
+        });
+      }
+      
+      document.getElementById('historyModal').classList.remove('hidden');
     }
     
     function showHistoryDetail(hexagramId, hexagramName) {
@@ -354,6 +408,50 @@
       
       const symbol = (typeof hexagramSymbols !== 'undefined' && hexagramSymbols[hexagramId]) ? hexagramSymbols[hexagramId] : '☰☷';
       alert(symbol + ' ' + hexagramName + interp);
+    }
+    
+    // 分享功能
+    let currentShareData = null;
+    
+    function shareResult() {
+      const guaName = document.getElementById('guaName').textContent;
+      const guaCi = document.getElementById('guaCi').textContent;
+      const symbol = document.getElementById('guaImage').textContent || '☰☷';
+      
+      let interpText = '';
+      if (typeof getHexagramInterpretation === 'function' && yijingData) {
+        const hexagram = yijingData.find(g => g.name === guaName);
+        if (hexagram) {
+          const info = getHexagramInterpretation(hexagram.id, 1);
+          interpText = '\n\n📖 运势分析：\n' + info.overall.substring(0, 50) + '...';
+        }
+      }
+      
+      const shareText = `🧬 易经占卜结果\n\n${symbol} ${guaName}\n\n📜 卦辞：${guaCi}${interpText}\n\n——来自 易经占卜小程序`;
+      
+      // 如果支持Web Share API
+      if (navigator.share) {
+        navigator.share({
+          title: '易经占卜 - ' + guaName,
+          text: shareText
+        }).catch(err => {
+          // 用户取消分享
+          if (err.name !== 'AbortError') {
+            copyToClipboard(shareText);
+          }
+        });
+      } else {
+        // 复制到剪贴板
+        copyToClipboard(shareText);
+      }
+    }
+    
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('卦象信息已复制到剪贴板，可以粘贴分享给朋友！');
+      }).catch(() => {
+        alert('复制失败，请手动复制');
+      });
     }
     
     function closeHistory() {
