@@ -616,7 +616,18 @@
       showHistoryList();
       $('historyModal').classList.add('show'); 
     }
-    function closeModal(id) { $(id).classList.remove('show'); }
+    function closeModal(id) { 
+      $(id).classList.remove('show'); 
+    }
+    
+    // 点击空白处关闭弹窗
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('show');
+        }
+      });
+    });
     
     let isLogin = true;
     function toggleAuth() {
