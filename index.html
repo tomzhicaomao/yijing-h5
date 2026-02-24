@@ -6,21 +6,29 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>易经占卜</title>
-  <link rel="stylesheet" href="style.css">
   <style>
-    /* 全新UI设计 */
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --primary: #1a1a2e;
+      --accent: #c9a227;
+      --accent-light: #e8c547;
+      --bg-dark: #0f0f1a;
+      --text: #ffffff;
+      --text-secondary: rgba(255,255,255,0.6);
+      --card-bg: rgba(255,255,255,0.08);
+    }
     
     body {
       font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
       background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
       min-height: 100vh;
-      color: #fff;
+      color: var(--text);
       overflow-x: hidden;
     }
     
-    /* 动态背景 */
-    .bg-canvas {
+    /* 背景 */
+    .bg {
       position: fixed;
       top: 0;
       left: 0;
@@ -30,7 +38,7 @@
       overflow: hidden;
     }
     
-    .bg-canvas .star {
+    .star {
       position: absolute;
       width: 2px;
       height: 2px;
@@ -40,561 +48,435 @@
     }
     
     @keyframes twinkle {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-    
-    .bg-canvas . Taiji {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      opacity: 0.05;
-      animation: rotate 60s linear infinite;
-    }
-    
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
     }
     
     /* 主容器 */
     .container {
       position: relative;
       z-index: 1;
-      max-width: 480px;
+      max-width: 420px;
       margin: 0 auto;
       padding: 20px;
       min-height: 100vh;
     }
     
-    /* 顶部Logo */
+    /* 顶部 */
     .header {
       text-align: center;
       padding: 30px 0 20px;
     }
     
     .logo {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       margin: 0 auto 15px;
-      background: linear-gradient(135deg, #c9a227, #e8c547);
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
-      box-shadow: 0 8px 32px rgba(201, 162, 39, 0.3);
+      font-size: 36px;
+      box-shadow: 0 8px 30px rgba(201, 162, 39, 0.3);
       animation: float 3s ease-in-out infinite;
     }
     
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-8px); }
     }
     
     .title {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 300;
-      letter-spacing: 8px;
-      background: linear-gradient(90deg, #c9a227, #e8c547, #c9a227);
+      letter-spacing: 6px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
     
     .subtitle {
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 4px;
-      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      letter-spacing: 3px;
+      margin-top: 6px;
     }
     
-    /* 卡片通用样式 */
+    /* 卡片 */
     .card {
-      background: rgba(255,255,255,0.08);
+      background: var(--card-bg);
       backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 24px;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: all 0.3s ease;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
     
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      border-color: rgba(201, 162, 39, 0.3);
+      border-color: rgba(201, 162, 39, 0.2);
     }
     
-    /* 今日运势卡片 */
-    .daily-card {
-      text-align: center;
-    }
-    
+    /* 每日运势 */
     .daily-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
     
     .daily-title {
-      font-size: 16px;
-      color: rgba(255,255,255,0.7);
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
     }
     
-    .daily-title .icon {
-      color: #c9a227;
-    }
+    .daily-title span { color: var(--accent); }
     
     .daily-btn {
-      background: linear-gradient(135deg, #c9a227, #a88420);
+      background: linear-gradient(135deg, var(--accent), #a88420);
       color: #fff;
       border: none;
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-size: 14px;
+      padding: 6px 16px;
+      border-radius: 15px;
+      font-size: 12px;
       cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .daily-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(201, 162, 39, 0.4);
     }
     
     .daily-result {
-      padding: 20px;
+      padding: 15px;
       background: rgba(201, 162, 39, 0.1);
-      border-radius: 16px;
-      margin-top: 16px;
+      border-radius: 12px;
+      margin-top: 12px;
+      display: none;
     }
     
+    .daily-result.show { display: block; }
+    
     .daily-gua {
-      font-size: 32px;
-      color: #e8c547;
-      margin-bottom: 8px;
+      font-size: 24px;
+      color: var(--accent-light);
+      margin-bottom: 4px;
     }
     
     .daily-brief {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    /* 输入区 */
+    .section-title {
       font-size: 14px;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.6;
-    }
-    
-    /* 起卦区域 */
-    .divination-title {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 20px;
       text-align: center;
+      margin-bottom: 16px;
       letter-spacing: 4px;
+      color: var(--text-secondary);
     }
     
-    .input-group {
+    .input-row {
       display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
     
     .input-item {
       flex: 1;
-      text-align: center;
     }
     
     .input-item label {
       display: block;
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 8px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      text-align: center;
     }
     
     .input-item input {
       width: 100%;
-      height: 56px;
+      height: 48px;
       background: rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
+      border-radius: 12px;
       color: #fff;
-      font-size: 24px;
+      font-size: 18px;
       text-align: center;
       outline: none;
-      transition: all 0.3s;
     }
     
     .input-item input:focus {
-      border-color: #c9a227;
-      box-shadow: 0 0 20px rgba(201, 162, 39, 0.2);
+      border-color: var(--accent);
     }
     
-    .input-item input::placeholder {
-      color: rgba(255,255,255,0.2);
-    }
-    
-    /* 按钮组 */
-    .btn-group {
+    /* 按钮 */
+    .btn-row {
       display: flex;
-      gap: 12px;
+      gap: 10px;
     }
     
     .btn {
       flex: 1;
-      height: 52px;
-      border-radius: 26px;
-      font-size: 16px;
+      height: 44px;
+      border-radius: 22px;
+      font-size: 14px;
       cursor: pointer;
-      transition: all 0.3s;
       border: none;
       letter-spacing: 2px;
     }
     
     .btn-primary {
-      background: linear-gradient(135deg, #c9a227, #e8c547);
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
       color: #1a1a2e;
       font-weight: 600;
-    }
-    
-    .btn-primary:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 25px rgba(201, 162, 39, 0.4);
     }
     
     .btn-secondary {
       background: rgba(255,255,255,0.1);
       color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.15);
     }
     
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.2);
-    }
-    
-    /* 结果区域 */
-    .result-card {
-      animation: slideUp 0.5s ease;
-    }
-    
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    /* 结果 */
+    .result { display: none; }
+    .result.show { display: block; }
     
     .result-header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     
     .gua-name {
-      font-size: 48px;
-      color: #e8c547;
-      margin-bottom: 16px;
-      text-shadow: 0 0 30px rgba(232, 197, 71, 0.5);
+      font-size: 42px;
+      color: var(--accent-light);
+      text-shadow: 0 0 30px rgba(232, 197, 71, 0.4);
     }
     
     .gua-symbol {
-      font-size: 36px;
-      letter-spacing: 8px;
-      color: rgba(255,255,255,0.8);
+      font-size: 28px;
+      letter-spacing: 6px;
+      margin-top: 8px;
+      color: var(--text-secondary);
     }
     
-    /* 解读区块 */
     .section {
-      margin-bottom: 20px;
-      padding: 16px;
+      margin-bottom: 14px;
+      padding: 14px;
       background: rgba(0,0,0,0.2);
-      border-radius: 16px;
+      border-radius: 12px;
     }
     
-    .section-title {
-      font-size: 14px;
-      color: #c9a227;
-      margin-bottom: 12px;
-      letter-spacing: 2px;
-    }
-    
-    .ancient-text {
-      font-size: 16px;
-      color: rgba(255,255,255,0.9);
-      line-height: 1.8;
+    .section-label {
+      font-size: 12px;
+      color: var(--accent);
       margin-bottom: 8px;
     }
     
-    .modern-text {
-      font-size: 14px;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.6;
-    }
+    .ancient { font-size: 15px; line-height: 1.6; }
+    .modern { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
     
     /* 爻列表 */
-    .yao-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .yao-list { display: flex; flex-direction: column; gap: 8px; }
     
     .yao-item {
-      padding: 12px;
-      background: rgba(0,0,0,0.2);
-      border-radius: 12px;
-      border-left: 3px solid rgba(201, 162, 39, 0.5);
+      padding: 10px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 8px;
+      border-left: 3px solid rgba(201, 162, 39, 0.3);
     }
     
     .yao-item.active {
-      border-left-color: #c9a227;
-      background: rgba(201, 162, 39, 0.1);
+      border-left-color: var(--accent);
+      background: rgba(201, 162, 39, 0.08);
     }
     
-    .yao-position {
-      color: #c9a227;
+    .yao-pos {
+      font-size: 11px;
+      color: var(--accent);
+    }
+    
+    /* 解读 */
+    .interp-item { margin-bottom: 12px; }
+    .interp-item:last-child { margin-bottom: 0; }
+    .interp-label { font-size: 12px; color: var(--accent); margin-bottom: 4px; }
+    .interp-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    
+    /* 分享 */
+    .share-btn {
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      border: none;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    
+    /* 用户栏 */
+    .user-bar {
+      text-align: center;
+      margin-top: 12px;
+    }
+    
+    .user-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 6px 20px;
+      border-radius: 15px;
       font-size: 12px;
     }
     
-    /* 操作栏 */
-    .action-bar {
+    .user-name { color: var(--accent); margin-right: 10px; }
+    
+    /* 浮动按钮 */
+    .float-btn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      border-radius: 50%;
       display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    
-    /* 分享按钮 */
-    .share-btn {
-      width: 100%;
-      height: 48px;
-      background: linear-gradient(135deg, #4CAF50, #45a049);
-      border: none;
-      border-radius: 24px;
-      color: #fff;
-      font-size: 14px;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
       cursor: pointer;
-      margin-top: 16px;
-      transition: all 0.3s;
+      z-index: 100;
     }
     
-    .share-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
-    }
+    .float-btn.show { display: flex; }
     
-    /* 模态框 - 修复居中 */
+    /* 弹窗 */
     .modal {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       z-index: 1000;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
       backdrop-filter: blur(10px);
     }
     
+    .modal.show { display: flex; }
+    
     .modal-content {
       background: #1a1a2e;
-      border-radius: 24px;
+      border-radius: 20px;
       width: 100%;
-      max-width: 400px;
-      max-height: 80vh;
+      max-width: 340px;
+      max-height: 75vh;
       overflow-y: auto;
-      border: 1px solid rgba(201, 162, 39, 0.3);
-      animation: modalIn 0.3s ease;
-    }
-    
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+      border: 1px solid rgba(201, 162, 39, 0.2);
     }
     
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     
     .modal-header h3 {
-      font-size: 18px;
-      font-weight: 500;
-      color: #c9a227;
+      font-size: 16px;
+      color: var(--accent);
     }
     
     .modal-close {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      color: rgba(255,255,255,0.5);
+      font-size: 20px;
+      color: var(--text-secondary);
       cursor: pointer;
-      border-radius: 50%;
-      transition: all 0.3s;
     }
     
-    .modal-close:hover {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-    }
-    
-    .modal-body {
-      padding: 24px;
-    }
-    
-    /* 表单 */
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .modal-body { padding: 20px; }
     
     .form-input {
       width: 100%;
-      height: 48px;
+      height: 42px;
       background: rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 0 16px;
+      border-radius: 10px;
+      padding: 0 14px;
       color: #fff;
       font-size: 14px;
-      outline: none;
-      transition: all 0.3s;
+      margin-bottom: 12px;
     }
     
-    .form-input:focus {
-      border-color: #c9a227;
+    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+    
+    .link-text {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-secondary);
     }
     
-    .form-input::placeholder {
-      color: rgba(255,255,255,0.3);
-    }
+    .link-text a { color: var(--accent); text-decoration: none; }
     
-    /* 历史记录 */
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    /* 历史 */
+    .history-list { display: flex; flex-direction: column; gap: 10px; }
     
     .history-item {
-      padding: 16px;
+      padding: 12px;
       background: rgba(0,0,0,0.2);
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.3s;
       border-left: 3px solid transparent;
     }
     
     .history-item:hover {
       background: rgba(201, 162, 39, 0.1);
-      border-left-color: #c9a227;
+      border-left-color: var(--accent);
     }
     
-    .history-date {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 4px;
-    }
+    .history-date { font-size: 11px; color: var(--text-secondary); }
+    .history-gua { font-size: 16px; color: var(--accent-light); margin-top: 2px; }
     
-    .history-gua {
-      font-size: 18px;
-      color: #e8c547;
-    }
-    
-    /* 用户栏 */
-    .user-bar {
-      text-align: center;
-      margin-top: 16px;
-    }
-    
-    .user-name {
-      color: #c9a227;
-      margin-right: 12px;
-    }
-    
-    .logout-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.7);
-      padding: 6px 16px;
-      border-radius: 16px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    
-    /* 历史按钮 */
-    .history-float-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, #c9a227, #e8c547);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 8px 25px rgba(201, 162, 39, 0.4);
-      cursor: pointer;
-      z-index: 100;
-      transition: all 0.3s;
-    }
-    
-    .history-float-btn:hover {
-      transform: scale(1.1);
-    }
-    
-    /* 隐藏 */
-    .hidden { display: none !important; }
-    
-    /* 响应式 */
-    @media (max-width: 480px) {
-      .container { padding: 16px; }
-      .title { font-size: 24px; }
-      .logo { width: 70px; height: 70px; font-size: 32px; }
-      .gua-name { font-size: 40px; }
-    }
+    .empty-text { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 13px; }
   </style>
 </head>
 <body>
-  <!-- 动态背景 -->
-  <div class="bg-canvas" id="bgCanvas"></div>
+  <!-- 背景 -->
+  <div class="bg" id="bg"></div>
 
   <div class="container">
-    <!-- 顶部 -->
+    <!-- 头部 -->
     <header class="header">
       <div class="logo">☯</div>
       <h1 class="title">易经占卜</h1>
       <p class="subtitle">YIJING FORTUNE</p>
       <div class="user-bar" id="userBar">
-        <button class="btn btn-secondary" onclick="showLogin()" style="padding: 8px 24px; height: auto; font-size: 14px;">登录</button>
+        <button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button>
       </div>
     </header>
 
     <!-- 今日运势 -->
-    <section class="card daily-card">
+    <section class="card">
       <div class="daily-header">
-        <div class="daily-title">
-          <span class="icon">✦</span>
-          <span>今日运势</span>
-        </div>
-        <button class="daily-btn" onclick="dailyDivination()">开始占卜</button>
+        <div class="daily-title"><span>✦</span> 今日运势</div>
+        <button class="daily-btn" onclick="doDaily()">开始占卜</button>
       </div>
-      <div id="dailyResult" class="daily-result hidden">
+      <div class="daily-result" id="dailyResult">
         <div class="daily-gua" id="dailyGuaName">—</div>
         <div class="daily-brief" id="dailyGuaBrief">—</div>
       </div>
     </section>
 
-    <!-- 起卦输入 -->
+    <!-- 起卦 -->
     <section class="card">
-      <h2 class="divination-title">起 卦</h2>
-      <div class="input-group">
+      <div class="section-title">起 卦</div>
+      <div class="input-row">
         <div class="input-item">
           <label>数一</label>
           <input type="number" id="num1" min="100" max="999" placeholder="100-999">
@@ -608,344 +490,393 @@
           <input type="number" id="num3" min="100" max="999" placeholder="100-999">
         </div>
       </div>
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="startDivination()">起 卦</button>
-        <button class="btn btn-secondary" onclick="randomDivination()">随机</button>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="doDivination()">起 卦</button>
+        <button class="btn btn-secondary" onclick="doRandom()">随 机</button>
       </div>
     </section>
 
-    <!-- 结果展示 -->
-    <section id="result" class="card result-card hidden">
+    <!-- 结果 -->
+    <section class="card result" id="result">
       <div class="result-header">
-        <h2 id="guaName" class="gua-name">—</h2>
-        <div id="guaImage" class="gua-symbol"></div>
+        <div class="gua-name" id="guaName">—</div>
+        <div class="gua-symbol" id="guaSymbol">—</div>
       </div>
       
       <div class="section">
-        <div class="section-title">☰ 卦辞</div>
-        <div class="ancient-text" id="guaCi">—</div>
-        <div class="modern-text" id="guaCiModern"></div>
+        <div class="section-label">☰ 卦辞</div>
+        <div class="ancient" id="guaCi">—</div>
       </div>
       
       <div class="section">
-        <div class="section-title">⚡ 动爻</div>
-        <div class="ancient-text" id="dongYao">—</div>
-        <div class="modern-text" id="dongYaoModern"></div>
+        <div class="section-label">⚡ 动爻</div>
+        <div class="ancient" id="dongYao">—</div>
       </div>
       
       <div class="section">
-        <div class="section-title">☷ 六爻详解</div>
-        <div id="allYaoList" class="yao-list"></div>
+        <div class="section-label">☷ 六爻</div>
+        <div class="yao-list" id="yaoList"></div>
       </div>
       
-      <div class="section">
-        <div class="section-title">📖 解卦分析</div>
-        <div id="interpretation"></div>
+      <div class="section" id="interpSection">
+        <div class="section-label">📖 解读</div>
+        <div id="interpContent"></div>
       </div>
       
-      <button class="share-btn" onclick="shareResult()">📤 分享卦象</button>
-      
-      <div class="btn-group" style="margin-top: 16px;">
-        <button class="btn btn-secondary" onclick="reset()">重新起卦</button>
+      <button class="share-btn" onclick="doShare()">📤 分享卦象</button>
+      <div class="btn-row" style="margin-top: 10px;">
+        <button class="btn btn-secondary" onclick="doReset()">重新起卦</button>
       </div>
     </section>
   </div>
 
-  <!-- 历史记录按钮 -->
-  <div class="history-float-btn" onclick="showHistory()" id="historyBtn">📜</div>
+  <!-- 历史按钮 -->
+  <div class="float-btn show" id="historyBtn" onclick="openHistory()">📜</div>
 
   <!-- 登录弹窗 -->
-  <div id="loginModal" class="modal hidden">
+  <div class="modal" id="loginModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modalTitle">登录</h3>
-        <span class="modal-close" onclick="closeLogin()">×</span>
+        <h3 id="loginTitle">登录</h3>
+        <div class="modal-close" onclick="closeModal('loginModal')">×</div>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <input type="text" id="username" class="form-input" placeholder="用户名">
-        </div>
-        <div class="form-group">
-          <input type="password" id="password" class="form-input" placeholder="密码">
-        </div>
-        <button class="btn btn-primary" onclick="doLogin()" style="width: 100%;">登 录</button>
-        <p style="text-align: center; margin-top: 16px; color: rgba(255,255,255,0.5); font-size: 14px;">
-          <span id="toggleText">没有账号？</span>
-          <a href="#" onclick="toggleRegister(); return false;" style="color: #c9a227;">点击注册</a>
+        <input type="text" id="username" class="form-input" placeholder="用户名">
+        <input type="password" id="password" class="form-input" placeholder="密码">
+        <button class="btn btn-primary" onclick="doLogin()" style="width:100%;">登 录</button>
+        <p class="link-text" style="margin-top:12px;">
+          <span id="linkText">没有账号？</span> <a href="#" onclick="toggleAuth()" id="linkBtn">点击注册</a>
         </p>
       </div>
     </div>
   </div>
 
   <!-- 注册弹窗 -->
-  <div id="registerModal" class="modal hidden">
+  <div class="modal" id="registerModal">
     <div class="modal-content">
       <div class="modal-header">
         <h3>注册账号</h3>
-        <span class="modal-close" onclick="closeRegister()">×</span>
+        <div class="modal-close" onclick="closeModal('registerModal')">×</div>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <input type="text" id="regUsername" class="form-input" placeholder="设置用户名">
-        </div>
-        <div class="form-group">
-          <input type="password" id="regPassword" class="form-input" placeholder="设置密码">
-        </div>
-        <div class="form-group">
-          <input type="password" id="regPassword2" class="form-input" placeholder="确认密码">
-        </div>
-        <button class="btn btn-primary" onclick="doRegister()" style="width: 100%; background: linear-gradient(135deg, #4CAF50, #45a049);">注 册</button>
+        <input type="text" id="regUser" class="form-input" placeholder="用户名">
+        <input type="password" id="regPass" class="form-input" placeholder="密码">
+        <input type="password" id="regPass2" class="form-input" placeholder="确认密码">
+        <button class="btn btn-primary" onclick="doRegister()" style="width:100%;background:linear-gradient(135deg,#4CAF50,#45a049);">注 册</button>
       </div>
     </div>
   </div>
 
-  <!-- 历史记录弹窗 -->
-  <div id="historyModal" class="modal hidden">
+  <!-- 历史弹窗 -->
+  <div class="modal" id="historyModal">
     <div class="modal-content">
       <div class="modal-header">
         <h3>占卜历史</h3>
-        <span class="modal-close" onclick="closeHistory()">×</span>
+        <div class="modal-close" onclick="closeModal('historyModal')">×</div>
       </div>
       <div class="modal-body">
-        <div id="historyList" class="history-list"></div>
+        <div id="historyList"></div>
       </div>
     </div>
   </div>
 
   <script src="app.js"></script>
   <script>
-    // 生成动态背景
-    function createBg() {
-      const canvas = document.getElementById('bgCanvas');
-      // 星星
-      for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 3 + 's';
-        canvas.appendChild(star);
+    // 生成背景
+    (function(){
+      const bg = document.getElementById('bg');
+      for(let i=0;i<60;i++){
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = Math.random()*100 + '%';
+        s.style.animationDelay = Math.random()*3 + 's';
+        bg.appendChild(s);
       }
-    }
-    createBg();
-  </script>
-  
-  <script>
-    // Supabase 配置
-    const SUPABASE_URL = 'https://esmgqpttyqufbqlgxslj.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_r3jfrOsF7Jtw-mjv04iMjw_y3lKKg5P';
+    })();
     
+    // 全局函数
+    function $(id) { return document.getElementById(id); }
+    
+    function openLogin() { $('loginModal').classList.add('show'); }
+    function openRegister() { $('registerModal').classList.add('show'); }
+    function openHistory() { 
+      showHistoryList();
+      $('historyModal').classList.add('show'); 
+    }
+    function closeModal(id) { $(id).classList.remove('show'); }
+    
+    let isLogin = true;
+    function toggleAuth() {
+      closeModal('loginModal');
+      if(isLogin) { openRegister(); } else { openLogin(); }
+      isLogin = !isLogin;
+    }
+    
+    // 用户系统
     let currentUser = null;
     const HISTORY_KEY = 'yijing_history';
-    const useSupabase = SUPABASE_URL.startsWith('http');
-    
-    async function saveToSupabase(table, data) {
-      if (!useSupabase) return null;
-      try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`
-          },
-          body: JSON.stringify(data)
-        });
-        return res.ok;
-      } catch (e) { console.error(e); return null; }
-    }
-    
-    async function querySupabase(table, filter) {
-      if (!useSupabase) return [];
-      try {
-        const params = new URLSearchParams(filter);
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`
-          }
-        });
-        return res.ok ? await res.json() : [];
-      } catch (e) { console.error(e); return []; }
-    }
     
     function initUser() {
-      const savedUser = localStorage.getItem('yijing_current_user');
-      if (savedUser) {
-        currentUser = JSON.parse(savedUser);
+      const u = localStorage.getItem('yijing_user');
+      if(u) {
+        currentUser = JSON.parse(u);
         updateUserUI();
       }
     }
     
     function updateUserUI() {
-      const userBar = document.getElementById('userBar');
-      const historyBtn = document.getElementById('historyBtn');
-      if (currentUser) {
-        userBar.innerHTML = '<span class="user-name">' + currentUser.username + '</span><button class="logout-btn" onclick="logout()">退出</button>';
-        historyBtn.style.display = 'flex';
+      if(currentUser) {
+        $('userBar').innerHTML = '<span class="user-name">'+currentUser.username+'</span><button class="user-btn" onclick="logout()">退出</button>';
       } else {
-        userBar.innerHTML = '<button class="btn btn-secondary" onclick="showLogin()" style="padding: 8px 24px; height: auto; font-size: 14px;">登录</button>';
-        historyBtn.style.display = 'none';
+        $('userBar').innerHTML = '<button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button>';
       }
     }
     
-    function showLogin() {
-      document.getElementById('loginModal').classList.remove('hidden');
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('yijing_user');
+      updateUserUI();
     }
     
-    function closeLogin() {
-      document.getElementById('loginModal').classList.add('hidden');
-    }
-    
-    function closeRegister() {
-      document.getElementById('registerModal').classList.add('hidden');
-    }
-    
-    let isRegister = false;
-    function toggleRegister() {
-      isRegister = !isRegister;
-      closeLogin();
-      document.getElementById('registerModal').classList.remove('hidden');
-    }
-    
+    // 登录注册
     function doLogin() {
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      if (!username || !password) { alert('请输入用户名和密码'); return; }
+      const u = $('username').value.trim();
+      const p = $('password').value;
+      if(!u || !p) { alert('请输入用户名和密码'); return; }
       
-      querySupabase('users', `username=eq.${username}`).then(users => {
-        if (users.length === 0 || users[0].password !== btoa(password)) {
-          alert('用户名或密码错误');
-          return;
+      queryDB('users','username=eq.'+u).then(rs => {
+        if(!rs.length || rs[0].password !== btoa(p)) {
+          alert('用户名或密码错误'); return;
         }
-        currentUser = { id: users[0].id, username: username };
-        localStorage.setItem('yijing_current_user', JSON.stringify(currentUser));
+        currentUser = {id:rs[0].id, username:u};
+        localStorage.setItem('yijing_user', JSON.stringify(currentUser));
         updateUserUI();
-        closeLogin();
+        closeModal('loginModal');
+        $('username').value = '';
+        $('password').value = '';
       });
     }
     
     function doRegister() {
-      const username = document.getElementById('regUsername').value.trim();
-      const password = document.getElementById('regPassword').value;
-      const password2 = document.getElementById('regPassword2').value;
+      const u = $('regUser').value.trim();
+      const p = $('regPass').value;
+      const p2 = $('regPass2').value;
+      if(!u || !p) { alert('请输入用户名和密码'); return; }
+      if(p !== p2) { alert('两次密码不一致'); return; }
+      if(p.length < 6) { alert('密码至少6位'); return; }
       
-      if (!username || !password) { alert('请输入用户名和密码'); return; }
-      if (password !== password2) { alert('两次密码不一致'); return; }
-      if (password.length < 6) { alert('密码至少6位'); return; }
-      
-      saveToSupabase('users', { username: username, password: btoa(password) }).then(ok => {
-        if (ok) {
+      saveDB('users',{username:u, password:btoa(p)}).then(ok => {
+        if(ok) {
           alert('注册成功，请登录');
-          closeRegister();
-          showLogin();
+          closeModal('registerModal');
+          openLogin();
         } else {
           alert('注册失败，用户名可能已存在');
         }
       });
     }
     
-    function logout() {
-      currentUser = null;
-      localStorage.removeItem('yijing_current_user');
-      updateUserUI();
+    // 数据库
+    const DB_URL = 'https://esmgqpttyqufbqlgxslj.supabase.co';
+    const DB_KEY = 'sb_publishable_r3jfrOsF7Jtw-mjv04iMjw_y3lKKg5P';
+    
+    async function saveDB(table, data) {
+      try {
+        const r = await fetch(DB_URL+'/rest/v1/'+table, {
+          method:'POST', headers:{'Content-Type':'application/json','apikey':DB_KEY,'Authorization':'Bearer '+DB_KEY},
+          body:JSON.stringify(data)
+        });
+        return r.ok;
+      } catch(e) { console.error(e); return false; }
+    }
+    
+    async function queryDB(table, filter) {
+      try {
+        const r = await fetch(DB_URL+'/rest/v1/'+table+'?'+filter, {
+          headers:{'apikey':DB_KEY,'Authorization':'Bearer '+DB_KEY}
+        });
+        return r.ok ? await r.json() : [];
+      } catch(e) { console.error(e); return []; }
     }
     
     // 历史记录
-    function saveHistory(hexagram, xiaGua, shangGua, dongYao) {
-      const historyItem = {
-        id: Date.now(),
-        hexagram_id: hexagram.id,
-        hexagram_name: hexagram.name,
-        hexagram_symbol: hexagramSymbols[hexagram.id] || '☰☷',
-        created_at: new Date().toISOString()
-      };
+    function saveHistory(hex) {
+      const item = {id:Date.now(), hex_id:hex.id, hex_name:hex.name, hex_symbol:getSymbol(hex.id), time:new Date().toISOString()};
+      let list = JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+      list.unshift(item);
+      list = list.slice(0,50);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
       
-      let localHistory = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-      localHistory.unshift(historyItem);
-      localHistory = localHistory.slice(0, 50);
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(localHistory));
-      
-      if (currentUser) {
-        saveToSupabase('history', { 
-          user_id: currentUser.id,
-          hexagram_id: hexagram.id,
-          hexagram_name: hexagram.name,
-          hexagram_symbol: hexagramSymbols[hexagram.id] || '☰☷'
-        });
+      if(currentUser) {
+        saveDB('history',{user_id:currentUser.id,hexagram_id:hex.id,hexagram_name:hex.name,hexagram_symbol:getSymbol(hex.id)});
       }
     }
     
-    function showHistory() {
-      const list = document.getElementById('historyList');
-      let localHistory = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-      
-      if (localHistory.length === 0) {
-        list.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5);padding:20px;">暂无占卜记录</p>';
-      } else {
-        list.innerHTML = localHistory.map(h => '<div class="history-item" onclick="showHistoryDetail(' + h.hexagram_id + ',\'' + h.hexagram_name + '\')"><div class="history-date">' + new Date(h.created_at).toLocaleString('zh-CN') + '</div><div class="history-gua">' + (h.hexagram_symbol || '☰☷') + ' ' + h.hexagram_name + '</div></div>').join('');
+    function getSymbol(id) {
+      const s = ['','☷','☴','☲','☳','☱','☵','☶','☰'];
+      for(let i=1;i<=8;i++){
+        for(let j=1;j<=8;j++){
+          if(i*8+j-8===id) return s[i]+s[j];
+        }
       }
-      
-      document.getElementById('historyModal').classList.remove('hidden');
+      return '☰☷';
     }
     
-    function showHistoryDetail(hexagramId, hexagramName) {
-      let interpText = '';
-      if (typeof getHexagramInterpretation === 'function') {
-        const info = getHexagramInterpretation(hexagramId, 1);
-        interpText = '\n\n【整体运势】' + info.overall + 
-                 '\n\n【事业发展】' + info.career + 
-                 '\n\n【财运分析】' + info.fortune + 
-                 '\n\n【爱情运势】' + info.love + 
-                 '\n\n【健康提示】' + info.health;
+    function showHistoryList() {
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+      if(!list.length) {
+        $('historyList').innerHTML = '<div class="empty-text">暂无占卜记录</div>';
+        return;
       }
-      
-      const symbol = (typeof hexagramSymbols !== 'undefined' && hexagramSymbols[hexagramId]) ? hexagramSymbols[hexagramId] : '☰☷';
-      alert(symbol + ' ' + hexagramName + interpText);
+      $('historyList').innerHTML = list.map(h => 
+        '<div class="history-item" onclick="showHistoryDetail('+h.hex_id+',\''+h.hex_name+'\')">'+
+        '<div class="history-date">'+new Date(h.time).toLocaleString('zh-CN')+'</div>'+
+        '<div class="history-gua">'+(h.hex_symbol||'☰☷')+' '+h.hex_name+'</div></div>'
+      ).join('');
     }
     
-    function closeHistory() {
-      document.getElementById('historyModal').classList.add('hidden');
+    function showHistoryDetail(id, name) {
+      let t = '';
+      if(typeof getInterp==='function') {
+        const i = getInterp(id,1);
+        t = '\n\n【整体】'+i.overall+'\n【事业】'+i.career+'\n【财运】'+i.fortune+'\n【爱情】'+i.love+'\n【健康】'+i.health;
+      }
+      alert((getSymbol(id)||'☰☷')+' '+name+t);
     }
     
-    // 分享
-    function shareResult() {
-      const guaName = document.getElementById('guaName').textContent;
-      const guaCi = document.getElementById('guaCi').textContent;
-      const symbol = document.getElementById('guaImage').textContent || '☰☷';
+    // 起卦
+    function doDivination() {
+      const n1 = parseInt($('num1').value);
+      const n2 = parseInt($('num2').value);
+      const n3 = parseInt($('num3').value);
       
-      let interpText = '';
-      if (typeof getHexagramInterpretation === 'function' && yijingData) {
-        const hexagram = yijingData.find(g => g.name === guaName);
-        if (hexagram) {
-          const info = getHexagramInterpretation(hexagram.id, 1);
-          interpText = '\n\n📖 运势：' + info.overall.substring(0, 30) + '...';
+      if(!n1||!n2||!n3) { alert('请输入三个数字'); return; }
+      if(n1<100||n1>999||n2<100||n2>999||n3<100||n3>999) { alert('请输入100-999之间的数字'); return; }
+      
+      const xg = (n1%8)||8;
+      const sg = (n2%8)||8;
+      const dy = ((n3-1)%6)+1;
+      
+      const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      showResult(hex, xg, sg, dy);
+      saveHistory(hex);
+    }
+    
+    function doRandom() {
+      $('num1').value = Math.floor(Math.random()*900)+100;
+      $('num2').value = Math.floor(Math.random()*900)+100;
+      $('num3').value = Math.floor(Math.random()*900)+100;
+      doDivination();
+    }
+    
+    function doReset() {
+      $('num1').value = '';
+      $('num2').value = '';
+      $('num3').value = '';
+      $('result').classList.remove('show');
+      $('num1').focus();
+    }
+    
+    // 每日
+    function doDaily() {
+      const key = 'yijing_daily';
+      const today = new Date().toDateString();
+      const stored = localStorage.getItem(key);
+      
+      if(stored) {
+        const d = JSON.parse(stored);
+        if(d.date === today) {
+          showDaily(d); return;
         }
       }
       
-      const shareText = `🧬 易经占卜\n\n${symbol} ${guaName}\n\n📜 ${guaCi}${interpText}\n\n——来自 易经占卜`;
+      const seed = new Date().getFullYear()*10000+(new Date().getMonth()+1)*100+new Date().getDate();
+      const n1 = Math.floor((seed*9301+49297)%233280/233280*900)+100;
+      const n2 = Math.floor((seed*9301+49297*2)%233280/233280*900)+100;
+      const n3 = Math.floor((seed*9301+49297*3)%233280/233280*900)+100;
       
-      if (navigator.share) {
-        navigator.share({ title: '易经占卜 - ' + guaName, text: shareText }).catch(() => copyToClipboard(shareText));
+      const xg = (n1%8)||8;
+      const sg = (n2%8)||8;
+      const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      const d = {date:today, name:hex.name, id:hex.id, symbol:getSymbol(hex.id), brief:hex.gua_ci.substring(0,20)};
+      localStorage.setItem(key, JSON.stringify(d));
+      showDaily(d);
+    }
+    
+    function showDaily(d) {
+      $('dailyGuaName').textContent = d.symbol+' '+d.name;
+      $('dailyGuaBrief').textContent = d.brief;
+      $('dailyResult').classList.add('show');
+    }
+    
+    // 显示结果
+    function showResult(hex, xg, sg, dy) {
+      $('guaName').textContent = hex.name;
+      $('guaSymbol').textContent = getSymbol(hex.id);
+      $('guaCi').textContent = hex.gua_ci;
+      
+      const dyao = hex.yao.find(y => y.position === dy);
+      $('dongYao').textContent = dyao ? '第'+dy+'爻：'+dyao.yao_ci : '';
+      
+      // 爻列表
+      $('yaoList').innerHTML = hex.yao.map(y => 
+        '<div class="yao-item'+(y.position===dy?' active':'')+'">'+
+        '<div class="yao-pos">'+['初','二','三','四','五','上'][y.position-1]+'爻</div>'+
+        '<div class="ancient" style="font-size:13px;">'+y.yao_ci+'</div></div>'
+      ).join('');
+      
+      // 解读
+      if(typeof getInterp==='function') {
+        const i = getInterp(hex.id, dy);
+        $('interpContent').innerHTML = 
+          '<div class="interp-item"><div class="interp-label">📖 整体运势</div><div class="interp-text">'+i.overall+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💼 事业发展</div><div class="interp-text">'+i.career+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💰 财运</div><div class="interp-text">'+i.fortune+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💕 爱情</div><div class="interp-text">'+i.love+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">'+i.health+'</div></div>'+
+          (dy ? '<div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">'+i.change+'</div></div>' : '');
+      }
+      
+      $('result').classList.add('show');
+      $('result').scrollIntoView({behavior:'smooth'});
+    }
+    
+    // 分享
+    function doShare() {
+      const name = $('guaName').textContent;
+      const ci = $('guaCi').textContent;
+      const symbol = $('guaSymbol').textContent;
+      const text = '🧬 易经占卜\n\n'+symbol+' '+name+'\n\n📜 '+ci+'\n\n——来自 易经占卜';
+      
+      if(navigator.share) {
+        navigator.share({title:'易经占卜 - '+name, text:text}).catch(()=>copyText(text));
       } else {
-        copyToClipboard(shareText);
+        copyText(text);
       }
     }
     
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        alert('已复制到剪贴板');
-      }).catch(() => alert('复制失败'));
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(()=>alert('已复制到剪贴板')).catch(()=>alert('复制失败'));
     }
     
-    // 回车键提交
-    ['num1', 'num2', 'num3'].forEach(id => {
-      document.getElementById(id).addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') startDivination();
-      });
+    // 回车
+    ['num1','num2','num3'].forEach(id => {
+      $(id).addEventListener('keypress', e => { if(e.key==='Enter') doDivination(); });
     });
     
+    // 初始化
     initUser();
+    
+    // 加载每日
+    const dk = 'yijing_daily';
+    const ds = localStorage.getItem(dk);
+    if(ds) {
+      const d = JSON.parse(ds);
+      if(d.date === new Date().toDateString()) showDaily(d);
+    }
   </script>
 </body>
 </html>

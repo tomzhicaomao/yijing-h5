@@ -1,24 +1,6 @@
-/* 基础样式 - 其他样式已内联到HTML */
+/* 极简样式 - 主要样式已内联 */
 :root {
-  --primary: #1A1A2E;
-  --accent: #C9A227;
-  --accent-light: #E8C547;
+  --primary: #1a1a2e;
+  --accent: #c9a227;
 }
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
-  min-height: 100vh;
-  color: #fff;
-  -webkit-font-smoothing: antialiased;
-}
-
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }

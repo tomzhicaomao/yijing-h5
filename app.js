@@ -459,20 +459,20 @@ function loadDailyResult() {
   }
 }
 
-// 初始化
-document.addEventListener('DOMContentLoaded', () => {
-  loadData();
-  
-  document.getElementById('startBtn').addEventListener('click', startDivination);
-  document.getElementById('randomBtn').addEventListener('click', randomDivination);
-  document.getElementById('resetBtn').addEventListener('click', reset);
-  
-  // 回车键提交
-  ['num1', 'num2', 'num3'].forEach(id => {
-    document.getElementById(id).addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') startDivination();
-    });
-  });
-  
-  loadDailyResult();
-});
+// 全局导出
+window.yijingData = null;
+window.getInterp = getHexagramInterpretation;
+
+window.loadData = async function() {
+  try {
+    const response = await fetch('data/yijing.json');
+    const data = await response.json();
+    window.yijingData = data.hexagrams;
+    console.log('已加载 ' + window.yijingData.length + ' 卦');
+  } catch (error) {
+    console.error('加载数据失败:', error);
+  }
+};
+
+// 预加载数据
+loadData();
