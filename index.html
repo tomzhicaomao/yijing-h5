@@ -25,6 +25,10 @@
       min-height: 100vh;
       color: var(--text);
       overflow-x: hidden;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+      position: fixed;
+      width: 100%;
     }
     
     /* 背景 */
@@ -60,6 +64,9 @@
       margin: 0 auto;
       padding: 20px;
       min-height: 100vh;
+      overflow-y: auto;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
     }
     
     /* 顶部 */
@@ -792,7 +799,16 @@
     }
     
     // 每日
-    function doDaily() {
+    async function doDaily() {
+      // 等待数据加载
+      if(!window.yijingData || !window.yijingData.length) {
+        await window.loadData();
+        if(!window.yijingData || !window.yijingData.length) {
+          alert('数据加载失败，请刷新页面重试');
+          return;
+        }
+      }
+      
       const key = 'yijing_daily';
       const today = new Date().toDateString();
       const stored = localStorage.getItem(key);
@@ -813,7 +829,7 @@
       const sg = (n2%8)||8;
       const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
       
-      const d = {date:today, name:hex.name, id:hex.id, symbol:getSymbol(hex.id), brief:hex.gua_ci.substring(0,20)};
+      const d = {date:today, name:hex.name, id:hex.id, symbol:getSymbol(hex.id), brief:hex.gua_ci?hex.gua_ci.substring(0,20):''};
       localStorage.setItem(key, JSON.stringify(d));
       showDaily(d);
     }

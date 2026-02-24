@@ -45,6 +45,10 @@ function findHexagram(xiaGua, shangGua) {
 }
 
 // 解卦分析 - 64卦完整版
+function getInterp(id, dongYao) {
+  return getHexagramInterpretation(id, dongYao);
+}
+
 function getHexagramInterpretation(id, dongYao) {
   const interpretations = {
     1: { overall: "乾卦象征天，代表刚健有力、纯阳至正之气。运势如飞龙在天，大吉大利。", career: "事业正处于上升通道，有贵人相助，宜把握时机积极进取。", fortune: "财运亨通，有意外之财的可能，但需注意合理分配。", love: "感情运势旺盛，单身者有望遇到优质对象。", health: "身体状态良好，精力充沛，适合运动锻炼。", change: "飞龙在天，利见大人。把握机遇，可成就大事。" },
