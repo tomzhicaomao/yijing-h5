@@ -581,6 +581,17 @@
     </div>
   </div>
 
+  <!-- 历史详情弹窗 -->
+  <div class="modal" id="historyDetailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="historyDetailTitle">卦象详情</h3>
+        <div class="modal-close" onclick="closeHistoryDetail()">×</div>
+      </div>
+      <div class="modal-body" id="historyDetailContent"></div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
   <script>
     // 生成背景
@@ -738,12 +749,27 @@
     }
     
     function showHistoryDetail(id, name) {
-      let t = '';
+      closeModal('historyModal'); // 关闭历史列表
+      
+      let content = '';
       if(typeof getInterp==='function') {
         const i = getInterp(id,1);
-        t = '\n\n【整体】'+i.overall+'\n【事业】'+i.career+'\n【财运】'+i.fortune+'\n【爱情】'+i.love+'\n【健康】'+i.health;
+        content = 
+          '<div class="interp-item"><div class="interp-label">📖 整体运势</div><div class="interp-text">'+i.overall+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💼 事业发展</div><div class="interp-text">'+i.career+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💰 财运</div><div class="interp-text">'+i.fortune+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💕 爱情</div><div class="interp-text">'+i.love+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">'+i.health+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">'+i.change+'</div></div>';
       }
-      alert((getSymbol(id)||'☰☷')+' '+name+t);
+      
+      $('historyDetailTitle').textContent = getSymbol(id) + ' ' + name;
+      $('historyDetailContent').innerHTML = content || '暂无详情';
+      $('historyDetailModal').classList.add('show');
+    }
+    
+    function closeHistoryDetail() {
+      $('historyDetailModal').classList.remove('show');
     }
     
     // 起卦
