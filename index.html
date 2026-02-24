@@ -79,6 +79,38 @@
       animation: float 3s ease-in-out infinite;
     }
     
+    /* 太极图案 */
+    .taiji {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c9a227, #e8c547);
+      position: relative;
+      box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);
+    }
+    
+    .taiji::before {
+      content: '';
+      position: absolute;
+      width: 70px;
+      height: 35px;
+      top: 0;
+      border-radius: 70px 70px 0 0;
+      background: linear-gradient(to right, #1a1a2e 50%, transparent 50%);
+    }
+    
+    .taiji::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 17px;
+      left: 25px;
+      background: #e8c547;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(232, 197, 71, 0.8);
+    }
+    
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
@@ -451,14 +483,7 @@
     <!-- 头部 -->
     <header class="header">
       <div class="logo">
-        <svg width="50" height="50" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="none" stroke="#e8c547" stroke-width="2"/>
-          <circle cx="50" cy="50" r="35" fill="none" stroke="#c9a227" stroke-width="1.5"/>
-          <path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#e8c547" stroke-width="4"/>
-          <path d="M50 20 A30 30 0 0 0 50 80" fill="none" stroke="#c9a227" stroke-width="4"/>
-          <circle cx="50" cy="35" r="8" fill="#e8c547"/>
-          <circle cx="50" cy="65" r="8" fill="#c9a227"/>
-        </svg>
+        <div class="taiji"></div>
       </div>
       <h1 class="title">易经占卜</h1>
       <p class="subtitle">YIJING FORTUNE</p>
@@ -915,7 +940,24 @@
       const name = $('guaName').textContent;
       const ci = $('guaCi').textContent;
       const symbol = $('guaSymbol').textContent;
-      const text = '🧬 易经占卜\n\n'+symbol+' '+name+'\n\n📜 '+ci+'\n\n——来自 易经占卜';
+      const dongYao = $('dongYao').textContent;
+      
+      // 获取解读内容
+      let interpText = '';
+      if(typeof getInterp==='function' && window.yijingData) {
+        const hex = window.yijingData.find(g => g.name === name);
+        if(hex) {
+          const i = getInterp(hex.id, 1);
+          interpText = '\n\n📖【整体运势】\n' + i.overall + 
+                       '\n\n💼【事业发展】\n' + i.career + 
+                       '\n\n💰【财运分析】\n' + i.fortune + 
+                       '\n\n💕【爱情运势】\n' + i.love + 
+                       '\n\n❤️【健康提示】\n' + i.health +
+                       '\n\n⚡【变爻启示】\n' + i.change;
+        }
+      }
+      
+      const text = '🧬 易经占卜结果\n\n' + symbol + ' ' + name + '\n\n📜【卦辞】\n' + ci + (dongYao ? '\n\n⚡【动爻】\n' + dongYao : '') + interpText + '\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/\n\n——来自 易经占卜小程序';
       
       if(navigator.share) {
         navigator.share({title:'易经占卜 - '+name, text:text}).catch(()=>copyText(text));
