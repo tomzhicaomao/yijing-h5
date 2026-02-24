@@ -149,6 +149,10 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
   // 显示卦信息
   document.getElementById('guaName').textContent = hexagram.name;
   
+  // 显示八卦符号
+  const symbol = hexagramSymbols[shangGua * 8 + xiaGua - 8] || '☰☷';
+  document.getElementById('guaImage').textContent = symbol;
+  
   // 卦辞
   document.getElementById('guaCi').textContent = hexagram.gua_ci;
   document.getElementById('guaCiModern').textContent = trans.gua_ci_modern || '';
@@ -159,10 +163,7 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
   document.getElementById('dongYao').textContent = dongYaoData ? `第${dongYao}爻：${dongYaoData.yao_ci}` : '';
   document.getElementById('dongYaoModern').textContent = dongTrans ? dongTrans.yao_ci_modern : '';
   
-  // 渲染八卦图形
-  const guaImage = document.getElementById('guaImage');
-  guaImage.innerHTML = '';
-  guaImage.appendChild(renderGuaLines(xiaGua, shangGua));
+  // 渲染六爻列表
   const allYaoList = document.getElementById('allYaoList');
   allYaoList.innerHTML = '';
   hexagram.yao.forEach((yao, idx) => {
@@ -170,17 +171,15 @@ function showResult(hexagram, xiaGua, shangGua, dongYao) {
     const item = document.createElement('div');
     item.className = 'yao-item' + (yao.position === dongYao ? ' active' : '');
     item.innerHTML = `
-      <div class="yao-ancient">
-        <span class="yao-position">${getYaoName(yao.position)}</span>${yao.yao_ci}
-      </div>
-      <div class="yao-modern">${yaoTrans ? yaoTrans.yao_ci_modern : ''}</div>
+      <div class="yao-position" style="color:#c9a227;font-size:12px;margin-bottom:4px;">${getYaoName(yao.position)}爻</div>
+      <div class="ancient-text" style="font-size:14px;color:rgba(255,255,255,0.9);">${yao.yao_ci}</div>
+      <div class="modern-text" style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;">${yaoTrans ? yaoTrans.yao_ci_modern : ''}</div>
     `;
     allYaoList.appendChild(item);
   });
   
   // 显示结果区域
   document.getElementById('result').classList.remove('hidden');
-  document.getElementById('actionBar').classList.remove('hidden');
   document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
   
   // 保存历史记录
@@ -201,25 +200,40 @@ function addInterpretation(hexagram, dongYao) {
   
   const div = document.createElement('div');
   div.id = 'interpretation';
-  div.className = 'result-card';
+  div.style.padding = '16px';
+  div.style.background = 'rgba(0,0,0,0.2)';
+  div.style.borderRadius = '16px';
   div.innerHTML = `
-    <div class="result-header">
-      <div class="gua-name" style="font-size:1.2rem;margin-bottom:10px;">📖 解卦分析</div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">📖 整体运势</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.overall}</div>
     </div>
-    <div class="content-section">
-      <div class="section-title">整体运势</div>
-      <div class="text-content">
-        <div class="text-modern">${interpretations.overall}</div>
-      </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">💼 事业发展</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.career}</div>
     </div>
-    <div class="content-section">
-      <div class="section-title">事业发展</div>
-      <div class="text-content">
-        <div class="text-modern">${interpretations.career}</div>
-      </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">💰 财运分析</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.fortune}</div>
     </div>
-    <div class="content-section">
-      <div class="section-title">财运分析</div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">💕 爱情运势</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.love}</div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">❤️ 健康提示</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.health}</div>
+    </div>
+    ${dongYao ? `
+    <div>
+      <div style="font-size:13px;color:#c9a227;margin-bottom:8px;">⚡ 变爻启示（第${dongYao}爻）</div>
+      <div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">${interpretations.change}</div>
+    </div>
+    ` : ''}
+  `;
+  
+  document.getElementById('result').appendChild(div);
+}
       <div class="text-content">
         <div class="text-modern">${interpretations.fortune}</div>
       </div>
@@ -387,7 +401,6 @@ function reset() {
   document.getElementById('num2').value = '';
   document.getElementById('num3').value = '';
   document.getElementById('result').classList.add('hidden');
-  document.getElementById('actionBar').classList.add('hidden');
   document.getElementById('num1').focus();
 }
 
