@@ -24,11 +24,7 @@
       background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
       min-height: 100vh;
       color: var(--text);
-      overflow-x: hidden;
-      overscroll-behavior: none;
       -webkit-overflow-scrolling: touch;
-      position: fixed;
-      width: 100%;
     }
     
     /* 背景 */
@@ -64,9 +60,7 @@
       margin: 0 auto;
       padding: 20px;
       min-height: 100vh;
-      overflow-y: auto;
-      overscroll-behavior: none;
-      -webkit-overflow-scrolling: touch;
+      padding-bottom: 80px;
     }
     
     /* 顶部 */
@@ -764,8 +758,8 @@
       const n2 = parseInt($('num2').value);
       const n3 = parseInt($('num3').value);
       
-      if(!n1||!n2||!n3) { alert('请输入三个数字'); return; }
-      if(n1<100||n1>999||n2<100||n2>999||n3<100||n3>999) { alert('请输入100-999之间的数字'); return; }
+      if(isNaN(n1)||isNaN(n2)||isNaN(n3)) { alert('请输入三个数字'); $('num1').focus(); return; }
+      if(n1<100||n1>999||n2<100||n2>999||n3<100||n3>999) { alert('请输入100-999之间的数字'); $('num1').focus(); return; }
       
       const xg = (n1%8)||8;
       const sg = (n2%8)||8;
@@ -835,8 +829,8 @@
     }
     
     function showDaily(d) {
-      $('dailyGuaName').textContent = d.symbol+' '+d.name;
-      $('dailyGuaBrief').textContent = d.brief;
+      $('dailyGuaName').textContent = (d.symbol||'☰☷')+' '+(d.name||'—');
+      $('dailyGuaBrief').textContent = d.brief || '点击查看详情';
       $('dailyResult').classList.add('show');
     }
     
