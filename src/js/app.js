@@ -4,6 +4,11 @@
  */
 
 const App = {
+  // 当前历史记录ID（用于AI解读更新）
+  currentHistoryId: null,
+  // 当前AI解读结果
+  currentAIInterpretation: null,
+  
   /**
    * 初始化应用
    */
@@ -253,8 +258,13 @@ const App = {
       hex_id: hex.id,
       hex_name: hex.name,
       hex_symbol: Yijing.getSymbol(hex.id),
-      time: new Date().toISOString()
+      time: new Date().toISOString(),
+      ai_interpretation: null
     };
+    
+    // 保存当前历史ID，用于后续AI解读更新
+    this.currentHistoryId = item.id;
+    this.currentAIInterpretation = null;
     
     Storage.addHistory(item);
     
@@ -264,8 +274,27 @@ const App = {
         user_id: User.current.id,
         hexagram_id: hex.id,
         hexagram_name: hex.name,
-        hexagram_symbol: item.hex_symbol
+        hexagram_symbol: item.hex_symbol,
+        ai_interpretation: null
       });
+    }
+  },
+  
+  /**
+   * 更新当前历史记录的AI解读
+   * @param {string} aiInterpretation - AI解读内容
+   */
+  updateCurrentHistoryAI(aiInterpretation) {
+    this.currentAIInterpretation = aiInterpretation;
+    
+    // 更新本地历史记录
+    if (this.currentHistoryId) {
+      Storage.updateHistoryAI(this.currentHistoryId, aiInterpretation);
+      
+      // 同步到云端
+      if (User.isLoggedIn()) {
+        DB.updateHistoryByHexId(this.currentHistoryId, { ai_interpretation: aiInterpretation });
+      }
     }
   },
   
@@ -275,8 +304,11 @@ const App = {
   showHistoryDetail(id, name) {
     UI.closeModal('historyModal');
     
+    // 获取历史记录详情
+    const historyItem = Storage.getHistoryById(id);
+    
     const interp = Yijing.getInterpretation(id, 1);
-    const content = `
+    let content = `
       <div class="interp-item"><div class="interp-label">📖 整体运势</div><div class="interp-text">${interp.overall}</div></div>
       <div class="interp-item"><div class="interp-label">💼 事业发展</div><div class="interp-text">${interp.career}</div></div>
       <div class="interp-item"><div class="interp-label">💰 财运</div><div class="interp-text">${interp.fortune}</div></div>
@@ -284,6 +316,16 @@ const App = {
       <div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">${interp.health}</div></div>
       <div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">${interp.change}</div></div>
     `;
+    
+    // 如果有AI解读，显示AI解读
+    if (historyItem && historyItem.ai_interpretation) {
+      content += `
+        <div class="interp-item ai-section">
+          <div class="interp-label">🤖 AI智能解读</div>
+          <div class="interp-text ai-text">${AIInterpret.formatDisplay(historyItem.ai_interpretation)}</div>
+        </div>
+      `;
+    }
     
     document.getElementById('historyDetailTitle').textContent = `${Yijing.getSymbol(id)} ${name}`;
     document.getElementById('historyDetailContent').innerHTML = content;
@@ -299,13 +341,32 @@ const App = {
     const symbol = document.getElementById('guaSymbol')?.textContent || '';
     const dongYao = document.getElementById('dongYao')?.textContent || '';
     
-    // 获取解读
-    let interpText = '';
-    const hex = Yijing.getById(parseInt(name));
-    if (hex) {
-      const interp = Yijing.getInterpretation(hex.id, 1);
-      interpText = `
-        
+    // 基础分享内容
+    let text = `🧬 易经占卜结果
+
+${symbol} ${name}
+
+📜【卦辞】
+${ci}
+${dongYao ? `\n⚡【动爻】\n${dongYao}` : ''}`;
+    
+    // 如果有AI解读结果，添加到分享内容
+    if (this.currentAIInterpretation) {
+      // 清理AI解读的Markdown格式，使其更适合分享
+      const cleanAI = this.currentAIInterpretation
+        .replace(/\*\*([^*]+)\*\*/g, '【$1】')
+        .replace(/###\s*/g, '')
+        .replace(/##\s*/g, '')
+        .replace(/\n{3,}/g, '\n\n');
+      
+      text += `\n\n🤖【AI智能解读】
+${cleanAI}`;
+    } else {
+      // 如果没有AI解读，添加基础解读
+      const hex = Yijing.getById(parseInt(name));
+      if (hex) {
+        const interp = Yijing.getInterpretation(hex.id, 1);
+        text += `\n
 📖【整体运势】
 ${interp.overall}
 
@@ -323,17 +384,10 @@ ${interp.health}
 
 ⚡【变爻启示】
 ${interp.change}`;
+      }
     }
     
-    const text = `🧬 易经占卜结果
-
-${symbol} ${name}
-
-📜【卦辞】
-${ci}
-${dongYao ? `\n⚡【动爻】\n${dongYao}` : ''}${interpText}
-
-🔗 体验更多易经占卜：https://yijing-h5.vercel.app/
+    text += `\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/
 
 ——来自 易经占卜小程序`;
     

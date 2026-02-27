@@ -1920,6 +1920,11 @@ ${yaoList}
         // 显示结果
         showAIResult(result);
         
+        // 更新历史记录中的AI解读
+        if (window.App && typeof App.updateCurrentHistoryAI === 'function') {
+          App.updateCurrentHistoryAI(result);
+        }
+        
       } catch (e) {
         alert('AI解读失败：' + e.message);
         console.error(e);

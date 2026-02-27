@@ -11,6 +11,7 @@
 | v1.0 | 代码重构 + PWA支持 | ✅ |
 | v1.1 | AI智能解读功能 | ✅ |
 | v1.2 | 用户反馈系统 | ✅ |
+| v1.3 | 分享增强 + 历史同步 | ✅ |
 
 ## v1.0 更新内容
 
@@ -191,3 +192,40 @@ yijing-h5/
 4. 可选：添加截图、联系方式
 5. 提交反馈
 6. 可在「反馈历史」中查看处理状态
+
+---
+
+## v1.3 更新内容 (分享增强 + 历史同步)
+
+### 📤 分享功能增强
+- [x] 分享时包含AI智能解读内容
+- [x] 分享文本格式清晰美观
+- [x] 自动清理Markdown格式，适配分享场景
+
+### 💾 历史记录增强
+- [x] 历史记录增加 `ai_interpretation` 字段
+- [x] 获取AI解读后自动更新对应历史记录
+- [x] 历史详情显示时展示AI解读内容
+
+### ☁️ 多端数据同步
+- [x] 登录后自动拉取云端历史记录
+- [x] 历史记录同步到 Supabase
+- [x] AI解读作为历史记录的一部分同步
+- [x] 本地与云端历史记录智能合并
+
+### 🔧 技术实现
+- [x] `src/js/storage.js` 新增 `updateHistoryAI`、`getHistoryById` 方法
+- [x] `src/js/app.js` 新增 `updateCurrentHistoryAI` 方法
+- [x] `src/js/db.js` 新增 `getUserHistory`、`updateHistoryByHexId` 方法
+- [x] `src/js/user.js` 新增 `syncData` 方法
+
+### 📁 文件更新
+```
+yijing-h5/
+├── src/js/storage.js    # 更新：AI解读存储
+├── src/js/app.js        # 更新：分享增强、历史更新
+├── src/js/db.js         # 更新：用户历史查询
+├── src/js/user.js       # 更新：登录同步
+├── index.html           # 更新：AI解读保存
+└── ROADMAP.md           # 更新：文档
+```

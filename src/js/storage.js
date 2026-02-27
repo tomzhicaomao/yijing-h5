@@ -127,6 +127,31 @@ const Storage = {
   },
   
   /**
+   * 更新历史记录的AI解读
+   * @param {number} historyId - 历史记录ID
+   * @param {string} aiInterpretation - AI解读内容
+   */
+  updateHistoryAI(id, aiInterpretation) {
+    const history = this.getHistory();
+    const index = history.findIndex(h => h.id === id);
+    if (index !== -1) {
+      history[index].ai_interpretation = aiInterpretation;
+      this.set(this.KEYS.HISTORY, history);
+      return true;
+    }
+    return false;
+  },
+  
+  /**
+   * 根据ID获取历史记录
+   * @param {number} id - 历史记录ID
+   */
+  getHistoryById(id) {
+    const history = this.getHistory();
+    return history.find(h => h.id === id) || null;
+  },
+  
+  /**
    * 清除历史记录
    */
   clearHistory() {

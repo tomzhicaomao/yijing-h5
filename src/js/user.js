@@ -48,7 +48,66 @@ const User = {
     
     Storage.setUser(this.current);
     this.updateUI();
+    
+    // 登录后同步数据
+    await this.syncData();
+    
     return this.current;
+  },
+  
+  /**
+   * 同步数据（登录后拉取云端历史记录）
+   */
+  async syncData() {
+    if (!this.isLoggedIn()) return;
+    
+    try {
+      console.log('🔄 开始同步云端数据...');
+      
+      // 拉取云端历史记录
+      const cloudHistory = await DB.getUserHistory(this.current.id);
+      
+      if (cloudHistory && cloudHistory.length > 0) {
+        // 获取本地历史记录
+        const localHistory = Storage.getHistory();
+        
+        // 合并云端和本地历史记录（以云端为主，本地补充）
+        const mergedMap = new Map();
+        
+        // 先添加云端记录
+        cloudHistory.forEach(item => {
+          const localItem = {
+            id: item.hex_id || Date.now(),
+            hex_id: item.hexagram_id,
+            hex_name: item.hexagram_name,
+            hex_symbol: item.hexagram_symbol,
+            time: item.created_at || new Date().toISOString(),
+            ai_interpretation: item.ai_interpretation || null
+          };
+          mergedMap.set(item.id, localItem);
+        });
+        
+        // 再添加本地记录（避免重复）
+        localHistory.forEach(item => {
+          const key = `${item.hex_id}_${item.time}`;
+          if (!mergedMap.has(item.id)) {
+            mergedMap.set(item.id, item);
+          }
+        });
+        
+        // 转换回数组并按时间排序
+        const mergedHistory = Array.from(mergedMap.values())
+          .sort((a, b) => new Date(b.time) - new Date(a.time))
+          .slice(0, 50); // 限制50条
+        
+        // 保存合并后的历史记录
+        Storage.set(Storage.KEYS.HISTORY, mergedHistory);
+        
+        console.log(`✅ 同步完成，共 ${mergedHistory.length} 条历史记录`);
+      }
+    } catch (error) {
+      console.error('数据同步失败:', error);
+    }
   },
   
   /**
