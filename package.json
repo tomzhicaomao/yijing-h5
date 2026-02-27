@@ -1,0 +1,12 @@
+{
+  "name": "yijing-h5",
+  "version": "1.0.0",
+  "description": "易经占卜 H5 应用",
+  "scripts": {
+    "dev": "npx http-server . -p 8080 -c-1",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": ["yijing", "divination", "h5"],
+  "author": "",
+  "license": "MIT"
+}
