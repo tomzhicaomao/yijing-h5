@@ -3,7 +3,7 @@
  * 版本: 1.1.0
  */
 
-const CACHE_NAME = 'yijing-v1.1.1';
+const CACHE_NAME = 'yijing-v2.0.0';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -13,7 +13,10 @@ const STATIC_ASSETS = [
   '/src/js/config.js',
   '/data/yijing.json',
   '/manifest.json',
-  '/icons/icon-192.svg'
+  '/icons/icon-192.svg',
+  '/icons/icon-512.svg',
+  '/icons/favicon.svg',
+  '/icons/logo-bagua.svg'
 ];
 
 /**

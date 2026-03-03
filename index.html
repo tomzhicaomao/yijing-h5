@@ -6,24 +6,38 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>易经占卜</title>
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a1410">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     :root {
-      --primary: #1a1a2e;
-      --accent: #c9a227;
-      --accent-light: #e8c547;
-      --bg-dark: #0f0f1a;
-      --text: #ffffff;
-      --text-secondary: rgba(255,255,255,0.6);
-      --card-bg: rgba(255,255,255,0.08);
+      --bg-main: #100d0d;
+      --bg-deep: #1a1410;
+      --ink: #f8f1e3;
+      --ink-soft: rgba(248, 241, 227, 0.72);
+      --gold: #c69a4b;
+      --gold-strong: #f1ce8c;
+      --teal: #2f6d67;
+      --card-bg: rgba(28, 21, 18, 0.82);
+      --border-soft: rgba(198, 154, 75, 0.24);
+      --shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+      --accent: var(--gold);
+      --accent-light: var(--gold-strong);
+      --text: var(--ink);
+      --text-secondary: var(--ink-soft);
     }
     
     body {
-      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "PingFang SC", "Microsoft YaHei", serif;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(198, 154, 75, 0.24), transparent 45%),
+        radial-gradient(circle at 88% 12%, rgba(47, 109, 103, 0.18), transparent 35%),
+        linear-gradient(170deg, #231912 0%, #17120f 50%, #100d0d 100%);
       min-height: 100vh;
-      color: var(--text);
+      color: var(--ink);
+      letter-spacing: 0.02em;
       -webkit-overflow-scrolling: touch;
     }
     
@@ -56,119 +70,118 @@
     .container {
       position: relative;
       z-index: 1;
-      max-width: 420px;
+      max-width: 460px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 24px 20px 92px;
       min-height: 100vh;
-      padding-bottom: 80px;
     }
     
     /* 顶部 */
     .header {
       text-align: center;
-      padding: 30px 0 20px;
+      padding: 34px 0 26px;
     }
     
     .logo {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 15px;
+      width: 108px;
+      height: 108px;
+      margin: 0 auto 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.45));
+      animation: float 5s ease-in-out infinite;
     }
     
-    /* 太极图案 */
-    .taiji {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: linear-gradient(180deg, #c9a227 50%, #e8c547 50%);
-      position: relative;
-      box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);
-    }
-    
-    .taiji::before {
-      content: '';
-      position: absolute;
-      width: 60px;
-      height: 30px;
-      top: 5px;
-      left: 5px;
-      border-radius: 30px 30px 0 0;
-      background: #e8c547;
-    }
-    
-    .taiji::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      top: 22px;
-      left: 25px;
-      background: #1a1a2e;
-      border-radius: 50%;
-      border: 3px solid #c9a227;
+    .logo-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
     
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-6px); }
     }
     
     .title {
-      font-size: 24px;
-      font-weight: 300;
-      letter-spacing: 6px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      margin-right: -0.22em;
+      background: linear-gradient(90deg, #9b7031, var(--gold-strong), #a47a38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     
     .subtitle {
-      font-size: 11px;
-      color: var(--text-secondary);
-      letter-spacing: 3px;
-      margin-top: 6px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      letter-spacing: 0.38em;
+      margin: 10px 0 0 0.38em;
     }
     
     /* 简介卡片 */
     .intro-card {
-      background: rgba(201, 162, 39, 0.1);
-      border: 1px solid rgba(201, 162, 39, 0.2);
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin: 16px auto 0;
-      max-width: 90%;
+      background: linear-gradient(155deg, rgba(198, 154, 75, 0.14), rgba(20, 16, 14, 0.85));
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 18px auto 0;
+      max-width: 100%;
+      box-shadow: var(--shadow);
     }
     
     .intro-title {
-      font-size: 13px;
-      color: var(--accent);
-      margin-bottom: 6px;
-      font-weight: 500;
+      font-size: 16px;
+      color: var(--gold-strong);
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
     }
     
     .intro-text {
-      font-size: 11px;
-      color: var(--text-secondary);
-      line-height: 1.6;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.85;
       text-align: justify;
+    }
+
+    .intro-list {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .intro-list-item {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(248, 241, 227, 0.84);
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .intro-list-item::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
     }
     
     /* 卡片 */
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      padding: 22px 20px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(198, 154, 75, 0.16);
+      box-shadow: var(--shadow);
     }
     
     .card:hover {
-      border-color: rgba(201, 162, 39, 0.2);
+      border-color: rgba(198, 154, 75, 0.3);
     }
     
     /* 每日运势 */
@@ -180,27 +193,29 @@
     }
     
     .daily-title {
-      font-size: 14px;
-      color: var(--text-secondary);
+      font-size: 15px;
+      color: var(--ink-soft);
     }
     
-    .daily-title span { color: var(--accent); }
+    .daily-title span { color: var(--gold); }
     
     .daily-btn {
-      background: linear-gradient(135deg, var(--accent), #a88420);
-      color: #fff;
+      background: linear-gradient(135deg, #6e4d24, var(--gold));
+      color: #fdf8ef;
       border: none;
-      padding: 6px 16px;
-      border-radius: 15px;
-      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 18px;
+      font-size: 13px;
+      letter-spacing: 0.05em;
       cursor: pointer;
     }
     
     .daily-result {
-      padding: 15px;
-      background: rgba(201, 162, 39, 0.1);
-      border-radius: 12px;
-      margin-top: 12px;
+      padding: 16px;
+      background: rgba(198, 154, 75, 0.12);
+      border: 1px solid rgba(198, 154, 75, 0.24);
+      border-radius: 14px;
+      margin-top: 14px;
       display: none;
     }
     
@@ -208,22 +223,23 @@
     
     .daily-gua {
       font-size: 24px;
-      color: var(--accent-light);
+      color: var(--gold-strong);
       margin-bottom: 4px;
     }
     
     .daily-brief {
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
     }
     
     /* 输入区 */
     .section-title {
-      font-size: 14px;
+      font-size: 15px;
       text-align: center;
-      margin-bottom: 16px;
-      letter-spacing: 4px;
-      color: var(--text-secondary);
+      margin-bottom: 18px;
+      letter-spacing: 0.3em;
+      margin-right: -0.3em;
+      color: var(--ink-soft);
     }
     
     .input-row {
@@ -238,20 +254,20 @@
     
     .input-item label {
       display: block;
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
       text-align: center;
     }
     
     .input-item input {
       width: 100%;
-      height: 48px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.1);
+      height: 50px;
+      background: rgba(8, 8, 8, 0.36);
+      border: 1px solid rgba(198, 154, 75, 0.22);
       border-radius: 12px;
       color: #fff;
-      font-size: 18px;
+      font-size: 19px;
       text-align: center;
       outline: none;
     }
@@ -268,24 +284,24 @@
     
     .btn {
       flex: 1;
-      height: 44px;
-      border-radius: 22px;
+      height: 46px;
+      border-radius: 24px;
       font-size: 14px;
       cursor: pointer;
       border: none;
-      letter-spacing: 2px;
+      letter-spacing: 0.16em;
     }
     
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      color: #1a1a2e;
+      background: linear-gradient(135deg, #8f6730, var(--gold-strong));
+      color: #241a11;
       font-weight: 600;
     }
     
     .btn-secondary {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(198, 154, 75, 0.06);
+      color: #fff5e0;
+      border: 1px solid rgba(198, 154, 75, 0.26);
     }
     
     /* 结果 */
@@ -299,70 +315,71 @@
     
     .gua-name {
       font-size: 42px;
-      color: var(--accent-light);
-      text-shadow: 0 0 30px rgba(232, 197, 71, 0.4);
+      color: var(--gold-strong);
+      text-shadow: 0 0 30px rgba(198, 154, 75, 0.38);
     }
     
     .gua-symbol {
       font-size: 28px;
       letter-spacing: 6px;
       margin-top: 8px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
     }
     
     .section {
       margin-bottom: 14px;
       padding: 14px;
-      background: rgba(0,0,0,0.2);
+      background: rgba(8, 8, 8, 0.28);
+      border: 1px solid rgba(198, 154, 75, 0.16);
       border-radius: 12px;
     }
     
     .section-label {
       font-size: 12px;
-      color: var(--accent);
+      color: var(--gold);
       margin-bottom: 8px;
     }
     
     .ancient { font-size: 15px; line-height: 1.6; }
-    .modern { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+    .modern { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
     
     /* 爻列表 */
     .yao-list { display: flex; flex-direction: column; gap: 8px; }
     
     .yao-item {
       padding: 10px;
-      background: rgba(0,0,0,0.15);
+      background: rgba(0, 0, 0, 0.2);
       border-radius: 8px;
-      border-left: 3px solid rgba(201, 162, 39, 0.3);
+      border-left: 3px solid rgba(198, 154, 75, 0.3);
     }
     
     .yao-item.active {
-      border-left-color: var(--accent);
-      background: rgba(201, 162, 39, 0.08);
+      border-left-color: var(--gold-strong);
+      background: rgba(198, 154, 75, 0.16);
     }
     
     .yao-pos {
       font-size: 11px;
-      color: var(--accent);
+      color: var(--gold);
     }
     
     /* 解读 */
     .interp-item { margin-bottom: 12px; }
     .interp-item:last-child { margin-bottom: 0; }
-    .interp-label { font-size: 12px; color: var(--accent); margin-bottom: 4px; }
-    .interp-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .interp-label { font-size: 12px; color: var(--gold); margin-bottom: 4px; }
+    .interp-text { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
     
     /* 分享 */
     .share-btn {
       width: 100%;
-      height: 40px;
-      background: linear-gradient(135deg, #4CAF50, #45a049);
+      height: 42px;
+      background: linear-gradient(135deg, var(--teal), #4c8d85);
       border: none;
-      border-radius: 20px;
+      border-radius: 22px;
       color: #fff;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
-      margin-top: 12px;
+      margin-top: 14px;
     }
     
     /* 用户栏 */
@@ -372,20 +389,20 @@
     }
     
     .user-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(198, 154, 75, 0.08);
+      border: 1px solid rgba(198, 154, 75, 0.25);
       color: #fff;
-      padding: 6px 20px;
-      border-radius: 15px;
+      padding: 7px 18px;
+      border-radius: 18px;
       font-size: 12px;
     }
     
-    .user-name { color: var(--accent); margin-right: 8px; }
+    .user-name { color: var(--gold-strong); margin-right: 8px; }
     
     .points-tag {
       font-size: 12px;
-      color: #e8c547;
-      background: rgba(232, 197, 71, 0.15);
+      color: var(--gold-strong);
+      background: rgba(198, 154, 75, 0.16);
       padding: 4px 10px;
       border-radius: 12px;
     }
@@ -404,20 +421,23 @@
     /* 浮动按钮 */
     .float-btn {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      right: 22px;
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #8c652f, var(--gold-strong));
+      border: 1px solid rgba(255, 236, 201, 0.22);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+      font-size: 22px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
       cursor: pointer;
       z-index: 100;
     }
+
+    .float-btn.history-btn { bottom: 24px; }
+    .float-btn.feedback-btn { bottom: 86px; }
     
     .float-btn.show { display: flex; }
     
@@ -428,7 +448,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.85);
+      background: rgba(5, 4, 4, 0.84);
       z-index: 1000;
       display: none;
       align-items: center;
@@ -440,13 +460,13 @@
     .modal.show { display: flex; }
     
     .modal-content {
-      background: #1a1a2e;
+      background: linear-gradient(180deg, #211813 0%, #17120f 100%);
       border-radius: 20px;
       width: 100%;
       max-width: 340px;
       max-height: 75vh;
       overflow-y: auto;
-      border: 1px solid rgba(201, 162, 39, 0.2);
+      border: 1px solid var(--border-soft);
     }
     
     .modal-header {
@@ -459,7 +479,7 @@
     
     .modal-header h3 {
       font-size: 16px;
-      color: var(--accent);
+      color: var(--gold-strong);
     }
     
     .modal-close {
@@ -469,7 +489,7 @@
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
       cursor: pointer;
     }
     
@@ -478,8 +498,8 @@
     .form-input {
       width: 100%;
       height: 42px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(7, 6, 6, 0.45);
+      border: 1px solid rgba(198, 154, 75, 0.2);
       border-radius: 10px;
       padding: 0 14px;
       color: #fff;
@@ -487,36 +507,36 @@
       margin-bottom: 12px;
     }
     
-    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+    .form-input::placeholder { color: rgba(255,255,255,0.32); }
     
     .link-text {
       text-align: center;
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
     }
     
-    .link-text a { color: var(--accent); text-decoration: none; }
+    .link-text a { color: var(--gold-strong); text-decoration: none; }
     
     /* 历史 */
     .history-list { display: flex; flex-direction: column; gap: 10px; }
     
     .history-item {
       padding: 12px;
-      background: rgba(0,0,0,0.2);
+      background: rgba(8, 8, 8, 0.28);
       border-radius: 10px;
       cursor: pointer;
       border-left: 3px solid transparent;
     }
     
     .history-item:hover {
-      background: rgba(201, 162, 39, 0.1);
-      border-left-color: var(--accent);
+      background: rgba(198, 154, 75, 0.14);
+      border-left-color: var(--gold);
     }
     
-    .history-date { font-size: 11px; color: var(--text-secondary); }
-    .history-gua { font-size: 16px; color: var(--accent-light); margin-top: 2px; }
+    .history-date { font-size: 11px; color: var(--ink-soft); }
+    .history-gua { font-size: 16px; color: var(--gold-strong); margin-top: 2px; }
     
-    .empty-text { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 13px; }
+    .empty-text { text-align: center; color: var(--ink-soft); padding: 30px; font-size: 13px; }
     
     /* 充值 */
     .recharge-balance {
@@ -770,7 +790,7 @@
     .ai-btn {
       width: 100%;
       height: 40px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      background: linear-gradient(135deg, #2e6f67, #4b8a80);
       border: none;
       border-radius: 20px;
       color: #fff;
@@ -794,21 +814,21 @@
     
     .ai-interpretation {
       padding: 15px;
-      background: rgba(99, 102, 241, 0.1);
+      background: rgba(47, 109, 103, 0.12);
       border-radius: 12px;
       margin-top: 12px;
-      border-left: 3px solid #6366f1;
+      border-left: 3px solid var(--teal);
     }
     
     .ai-interpretation h3 {
       font-size: 14px;
-      color: #8b5cf6;
+      color: var(--gold-strong);
       margin-bottom: 8px;
     }
     
     .ai-interpretation h4 {
       font-size: 13px;
-      color: #a78bfa;
+      color: var(--gold);
       margin: 10px 0 5px;
     }
     
@@ -827,7 +847,7 @@
     }
     
     .ai-interpretation strong {
-      color: #c4b5fd;
+      color: var(--gold-strong);
     }
     
     .ai-loading {
@@ -843,7 +863,7 @@
       content: '';
       width: 16px;
       height: 16px;
-      border: 2px solid #6366f1;
+      border: 2px solid var(--teal);
       border-top-color: transparent;
       border-radius: 50%;
       animation: spin 1s linear infinite;
@@ -857,8 +877,8 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      background: rgba(99, 102, 241, 0.2);
-      color: #a78bfa;
+      background: rgba(198, 154, 75, 0.16);
+      color: var(--gold-strong);
       padding: 2px 8px;
       border-radius: 10px;
       font-size: 11px;
@@ -868,7 +888,7 @@
     .ai-section {
       margin-top: 16px;
       padding-top: 16px;
-      border-top: 1px dashed rgba(99, 102, 241, 0.3);
+      border-top: 1px dashed rgba(198, 154, 75, 0.36);
     }
     
     /* 设置表单 */
@@ -910,6 +930,42 @@
       flex: 1;
       margin-bottom: 0;
     }
+
+    .history-actions {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .history-sync-tip {
+      font-size: 12px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 18px 14px 86px;
+      }
+
+      .title {
+        font-size: 30px;
+      }
+
+      .intro-card {
+        padding: 14px;
+      }
+
+      .card {
+        padding: 18px 16px;
+      }
+
+      .btn {
+        letter-spacing: 0.1em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -920,16 +976,31 @@
     <!-- 头部 -->
     <header class="header">
       <div class="logo">
-        <div class="taiji"></div>
+        <img class="logo-icon" src="icons/logo-bagua.svg" alt="易经八卦太极图标">
       </div>
       <h1 class="title">易经占卜</h1>
       <p class="subtitle">YIJING FORTUNE</p>
       
       <!-- 傅佩荣简介 -->
       <div class="intro-card">
-        <div class="intro-title">📜 先天起卦法</div>
+        <div class="intro-title">先天起卦法 · 学术依据</div>
         <div class="intro-text">
-          著名国学大师傅佩荣先生推崇此法：以三个随机数（100-999）起卦，取其除以8之余数得上下卦，除以6之余数得动爻。此法完全凭随机数决定，排除人为意念干扰，最能反映天道自然之理。
+          本应用采用傅佩荣教授长期讲授与推广的先天起卦思路：以三个随机数（100-999）起卦，前两数取八卦之象，第三数定动爻。该方法强调“随机即天机”，尽可能排除主观预设，更贴近《易经》以象数观变的核心精神。
+        </div>
+        <div class="intro-list">
+          <div class="intro-list-item">方法公开、公式清晰，具备可复核性与教学一致性。</div>
+          <div class="intro-list-item">以象、数、理三层并进，兼顾古典义理与现代思维。</div>
+          <div class="intro-list-item">适合个人决策反思，不替代医学、法律与投资专业建议。</div>
+        </div>
+      </div>
+
+      <div class="intro-card">
+        <div class="intro-title">傅佩荣教授 · 权威简介</div>
+        <div class="intro-list">
+          <div class="intro-list-item">学历背景：台湾大学哲学系毕业，后赴耶鲁大学深造并获哲学博士学位。</div>
+          <div class="intro-list-item">学术成就：长期任教于台湾大学并曾任哲学系主任，持续推动中国哲学与《易经》现代诠释。</div>
+          <div class="intro-list-item">著作与课程：出版《易经》导读及中国哲学相关作品，并通过公开课程与讲座广泛普及国学。</div>
+          <div class="intro-list-item">社会影响：以严谨学术训练连接传统经典与当代生活，提升大众对《易经》理性学习与实践的接受度。</div>
         </div>
       </div>
       
@@ -1018,10 +1089,10 @@
   </div>
 
   <!-- 历史按钮 -->
-  <div class="float-btn show" id="historyBtn" onclick="openHistory()">📜</div>
+  <div class="float-btn history-btn show" id="historyBtn" onclick="openHistory()">📜</div>
 
   <!-- 反馈按钮 -->
-  <div class="float-btn feedback-btn" id="feedbackBtn" onclick="openFeedback()" style="bottom: 85px; right: 25px; width: 44px; height: 44px; font-size: 18px;">💬</div>
+  <div class="float-btn feedback-btn" id="feedbackBtn" onclick="openFeedback()">💬</div>
 
   <!-- 登录弹窗 -->
   <div class="modal" id="loginModal">
@@ -1065,7 +1136,13 @@
         <div class="modal-close" onclick="closeModal('historyModal')">×</div>
       </div>
       <div class="modal-body">
+        <div class="history-actions">
+          <button class="btn btn-secondary" onclick="syncHistoryFromCloud()" style="height:36px;font-size:12px;">同步云端记录</button>
+        </div>
         <div id="historyList"></div>
+        <div class="history-sync-tip">
+          说明：当前默认本机 localStorage 存储；登录后可将历史写入 Supabase，并在此手动拉取到本机，实现多端同步。
+        </div>
       </div>
     </div>
   </div>
@@ -1137,8 +1214,8 @@
           <button class="btn btn-primary" onclick="saveAISettings()">保存设置</button>
         </div>
         
-        <div style="margin-top:16px;padding:12px;background:rgba(99,102,241,0.1);border-radius:10px;font-size:12px;color:var(--text-secondary);line-height:1.6;">
-          <strong style="color:#a78bfa;">💡 使用说明：</strong><br>
+        <div style="margin-top:16px;padding:12px;background:rgba(47,109,103,0.12);border-radius:10px;font-size:12px;color:var(--text-secondary);line-height:1.6;">
+          <strong style="color:var(--accent-light);">💡 使用说明：</strong><br>
           • AI解读每次消耗2积分<br>
           • 解读结果会缓存7天<br>
           • 支持多种AI服务商<br>
@@ -1412,6 +1489,54 @@
         '<div class="history-date">'+new Date(h.time).toLocaleString('zh-CN')+'</div>'+
         '<div class="history-gua">'+(h.hex_symbol||'☰☷')+' '+h.hex_name+'</div></div>'
       ).join('');
+    }
+
+    async function syncHistoryFromCloud() {
+      if(!currentUser) {
+        alert('请先登录后再同步云端记录');
+        openLogin();
+        return;
+      }
+
+      const cloudList = await queryDB(
+        'history',
+        'user_id=eq.' + currentUser.id + '&select=id,hexagram_id,hexagram_name,hexagram_symbol,created_at&order=created_at.desc&limit=100'
+      );
+
+      if(!cloudList.length) {
+        alert('云端暂无可同步记录');
+        return;
+      }
+
+      const localList = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      const mergedMap = new Map();
+
+      localList.forEach(item => {
+        const key = [item.hex_id, item.hex_name, item.time].join('|');
+        mergedMap.set(key, item);
+      });
+
+      cloudList.forEach(item => {
+        const normalized = {
+          id: 'cloud_' + item.id,
+          hex_id: item.hexagram_id,
+          hex_name: item.hexagram_name,
+          hex_symbol: item.hexagram_symbol || getSymbol(item.hexagram_id),
+          time: item.created_at || new Date().toISOString()
+        };
+        const key = [normalized.hex_id, normalized.hex_name, normalized.time].join('|');
+        if(!mergedMap.has(key)) {
+          mergedMap.set(key, normalized);
+        }
+      });
+
+      const merged = Array.from(mergedMap.values())
+        .sort((a, b) => new Date(b.time) - new Date(a.time))
+        .slice(0, 100);
+
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(merged));
+      showHistoryList();
+      alert('同步完成，共载入 ' + cloudList.length + ' 条云端记录');
     }
     
     function showHistoryDetail(id, name) {
