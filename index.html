@@ -2113,6 +2113,15 @@ ${yaoList}
     // 初始化
     initUser();
     
+    // 注册 Service Worker（提升二次加载和离线可用性）
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.warn('Service Worker 注册失败:', err);
+        });
+      });
+    }
+    
     // 自动加载数据
     window.loadData().then(() => {
       console.log('数据加载完成');

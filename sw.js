@@ -3,20 +3,17 @@
  * 版本: 1.1.0
  */
 
-const CACHE_NAME = 'yijing-v1.1.0';
+const CACHE_NAME = 'yijing-v1.1.1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/src/css/main.css',
+  '/style.css',
+  '/app.js',
+  '/src/js/feedback.js',
   '/src/js/config.js',
-  '/src/js/storage.js',
-  '/src/js/db.js',
-  '/src/js/yijing.js',
-  '/src/js/user.js',
-  '/src/js/ui.js',
-  '/src/js/app.js',
   '/data/yijing.json',
-  '/manifest.json'
+  '/manifest.json',
+  '/icons/icon-192.svg'
 ];
 
 /**

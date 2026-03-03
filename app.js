@@ -1,6 +1,8 @@
 // 易经占卜 - 核心逻辑
 
 let yijingData = null;
+let yijingDataById = null;
+let interpretationCache = null;
 const DAILY_KEY = 'yijing_daily';
 
 // 八卦符号
@@ -22,6 +24,7 @@ window.loadData = async function() {
     const response = await fetch('data/yijing.json');
     const data = await response.json();
     window.yijingData = data.hexagrams;
+    yijingDataById = new Map(window.yijingData.map((hex) => [hex.id, hex]));
     console.log('已加载 ' + window.yijingData.length + ' 卦');
     return window.yijingData;
   } catch (error) {
@@ -41,7 +44,7 @@ function calculateGua(n1, n2, n3) {
 // 查找卦
 function findHexagram(xiaGua, shangGua) {
   const id = shangGua * 8 + xiaGua - 8;
-  return window.yijingData.find(g => g.id === id) || window.yijingData[0];
+  return yijingDataById?.get(id) || window.yijingData[0];
 }
 
 // 解卦分析 - 64卦完整版
@@ -50,7 +53,8 @@ function getInterp(id, dongYao) {
 }
 
 function getHexagramInterpretation(id, dongYao) {
-  const interpretations = {
+  if (!interpretationCache) {
+    interpretationCache = {
     1: { overall: "乾卦象征天，代表刚健有力、纯阳至正之气。运势如飞龙在天，大吉大利。", career: "事业正处于上升通道，有贵人相助，宜把握时机积极进取。", fortune: "财运亨通，有意外之财的可能，但需注意合理分配。", love: "感情运势旺盛，单身者有望遇到优质对象。", health: "身体状态良好，精力充沛，适合运动锻炼。", change: "飞龙在天，利见大人。把握机遇，可成就大事。" },
     2: { overall: "坤卦象征地，代表柔顺、厚重、包容之气。运势平稳，需要以柔克刚。", career: "工作需要稳扎稳打，不可急于求成。多倾听他人意见。", fortune: "财运平稳，支出需有计划，适合进行长期储蓄。", love: "感情需要耐心经营，以真诚和包容对待对方。", health: "注意脾胃健康，饮食规律，适当散步。", change: "龙战于野，其血玄黄。需防竞争小人，以退为进。" },
     3: { overall: "屯卦象征事物初生之状态，虽有困难但前景光明。", career: "创业或新项目会遇到阻碍，但这是积累经验的必要过程。", fortune: "财运初起步，投入需谨慎，小额尝试为宜。", love: "感情发展需耐心，不可急于确定关系。", health: "注意预防感冒，保持充足睡眠。", change: "乘马班如，求婚媾。把握机遇，吉祥无不利。" },
@@ -115,9 +119,10 @@ function getHexagramInterpretation(id, dongYao) {
     62: { overall: "小过卦象征小有过越。运势有小过但无碍。", career: "有小失误，但无大碍。", fortune: "有小收益，注意细节。", love: "有小误会，可化解。", health: "注意小病防治。", change: "弗过防之，从或戕之。不过预防，跟随可能受害。" },
     63: { overall: "既济卦象征事已成功。运势大吉，事成圆满。", career: "事业成功，目标达成。", fortune: "财运成功，收益圆满。", love: "感情成功，终成眷属。", health: "身体健康圆满。", change: "濡其首，厉。弄湿头，危险。" },
     64: { overall: "未济卦象征事未成功。运势未完成，待发展。", career: "事业未竟，仍需努力。", fortune: "财运未竟，仍有发展。", love: "感情未成，仍需培养。", health: "身体未完全康复。", change: "濡其尾，曳其轮。弄湿尾巴，拖住车轮。" }
-  };
+    };
+  }
   
-  return interpretations[id] || {
+  return interpretationCache[id] || {
     overall: "此卦提醒您保持中正平和的心态，顺势而为，静待时机。",
     career: "脚踏实地做好眼前工作，积累经验等待机会。",
     fortune: "财运平稳，建议稳健理财，避免投机。",
