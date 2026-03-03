@@ -5,6 +5,9 @@ CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
+  points INTEGER DEFAULT 10,
+  invite_code TEXT UNIQUE,
+  invited_by INTEGER REFERENCES users(id),
   created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -15,8 +18,16 @@ CREATE TABLE IF NOT EXISTS history (
   hexagram_id INTEGER NOT NULL,
   hexagram_name TEXT NOT NULL,
   hexagram_symbol TEXT,
+  ai_interpretation TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );
+
+-- 兼容已存在表结构
+ALTER TABLE users ADD COLUMN IF NOT EXISTS points INTEGER DEFAULT 10;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS invite_code TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS invited_by INTEGER REFERENCES users(id);
+ALTER TABLE history ADD COLUMN IF NOT EXISTS ai_interpretation TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS users_invite_code_idx ON users(invite_code);
 
 -- 启用 RLS
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;

@@ -388,6 +388,14 @@
       margin-top: 16px;
     }
     
+    .user-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+    
     .user-btn {
       background: rgba(198, 154, 75, 0.08);
       border: 1px solid rgba(198, 154, 75, 0.25);
@@ -398,6 +406,13 @@
     }
     
     .user-name { color: var(--gold-strong); margin-right: 8px; }
+    
+    .invite-link {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      word-break: break-all;
+    }
     
     .points-tag {
       font-size: 12px;
@@ -590,6 +605,12 @@
     
     .history-date { font-size: 11px; color: var(--ink-soft); }
     .history-gua { font-size: 16px; color: var(--gold-strong); margin-top: 2px; }
+    .history-ai {
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(248, 241, 227, 0.78);
+      line-height: 1.6;
+    }
     
     .empty-text { text-align: center; color: var(--ink-soft); padding: 30px; font-size: 13px; }
     
@@ -1136,7 +1157,7 @@
         <span>🤖</span> AI智能解读
       </button>
       
-      <button class="share-btn" onclick="doShare()">📤 分享卦象</button>
+      <button class="share-btn" onclick="doShare()" title="分享给好友注册后，你可获得5积分奖励">📤 分享卦象 <span style="font-size:11px;opacity:0.8;">(分享得5积分)</span></button>
       <div class="btn-row" style="margin-top: 10px;">
         <button class="btn btn-secondary" onclick="doReset()">重新起卦</button>
       </div>
@@ -1401,7 +1422,12 @@
 
     const HISTORY_KEY = 'yijing_history';
     const POINTS_KEY = 'yijing_points';
+    const PENDING_REF_KEY = 'yijing_pending_ref';
     const DEFAULT_POINTS = 10; // 新用户默认赠送10积分
+    const REFERRAL_BONUS_POINTS = 5;
+
+    let currentHistoryId = null;
+    let currentCloudHistoryId = null;
     
     function getPoints() {
       return parseInt(localStorage.getItem(POINTS_KEY)) || 0;
@@ -1434,7 +1460,9 @@
     
     function updateUserUI() {
       if(currentUser) {
-        $('userBar').innerHTML = '<span class="user-name">'+currentUser.username+'</span><span id="userPoints" class="points-tag"></span><button class="user-btn" onclick="logout()">退出</button>';
+        const link = getShareLink();
+        $('userBar').innerHTML = '<div class="user-meta"><span class="user-name">'+currentUser.username+'</span><span id="userPoints" class="points-tag"></span><button class="user-btn" onclick="shareInviteLink()">邀请得分</button><button class="user-btn" onclick="logout()">退出</button></div>' +
+          (link ? '<div class="invite-link">邀请链接：' + link + '</div>' : '');
         updatePointsUI();
       } else {
         // 未登录时不显示积分
@@ -1471,6 +1499,59 @@
         return [];
       }
     }
+    
+    function getPendingInviteCode() {
+      return localStorage.getItem(PENDING_REF_KEY) || '';
+    }
+
+    function extractInviteCodeFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const ref = (params.get('ref') || '').trim();
+      return ref;
+    }
+
+    function initReferralFromUrl() {
+      const ref = extractInviteCodeFromUrl();
+      if (!ref) return;
+      localStorage.setItem(PENDING_REF_KEY, ref);
+      friendlyTip('已记录邀请信息，注册成功后将给邀请者赠送 5 积分。');
+    }
+
+    function generateInviteCode(seed = '') {
+      const cleaned = String(seed).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4) || 'YJ';
+      const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
+      return `${cleaned}${suffix}`;
+    }
+
+    async function ensureUniqueInviteCode(seed = '') {
+      for (let i = 0; i < 8; i++) {
+        const code = generateInviteCode(seed);
+        const exists = await queryDB('users', `invite_code=eq.${encodeURIComponent(code)}&select=id&limit=1`);
+        if (Array.isArray(exists) && exists.length === 0) return code;
+      }
+      return `${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+    }
+
+    function getShareLink() {
+      if (!currentUser?.invite_code) return '';
+      return `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(currentUser.invite_code)}`;
+    }
+
+    async function shareInviteLink() {
+      if (!currentUser?.invite_code) {
+        friendlyTip('请先登录后再分享邀请链接。');
+        return;
+      }
+      const link = getShareLink();
+      const text = `我在用易经占卜，送你注册链接：${link}`;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: '易经占卜邀请', text });
+          return;
+        } catch (_) {}
+      }
+      copyText(text);
+    }
 
     // 登录注册
     async function doLogin() {
@@ -1478,13 +1559,25 @@
       const p = $('password').value;
       if(!u || !p) { friendlyTip('请输入用户名和密码。'); return; }
       
-      const rs = await queryDB('users', 'username=eq.' + encodeURIComponent(u) + '&limit=1');
+      const rs = await queryDB('users', 'username=eq.' + encodeURIComponent(u) + '&select=id,username,password,invite_code,points&limit=1');
       if (Array.isArray(rs)) {
         if(!rs.length || rs[0].password !== btoa(p)) {
           friendlyTip('用户名或密码不正确，请再试一次。');
           return;
         }
-        currentUser = {id:rs[0].id, username:u};
+        currentUser = {
+          id: rs[0].id,
+          username: rs[0].username || u,
+          invite_code: rs[0].invite_code || ''
+        };
+        if (typeof rs[0].points === 'number') {
+          setPoints(rs[0].points);
+        }
+        if (!currentUser.invite_code) {
+          const inviteCode = await ensureUniqueInviteCode(currentUser.username);
+          const updated = await updateDB('users', `id=eq.${currentUser.id}`, { invite_code: inviteCode });
+          if (updated) currentUser.invite_code = inviteCode;
+        }
       } else {
         // Supabase 不可用时使用本地模式兜底
         const localUsers = getLocalUsers();
@@ -1493,7 +1586,7 @@
           friendlyTip('当前网络连接不稳定，且未找到本地账号。请稍后重试或先注册。');
           return;
         }
-        currentUser = {id:user.id, username:u};
+        currentUser = {id:user.id, username:u, invite_code:user.invite_code || ''};
         friendlyTip('已使用本地模式登录，云端同步将在网络恢复后可用。');
       }
 
@@ -1511,10 +1604,34 @@
       if(!u || !p) { friendlyTip('请输入用户名和密码。'); return; }
       if(p !== p2) { friendlyTip('两次密码不一致，请确认后重试。'); return; }
       if(p.length < 6) { friendlyTip('密码至少需要 6 位。'); return; }
-      
-      const remoteOk = await saveDB('users', { username: u, password: btoa(p) });
-      if (remoteOk) {
-        friendlyTip('注册成功，请登录。');
+
+      const pendingRef = getPendingInviteCode();
+      let inviterId = null;
+      if (pendingRef) {
+        const inviterRows = await queryDB('users', `invite_code=eq.${encodeURIComponent(pendingRef)}&select=id&limit=1`);
+        if (Array.isArray(inviterRows) && inviterRows.length) {
+          inviterId = inviterRows[0].id;
+        }
+      }
+
+      const inviteCode = await ensureUniqueInviteCode(u);
+      const createdUser = await insertDB('users', {
+        username: u,
+        password: btoa(p),
+        invite_code: inviteCode,
+        invited_by: inviterId,
+        points: DEFAULT_POINTS
+      }, 'id,username,invite_code,invited_by');
+      if (createdUser) {
+        if (inviterId) {
+          const inviterRows = await queryDB('users', `id=eq.${inviterId}&select=id,points&limit=1`);
+          if (Array.isArray(inviterRows) && inviterRows.length) {
+            const newPoints = (parseInt(inviterRows[0].points, 10) || 0) + REFERRAL_BONUS_POINTS;
+            await updateDB('users', `id=eq.${inviterId}`, { points: newPoints });
+          }
+          localStorage.removeItem(PENDING_REF_KEY);
+        }
+        friendlyTip(inviterId ? '注册成功，邀请者已获得 5 积分奖励，请登录。' : '注册成功，请登录。');
         closeModal('registerModal');
         openLogin();
         return;
@@ -1526,7 +1643,7 @@
         friendlyTip('用户名已存在，请更换后再试。');
         return;
       }
-      const newUser = {id: 'local_' + Date.now(), username: u, password: btoa(p)};
+      const newUser = {id: 'local_' + Date.now(), username: u, password: btoa(p), invite_code: generateInviteCode(u)};
       localUsers.push(newUser);
       localStorage.setItem('yijing_local_users', JSON.stringify(localUsers));
       friendlyTip('已在本地模式注册成功，你现在可以直接登录。');
@@ -1584,6 +1701,19 @@
       }
       return result.ok;
     }
+
+    async function insertDB(table, data, select = '*') {
+      const result = await dbRequest(`/rest/v1/${table}?select=${encodeURIComponent(select)}`, {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify(data)
+      });
+      if (!result.ok || !Array.isArray(result.data) || !result.data.length) {
+        console.error('插入数据失败:', table, result.status, result.error);
+        return null;
+      }
+      return result.data[0];
+    }
     
     async function queryDB(table, filter) {
       const query = filter ? ('?' + filter) : '';
@@ -1593,6 +1723,18 @@
         return null;
       }
       return Array.isArray(result.data) ? result.data : [];
+    }
+
+    async function updateDB(table, filter, data) {
+      const result = await dbRequest(`/rest/v1/${table}?${filter}`, {
+        method: 'PATCH',
+        headers: { Prefer: 'return=minimal' },
+        body: JSON.stringify(data)
+      });
+      if (!result.ok) {
+        console.error('更新数据失败:', table, result.status, result.error);
+      }
+      return result.ok;
     }
 
     async function checkSupabaseConnection() {
@@ -1612,23 +1754,87 @@
     });
     window.DB = {
       save: saveDB,
-      query: queryDB
+      query: queryDB,
+      update: updateDB
     };
     window.APP_CONFIG = {
       SUPABASE_URL: DB_URL,
       SUPABASE_ANON_KEY: DB_KEY
     };
     
+    function escapeHtml(text = '') {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatAIText(text = '') {
+      return escapeHtml(text)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/###\s*(.+)/g, '<h4>$1</h4>')
+        .replace(/##\s*(.+)/g, '<h3>$1</h3>')
+        .replace(/^\d+\.\s*(.+)$/gm, '<li>$1</li>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+    }
+
+    function updateCurrentHistoryAI(aiText) {
+      if (!currentHistoryId) return;
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      const index = list.findIndex(item => String(item.id) === String(currentHistoryId));
+      if (index === -1) return;
+      list[index].ai_interpretation = aiText;
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+
+      if (currentUser) {
+        if (currentCloudHistoryId) {
+          updateDB('history', `id=eq.${currentCloudHistoryId}`, { ai_interpretation: aiText });
+        } else {
+          updateDB('history', `user_id=eq.${currentUser.id}&hexagram_id=eq.${list[index].hex_id}`, { ai_interpretation: aiText });
+        }
+      }
+    }
+
     // 历史记录
-    function saveHistory(hex) {
-      const item = {id:Date.now(), hex_id:hex.id, hex_name:hex.name, hex_symbol:getSymbol(hex.id), time:new Date().toISOString()};
+    async function saveHistory(hex) {
+      const item = {
+        id: Date.now(),
+        hex_id: hex.id,
+        hex_name: hex.name,
+        hex_symbol: getSymbol(hex.id),
+        time: new Date().toISOString(),
+        ai_interpretation: null,
+        cloud_id: null
+      };
+      currentHistoryId = item.id;
+      currentCloudHistoryId = null;
+
       let list = JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
       list.unshift(item);
       list = list.slice(0,50);
       localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
       
       if(currentUser) {
-        saveDB('history',{user_id:currentUser.id,hexagram_id:hex.id,hexagram_name:hex.name,hexagram_symbol:getSymbol(hex.id)});
+        const cloudRecord = await insertDB('history', {
+          user_id: currentUser.id,
+          hexagram_id: hex.id,
+          hexagram_name: hex.name,
+          hexagram_symbol: getSymbol(hex.id),
+          ai_interpretation: null
+        }, 'id');
+        if (cloudRecord?.id) {
+          currentCloudHistoryId = cloudRecord.id;
+          list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+          const localIndex = list.findIndex(history => String(history.id) === String(item.id));
+          if (localIndex !== -1) {
+            list[localIndex].cloud_id = cloudRecord.id;
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+          }
+        }
       }
     }
     
@@ -1649,9 +1855,11 @@
         return;
       }
       $('historyList').innerHTML = list.map(h => 
-        '<div class="history-item" onclick="showHistoryDetail('+h.hex_id+',\''+h.hex_name+'\')">'+
+        '<div class="history-item" onclick="showHistoryDetail(\''+encodeURIComponent(String(h.id))+'\','+h.hex_id+',\''+encodeURIComponent(h.hex_name || '')+'\')">'+
         '<div class="history-date">'+new Date(h.time).toLocaleString('zh-CN')+'</div>'+
-        '<div class="history-gua">'+(h.hex_symbol||'☰☷')+' '+h.hex_name+'</div></div>'
+        '<div class="history-gua">'+(h.hex_symbol||'☰☷')+' '+(h.hex_name || '')+'</div>' +
+        (h.ai_interpretation ? '<div class="history-ai">🤖 已保存AI解读</div>' : '') +
+        '</div>'
       ).join('');
     }
 
@@ -1660,7 +1868,7 @@
 
       const cloudList = await queryDB(
         'history',
-        'user_id=eq.' + currentUser.id + '&select=id,hexagram_id,hexagram_name,hexagram_symbol,created_at&order=created_at.desc&limit=100'
+        'user_id=eq.' + currentUser.id + '&select=id,hexagram_id,hexagram_name,hexagram_symbol,ai_interpretation,created_at&order=created_at.desc&limit=100'
       );
 
       if (!Array.isArray(cloudList)) {
@@ -1684,14 +1892,22 @@
       cloudList.forEach(item => {
         const normalized = {
           id: 'cloud_' + item.id,
+          cloud_id: item.id,
           hex_id: item.hexagram_id,
           hex_name: item.hexagram_name,
           hex_symbol: item.hexagram_symbol || getSymbol(item.hexagram_id),
-          time: item.created_at || new Date().toISOString()
+          time: item.created_at || new Date().toISOString(),
+          ai_interpretation: item.ai_interpretation || null
         };
         const key = [normalized.hex_id, normalized.hex_name, normalized.time].join('|');
         if(!mergedMap.has(key)) {
           mergedMap.set(key, normalized);
+        } else if (normalized.ai_interpretation) {
+          const merged = mergedMap.get(key);
+          if (!merged.ai_interpretation) {
+            merged.ai_interpretation = normalized.ai_interpretation;
+            mergedMap.set(key, merged);
+          }
         }
       });
 
@@ -1704,8 +1920,11 @@
       friendlyTip('同步完成，共载入 ' + cloudList.length + ' 条云端记录。');
     }
     
-    function showHistoryDetail(id, name) {
+    function showHistoryDetail(historyId, id, encodedName) {
       closeModal('historyModal'); // 关闭历史列表
+      const name = decodeURIComponent(encodedName || '');
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      const historyItem = list.find(item => String(item.id) === decodeURIComponent(historyId || ''));
       
       let content = '';
       if(typeof getInterp==='function') {
@@ -1717,6 +1936,12 @@
           '<div class="interp-item"><div class="interp-label">💕 爱情</div><div class="interp-text">'+i.love+'</div></div>'+
           '<div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">'+i.health+'</div></div>'+
           '<div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">'+i.change+'</div></div>';
+      }
+
+      if (historyItem?.ai_interpretation) {
+        content += '<div class="interp-item ai-section"><div class="interp-label">🤖 AI智能解读</div><div class="interp-text">' +
+          formatAIText(historyItem.ai_interpretation) +
+          '</div></div>';
       }
       
       $('historyDetailTitle').textContent = getSymbol(id) + ' ' + name;
@@ -1910,7 +2135,14 @@
           .replace(/\n{3,}/g, '\n\n');
       }
       
-      const text = '🧬 易经占卜结果\n\n' + symbol + ' ' + name + '\n\n📜【卦辞】\n' + ci + (dongYao ? '\n\n⚡【动爻】\n' + dongYao : '') + interpText + aiText + '\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/\n\n——来自 易经占卜小程序';
+      // 添加邀请链接
+      let inviteText = '';
+      if (currentUser?.invite_code) {
+        const shareLink = getShareLink();
+        inviteText = '\n\n🎁【邀请福利】\n注册即送10积分！通过此链接注册：' + shareLink + '\n(邀请好友注册，你可得5积分奖励)';
+      }
+      
+      const text = '🧬 易经占卜结果\n\n' + symbol + ' ' + name + '\n\n📜【卦辞】\n' + ci + (dongYao ? '\n\n⚡【动爻】\n' + dongYao : '') + interpText + aiText + inviteText + '\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/\n\n——来自 易经占卜小程序';
       
       if(navigator.share) {
         navigator.share({title:'易经占卜 - '+name, text:text}).catch(()=>copyText(text));
@@ -2138,11 +2370,6 @@ ${yaoList}
         // 显示结果
         showAIResult(result);
         
-        // 更新历史记录中的AI解读
-        if (window.App && typeof App.updateCurrentHistoryAI === 'function') {
-          App.updateCurrentHistoryAI(result);
-        }
-        
       } catch (e) {
         friendlyTip('AI 解读失败：' + e.message);
         console.error(e);
@@ -2156,15 +2383,9 @@ ${yaoList}
     function showAIResult(text) {
       // 保存AI解读结果用于分享
       currentAIInterpretation = text;
+      updateCurrentHistoryAI(text);
       // 格式化显示
-      let html = text
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        .replace(/###\s*(.+)/g, '<h4>$1</h4>')
-        .replace(/##\s*(.+)/g, '<h3>$1</h3>')
-        .replace(/^\d+\.\s*(.+)$/gm, '<li>$1</li>')
-        .replace(/^- (.+)$/gm, '<li>$1</li>')
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/\n/g, '<br>');
+      let html = formatAIText(text);
       
       $('aiContent').innerHTML = `<div class="ai-interpretation"><p>${html}</p></div>`;
       $('aiSection').style.display = 'block';
@@ -2332,6 +2553,7 @@ ${yaoList}
     }
     
     // 初始化
+    initReferralFromUrl();
     initUser();
     initAISettingsUI();
     checkSupabaseConnection().then((ok) => {
