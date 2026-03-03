@@ -1896,7 +1896,18 @@
         }
       }
       
-      const text = '🧬 易经占卜结果\n\n' + symbol + ' ' + name + '\n\n📜【卦辞】\n' + ci + (dongYao ? '\n\n⚡【动爻】\n' + dongYao : '') + interpText + '\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/\n\n——来自 易经占卜小程序';
+      // 添加AI解读结果
+      let aiText = '';
+      if (currentAIInterpretation) {
+        // 清理Markdown格式，转换为纯文本
+        aiText = '\n\n🤖【AI智能解读】\n' + currentAIInterpretation
+          .replace(/\*\*([^*]+)\*\*/g, '$1')
+          .replace(/###+\s*/g, '')
+          .replace(/##\s*/g, '')
+          .replace(/\n{3,}/g, '\n\n');
+      }
+      
+      const text = '🧬 易经占卜结果\n\n' + symbol + ' ' + name + '\n\n📜【卦辞】\n' + ci + (dongYao ? '\n\n⚡【动爻】\n' + dongYao : '') + interpText + aiText + '\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/\n\n——来自 易经占卜小程序';
       
       if(navigator.share) {
         navigator.share({title:'易经占卜 - '+name, text:text}).catch(()=>copyText(text));
@@ -1914,6 +1925,7 @@
     // 存储当前卦象数据供AI解读使用
     let currentHexagram = null;
     let currentDongYao = 1;
+    let currentAIInterpretation = null;
 
     // 内置AI配置（网站提供，用户无需配置）
     const BUILTIN_AI_CONFIG = {
@@ -2137,6 +2149,8 @@ ${yaoList}
     
     // 显示AI解读结果
     function showAIResult(text) {
+      // 保存AI解读结果用于分享
+      currentAIInterpretation = text;
       // 格式化显示
       let html = text
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -2157,7 +2171,8 @@ ${yaoList}
     showResult = function(hex, xg, sg, dy) {
       currentHexagram = hex;
       currentDongYao = dy;
-      // 隐藏AI解读区域
+      // 清空并隐藏AI解读区域
+      currentAIInterpretation = null;
       $('aiSection').style.display = 'none';
       $('aiContent').innerHTML = '';
       originalShowResult(hex, xg, sg, dy);
