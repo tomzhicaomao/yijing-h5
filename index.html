@@ -1437,8 +1437,8 @@
         $('userBar').innerHTML = '<span class="user-name">'+currentUser.username+'</span><span id="userPoints" class="points-tag"></span><button class="user-btn" onclick="logout()">退出</button>';
         updatePointsUI();
       } else {
-        $('userBar').innerHTML = '<button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button><span id="userPoints" class="points-tag" style="margin-left:10px;"></span>';
-        updatePointsUI();
+        // 未登录时不显示积分
+        $('userBar').innerHTML = '<button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button>';
       }
     }
     
@@ -1732,6 +1732,9 @@
     
     // 起卦
     function doDivination() {
+      // 检查登录状态
+      if(!requireLogin('进行占卜')) return;
+      
       // 检查积分
       const pts = getPoints();
       if(pts < 1) {
@@ -2120,9 +2123,11 @@ ${yaoList}
         const data = await response.json();
         const result = data.choices?.[0]?.message?.content || '解读失败，请重试';
         
-        // 扣除积分
-        setPoints(pts - config.costPoints);
+        // 扣除积分（在成功获取结果后）
+        const currentPts = getPoints();
+        setPoints(currentPts - config.costPoints);
         updatePointsUI();
+        console.log('AI解读扣除积分:', config.costPoints, '剩余:', getPoints());
         
         // 缓存结果
         localStorage.setItem(cacheKey, JSON.stringify({
