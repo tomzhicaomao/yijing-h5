@@ -493,7 +493,36 @@
       cursor: pointer;
     }
     
-    .modal-body { padding: 20px; }
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* 滚动条美化 */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #c89a45 rgba(15, 12, 10, 0.45);
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 12, 10, 0.45);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #d8b36a 0%, #b7852f 100%);
+      border-radius: 999px;
+      border: 1px solid rgba(15, 12, 10, 0.35);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #f3d18f 0%, #d9a649 100%);
+    }
     
     .form-input {
       width: 100%;
@@ -1195,15 +1224,15 @@
       </div>
       <div class="modal-body">
         <select id="aiProvider" class="form-select" onchange="onProviderChange()">
-          <option value="qwen">通义千问 (阿里云)</option>
           <option value="deepseek">DeepSeek</option>
+          <option value="qwen">通义千问 (阿里云)</option>
           <option value="openai">OpenAI</option>
           <option value="custom">自定义API</option>
         </select>
         
         <input type="password" id="aiApiKey" class="form-input" placeholder="API密钥">
         <p class="form-hint">
-          <span id="apiKeyHint">获取密钥：<a href="https://dashscope.console.aliyun.com/" target="_blank" style="color:var(--accent);">阿里云控制台</a></span>
+          <span id="apiKeyHint">获取密钥：<a href="https://platform.deepseek.com/" target="_blank" style="color:var(--accent);">DeepSeek开放平台</a></span>
         </p>
         
         <input type="text" id="aiEndpoint" class="form-input" placeholder="API端点（自定义时需要）" style="display:none;">
@@ -1216,7 +1245,7 @@
         
         <div style="margin-top:16px;padding:12px;background:rgba(47,109,103,0.12);border-radius:10px;font-size:12px;color:var(--text-secondary);line-height:1.6;">
           <strong style="color:var(--accent-light);">💡 使用说明：</strong><br>
-          • AI解读每次消耗2积分<br>
+          • AI解读每次消耗3积分<br>
           • 解读结果会缓存7天<br>
           • 支持多种AI服务商<br>
           • 您的占卜数据不会被发送到第三方
@@ -1749,16 +1778,67 @@
     // 存储当前卦象数据供AI解读使用
     let currentHexagram = null;
     let currentDongYao = 1;
+
+    function ensureAIConfig() {
+      const defaults = {
+        provider: 'deepseek',
+        apiKeys: {
+          openai: '',
+          qwen: '',
+          deepseek: '',
+          custom: ''
+        },
+        endpoints: {
+          openai: 'https://api.openai.com/v1/chat/completions',
+          qwen: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation',
+          deepseek: 'https://api.deepseek.com/v1/chat/completions',
+          custom: ''
+        },
+        models: {
+          openai: 'gpt-3.5-turbo',
+          qwen: 'qwen-turbo',
+          deepseek: 'deepseek-chat',
+          custom: 'gpt-3.5-turbo'
+        }
+      };
+
+      const raw = localStorage.getItem('ai_config');
+      let config = {};
+
+      try {
+        config = raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        config = {};
+      }
+
+      if (!raw || !Object.keys(config).length) {
+        localStorage.setItem('ai_config', JSON.stringify(defaults));
+        return defaults;
+      }
+
+      const merged = {
+        ...defaults,
+        ...config,
+        apiKeys: { ...defaults.apiKeys, ...(config.apiKeys || {}) },
+        endpoints: { ...defaults.endpoints, ...(config.endpoints || {}) },
+        models: { ...defaults.models, ...(config.models || {}) }
+      };
+
+      if (!merged.provider) {
+        merged.provider = 'deepseek';
+      }
+      localStorage.setItem('ai_config', JSON.stringify(merged));
+      return merged;
+    }
     
     // 打开AI设置弹窗
     function openAISettings() {
       $('aiSettingsModal').classList.add('show');
       // 加载当前配置
-      const config = JSON.parse(localStorage.getItem('ai_config') || '{}');
-      if (config.provider) {
-        $('aiProvider').value = config.provider;
-        $('aiApiKey').value = config.apiKeys?.[config.provider] || '';
-      }
+      const config = ensureAIConfig();
+      const provider = config.provider || 'deepseek';
+      $('aiProvider').value = provider;
+      $('aiApiKey').value = config.apiKeys?.[provider] || '';
       onProviderChange();
     }
     
@@ -1795,7 +1875,7 @@
         return;
       }
       
-      const config = JSON.parse(localStorage.getItem('ai_config') || '{}');
+      const config = ensureAIConfig();
       config.provider = provider;
       config.apiKeys = config.apiKeys || {};
       config.apiKeys[provider] = apiKey;
@@ -1826,7 +1906,7 @@
       alert('正在测试连接...');
       
       try {
-        const config = JSON.parse(localStorage.getItem('ai_config') || '{}');
+        const config = ensureAIConfig();
         const endpoints = {
           openai: 'https://api.openai.com/v1/chat/completions',
           qwen: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation',
@@ -1901,8 +1981,8 @@
       }
       
       // 检查AI配置
-      const config = JSON.parse(localStorage.getItem('ai_config') || '{}');
-      const provider = config.provider || 'qwen';
+      const config = ensureAIConfig();
+      const provider = config.provider || 'deepseek';
       const apiKey = config.apiKeys?.[provider];
       
       if (!apiKey) {
@@ -1913,8 +1993,8 @@
       
       // 检查积分
       const pts = getPoints();
-      if (pts < 2) {
-        alert('AI解读需要2积分，当前积分不足');
+      if (pts < 3) {
+        alert('AI解读需要3积分，当前积分不足');
         showRecharge();
         return;
       }
@@ -1929,6 +2009,12 @@
           showAIResult(cacheData.result);
           return;
         }
+      }
+
+      // 调用确认
+      const confirmed = confirm('✨ AI智能解读为您深度解析卦象奥秘，仅需3积分。是否立即体验？');
+      if (!confirmed) {
+        return;
       }
       
       // 显示加载状态
@@ -2033,7 +2119,7 @@ ${yaoList}
         }
         
         // 扣除积分
-        setPoints(pts - 2);
+        setPoints(pts - 3);
         updatePointsUI();
         
         // 缓存结果

@@ -15,7 +15,7 @@ const AIInterpret = {
    */
   config: {
     // 默认API配置（用户可自定义）
-    provider: 'qwen', // openai | qwen | deepseek | custom
+    provider: 'deepseek', // openai | qwen | deepseek | custom
     apiKeys: {
       openai: '',
       qwen: '',
@@ -41,7 +41,7 @@ const AIInterpret = {
     // 是否启用AI解读
     enabled: false,
     // 一次解读消耗的积分
-    costPoints: 2
+    costPoints: 3
   },
 
   /**
@@ -60,6 +60,9 @@ const AIInterpret = {
     const saved = Storage.get('ai_config');
     if (saved) {
       this.config = { ...this.config, ...saved };
+    } else {
+      this.config.provider = 'deepseek';
+      this.saveConfig();
     }
   },
 
@@ -313,6 +316,15 @@ ${options.context ? `\n【我的情况】\n${options.context}\n` : ''}
         success: false,
         error: 'AI解读未配置，请先设置API密钥',
         needsConfig: true
+      };
+    }
+
+    const confirmText = `✨ AI智能解读为您深度解析卦象奥秘，仅需${this.config.costPoints}积分。是否立即体验？`;
+    if (!window.confirm(confirmText)) {
+      return {
+        success: false,
+        cancelled: true,
+        error: '已取消AI解读'
       };
     }
 
