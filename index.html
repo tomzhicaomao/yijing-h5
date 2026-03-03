@@ -1358,6 +1358,16 @@
     
     // 用户系统
     let currentUser = null;
+    // 检查登录状态并提示
+    function requireLogin(actionName) {
+      if(!currentUser) {
+        alert('请先注册/登录后再使用' + actionName + '功能');
+        openLogin();
+        return false;
+      }
+      return true;
+    }
+
     const HISTORY_KEY = 'yijing_history';
     const POINTS_KEY = 'yijing_points';
     const DEFAULT_POINTS = 10; // 新用户默认赠送10积分
@@ -1424,12 +1434,13 @@
     }
     
     // 登录注册
-    function doLogin() {
+    async function doLogin() {
       const u = $('username').value.trim();
       const p = $('password').value;
       if(!u || !p) { alert('请输入用户名和密码'); return; }
       
-      queryDB('users','username=eq.'+u).then(rs => {
+      try {
+        const rs = await queryDB('users','username=eq.'+u);
         if(!rs.length || rs[0].password !== btoa(p)) {
           alert('用户名或密码错误'); return;
         }
@@ -1439,10 +1450,26 @@
         closeModal('loginModal');
         $('username').value = '';
         $('password').value = '';
-      });
+      } catch(e) {
+        // 网络错误时使用本地登录模式
+        const localUser = localStorage.getItem('yijing_local_user');
+        if(localUser) {
+          const user = JSON.parse(localUser);
+          if(user.username === u && user.password === btoa(p)) {
+            currentUser = {id:user.id, username:u};
+            localStorage.setItem('yijing_user', JSON.stringify(currentUser));
+            updateUserUI();
+            closeModal('loginModal');
+            $('username').value = '';
+            $('password').value = '';
+            return;
+          }
+        }
+        alert('登录失败，请检查网络或先注册账号');
+      }
     }
     
-    function doRegister() {
+    async function doRegister() {
       const u = $('regUser').value.trim();
       const p = $('regPass').value;
       const p2 = $('regPass2').value;
@@ -1450,7 +1477,8 @@
       if(p !== p2) { alert('两次密码不一致'); return; }
       if(p.length < 6) { alert('密码至少6位'); return; }
       
-      saveDB('users',{username:u, password:btoa(p)}).then(ok => {
+      try {
+        const ok = await saveDB('users',{username:u, password:btoa(p)});
         if(ok) {
           alert('注册成功，请登录');
           closeModal('registerModal');
@@ -1458,7 +1486,21 @@
         } else {
           alert('注册失败，用户名可能已存在');
         }
-      });
+      } catch(e) {
+        // 网络错误时使用本地注册模式
+        const localUsers = JSON.parse(localStorage.getItem('yijing_local_users') || '[]');
+        if(localUsers.find(u2 => u2.username === u)) {
+          alert('用户名已存在');
+          return;
+        }
+        const newUser = {id: 'local_' + Date.now(), username: u, password: btoa(p)};
+        localUsers.push(newUser);
+        localStorage.setItem('yijing_local_users', JSON.stringify(localUsers));
+        localStorage.setItem('yijing_local_user', JSON.stringify(newUser));
+        alert('注册成功（本地模式），请登录');
+        closeModal('registerModal');
+        openLogin();
+      }
     }
     
     // 数据库
@@ -1896,6 +1938,13 @@
     
     // 获取AI解读
     async function getAIInterpretation() {
+      // 检查登录状态
+      if(!currentUser) {
+        alert('请先注册/登录后使用AI解读功能');
+        openLogin();
+        return;
+      }
+      
       // 检查是否有当前卦象
       if (!currentHexagram) {
         alert('请先进行占卜');
