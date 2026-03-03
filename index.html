@@ -1779,89 +1779,21 @@
     let currentHexagram = null;
     let currentDongYao = 1;
 
+    // 内置AI配置（网站提供，用户无需配置）
+    const BUILTIN_AI_CONFIG = {
+      provider: 'deepseek',
+      apiKey: 'sk-bf606612da8d4f01b16ade5070468956',
+      endpoint: 'https://api.deepseek.com/v1/chat/completions',
+      model: 'deepseek-chat'
+    };
+
     function ensureAIConfig() {
-      const defaults = {
-        provider: 'deepseek',
-        apiKeys: {
-          openai: '',
-          qwen: '',
-          deepseek: '',
-          custom: ''
-        },
-        endpoints: {
-          openai: 'https://api.openai.com/v1/chat/completions',
-          qwen: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation',
-          deepseek: 'https://api.deepseek.com/v1/chat/completions',
-          custom: ''
-        },
-        models: {
-          openai: 'gpt-3.5-turbo',
-          qwen: 'qwen-turbo',
-          deepseek: 'deepseek-chat',
-          custom: 'gpt-3.5-turbo'
-        }
-      };
-
-      const raw = localStorage.getItem('ai_config');
-      let config = {};
-
-      try {
-        config = raw ? JSON.parse(raw) : {};
-      } catch (e) {
-        config = {};
-      }
-
-      if (!raw || !Object.keys(config).length) {
-        localStorage.setItem('ai_config', JSON.stringify(defaults));
-        return defaults;
-      }
-
-      const merged = {
-        ...defaults,
-        ...config,
-        apiKeys: { ...defaults.apiKeys, ...(config.apiKeys || {}) },
-        endpoints: { ...defaults.endpoints, ...(config.endpoints || {}) },
-        models: { ...defaults.models, ...(config.models || {}) }
-      };
-
-      if (!merged.provider) {
-        merged.provider = 'deepseek';
-      }
-      localStorage.setItem('ai_config', JSON.stringify(merged));
-      return merged;
+      return BUILTIN_AI_CONFIG;
     }
     
-    // 打开AI设置弹窗
-    function openAISettings() {
-      $('aiSettingsModal').classList.add('show');
-      // 加载当前配置
-      const config = ensureAIConfig();
-      const provider = config.provider || 'deepseek';
-      $('aiProvider').value = provider;
-      $('aiApiKey').value = config.apiKeys?.[provider] || '';
-      onProviderChange();
-    }
     
-    // 切换AI提供商
-    function onProviderChange() {
-      const provider = $('aiProvider').value;
-      const endpointInput = $('aiEndpoint');
-      const modelInput = $('aiModel');
-      const hintEl = $('apiKeyHint');
-      
-      // 显示/隐藏自定义选项
-      endpointInput.style.display = provider === 'custom' ? 'block' : 'none';
-      modelInput.style.display = provider === 'custom' ? 'block' : 'none';
-      
-      // 更新密钥获取链接
-      const links = {
-        qwen: '获取密钥：<a href="https://dashscope.console.aliyun.com/" target="_blank" style="color:var(--accent);">阿里云控制台</a>',
-        deepseek: '获取密钥：<a href="https://platform.deepseek.com/" target="_blank" style="color:var(--accent);">DeepSeek开放平台</a>',
-        openai: '获取密钥：<a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent);">OpenAI API Keys</a>',
-        custom: '输入自定义API端点和模型名称'
-      };
-      hintEl.innerHTML = links[provider] || '';
-    }
+    
+    
     
     // 保存AI设置
     function saveAISettings() {
@@ -1907,18 +1839,8 @@
       
       try {
         const config = ensureAIConfig();
-        const endpoints = {
-          openai: 'https://api.openai.com/v1/chat/completions',
-          qwen: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation',
-          deepseek: 'https://api.deepseek.com/v1/chat/completions',
-          custom: config.endpoints?.custom || ''
-        };
-        const models = {
-          openai: 'gpt-3.5-turbo',
-          qwen: 'qwen-turbo',
-          deepseek: 'deepseek-chat',
-          custom: config.models?.custom || 'gpt-3.5-turbo'
-        };
+        const endpoint = config.endpoint;
+        const model = config.model;
         
         const endpoint = endpoints[provider];
         const model = models[provider];
@@ -1982,12 +1904,10 @@
       
       // 检查AI配置
       const config = ensureAIConfig();
-      const provider = config.provider || 'deepseek';
-      const apiKey = config.apiKeys?.[provider];
+      const apiKey = config.apiKey;
       
       if (!apiKey) {
-        alert('请先配置AI密钥');
-        openAISettings();
+        alert('AI服务暂时不可用，请稍后再试');
         return;
       }
       
@@ -2024,18 +1944,8 @@
       aiBtn.disabled = true;
       
       try {
-        const endpoints = {
-          openai: 'https://api.openai.com/v1/chat/completions',
-          qwen: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation',
-          deepseek: 'https://api.deepseek.com/v1/chat/completions',
-          custom: config.endpoints?.custom || ''
-        };
-        const models = {
-          openai: 'gpt-3.5-turbo',
-          qwen: 'qwen-turbo',
-          deepseek: 'deepseek-chat',
-          custom: config.models?.custom || 'gpt-3.5-turbo'
-        };
+        const endpoint = config.endpoint;
+        const model = config.model;
         
         // 构建提示词
         const hex = currentHexagram;
