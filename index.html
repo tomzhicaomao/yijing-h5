@@ -498,6 +498,32 @@
       overflow-y: auto;
     }
 
+    #historyModal .modal-body,
+    #feedbackHistoryModal .modal-body {
+      max-height: min(58vh, 520px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #d8b36a rgba(15, 12, 10, 0.45);
+    }
+
+    #historyModal .modal-body::-webkit-scrollbar,
+    #feedbackHistoryModal .modal-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #historyModal .modal-body::-webkit-scrollbar-track,
+    #feedbackHistoryModal .modal-body::-webkit-scrollbar-track {
+      background: rgba(15, 12, 10, 0.45);
+      border-radius: 999px;
+    }
+
+    #historyModal .modal-body::-webkit-scrollbar-thumb,
+    #feedbackHistoryModal .modal-body::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #d8b36a 0%, #b7852f 100%);
+      border-radius: 999px;
+      border: 1px solid rgba(15, 12, 10, 0.35);
+    }
+
     /* 滚动条美化 */
     * {
       scrollbar-width: thin;
@@ -1332,9 +1358,10 @@
     
     function openLogin() { $('loginModal').classList.add('show'); }
     function openRegister() { $('registerModal').classList.add('show'); }
-    function openHistory() { 
+    function openHistory() {
+      if (!requireLogin('查看历史记录')) return;
       showHistoryList();
-      $('historyModal').classList.add('show'); 
+      $('historyModal').classList.add('show');
     }
     function closeModal(id) { 
       $(id).classList.remove('show'); 
@@ -1359,9 +1386,13 @@
     // 用户系统
     let currentUser = null;
     // 检查登录状态并提示
+    function friendlyTip(message) {
+      alert(message);
+    }
+
     function requireLogin(actionName) {
       if(!currentUser) {
-        alert('请先注册/登录后再使用' + actionName + '功能');
+        friendlyTip(`请先登录后再${actionName}，登录后我会继续为你服务。`);
         openLogin();
         return false;
       }
@@ -1433,98 +1464,160 @@
       alert('充值成功！+' + points + '积分');
     }
     
+    function getLocalUsers() {
+      try {
+        return JSON.parse(localStorage.getItem('yijing_local_users') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
     // 登录注册
     async function doLogin() {
       const u = $('username').value.trim();
       const p = $('password').value;
-      if(!u || !p) { alert('请输入用户名和密码'); return; }
+      if(!u || !p) { friendlyTip('请输入用户名和密码。'); return; }
       
-      try {
-        const rs = await queryDB('users','username=eq.'+u);
+      const rs = await queryDB('users', 'username=eq.' + encodeURIComponent(u) + '&limit=1');
+      if (Array.isArray(rs)) {
         if(!rs.length || rs[0].password !== btoa(p)) {
-          alert('用户名或密码错误'); return;
+          friendlyTip('用户名或密码不正确，请再试一次。');
+          return;
         }
         currentUser = {id:rs[0].id, username:u};
-        localStorage.setItem('yijing_user', JSON.stringify(currentUser));
-        updateUserUI();
-        closeModal('loginModal');
-        $('username').value = '';
-        $('password').value = '';
-      } catch(e) {
-        // 网络错误时使用本地登录模式
-        const localUser = localStorage.getItem('yijing_local_user');
-        if(localUser) {
-          const user = JSON.parse(localUser);
-          if(user.username === u && user.password === btoa(p)) {
-            currentUser = {id:user.id, username:u};
-            localStorage.setItem('yijing_user', JSON.stringify(currentUser));
-            updateUserUI();
-            closeModal('loginModal');
-            $('username').value = '';
-            $('password').value = '';
-            return;
-          }
+      } else {
+        // Supabase 不可用时使用本地模式兜底
+        const localUsers = getLocalUsers();
+        const user = localUsers.find(item => item.username === u && item.password === btoa(p));
+        if (!user) {
+          friendlyTip('当前网络连接不稳定，且未找到本地账号。请稍后重试或先注册。');
+          return;
         }
-        alert('登录失败，请检查网络或先注册账号');
+        currentUser = {id:user.id, username:u};
+        friendlyTip('已使用本地模式登录，云端同步将在网络恢复后可用。');
       }
+
+      localStorage.setItem('yijing_user', JSON.stringify(currentUser));
+      updateUserUI();
+      closeModal('loginModal');
+      $('username').value = '';
+      $('password').value = '';
     }
     
     async function doRegister() {
       const u = $('regUser').value.trim();
       const p = $('regPass').value;
       const p2 = $('regPass2').value;
-      if(!u || !p) { alert('请输入用户名和密码'); return; }
-      if(p !== p2) { alert('两次密码不一致'); return; }
-      if(p.length < 6) { alert('密码至少6位'); return; }
+      if(!u || !p) { friendlyTip('请输入用户名和密码。'); return; }
+      if(p !== p2) { friendlyTip('两次密码不一致，请确认后重试。'); return; }
+      if(p.length < 6) { friendlyTip('密码至少需要 6 位。'); return; }
       
-      try {
-        const ok = await saveDB('users',{username:u, password:btoa(p)});
-        if(ok) {
-          alert('注册成功，请登录');
-          closeModal('registerModal');
-          openLogin();
-        } else {
-          alert('注册失败，用户名可能已存在');
-        }
-      } catch(e) {
-        // 网络错误时使用本地注册模式
-        const localUsers = JSON.parse(localStorage.getItem('yijing_local_users') || '[]');
-        if(localUsers.find(u2 => u2.username === u)) {
-          alert('用户名已存在');
-          return;
-        }
-        const newUser = {id: 'local_' + Date.now(), username: u, password: btoa(p)};
-        localUsers.push(newUser);
-        localStorage.setItem('yijing_local_users', JSON.stringify(localUsers));
-        localStorage.setItem('yijing_local_user', JSON.stringify(newUser));
-        alert('注册成功（本地模式），请登录');
+      const remoteOk = await saveDB('users', { username: u, password: btoa(p) });
+      if (remoteOk) {
+        friendlyTip('注册成功，请登录。');
         closeModal('registerModal');
         openLogin();
+        return;
       }
+
+      // 云端失败时，本地模式兜底
+      const localUsers = getLocalUsers();
+      if(localUsers.find(u2 => u2.username === u)) {
+        friendlyTip('用户名已存在，请更换后再试。');
+        return;
+      }
+      const newUser = {id: 'local_' + Date.now(), username: u, password: btoa(p)};
+      localUsers.push(newUser);
+      localStorage.setItem('yijing_local_users', JSON.stringify(localUsers));
+      friendlyTip('已在本地模式注册成功，你现在可以直接登录。');
+      closeModal('registerModal');
+      openLogin();
     }
     
     // 数据库
     const DB_URL = 'https://esmgqpttyqufbqlgxslj.supabase.co';
     const DB_KEY = 'sb_publishable_r3jfrOsF7Jtw-mjv04iMjw_y3lKKg5P';
+
+    async function dbRequest(path, options = {}) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+      try {
+        const response = await fetch(DB_URL + path, {
+          ...options,
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': DB_KEY,
+            'Authorization': 'Bearer ' + DB_KEY,
+            ...(options.headers || {})
+          },
+          signal: controller.signal
+        });
+
+        const text = await response.text();
+        const payload = text ? JSON.parse(text) : null;
+        return {
+          ok: response.ok,
+          status: response.status,
+          data: payload,
+          error: response.ok ? null : (payload?.message || payload?.hint || payload?.details || text || '请求失败')
+        };
+      } catch (error) {
+        return {
+          ok: false,
+          status: 0,
+          data: null,
+          error: error.name === 'AbortError' ? '请求超时，请检查网络后重试' : (error.message || '网络异常')
+        };
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
     
     async function saveDB(table, data) {
-      try {
-        const r = await fetch(DB_URL+'/rest/v1/'+table, {
-          method:'POST', headers:{'Content-Type':'application/json','apikey':DB_KEY,'Authorization':'Bearer '+DB_KEY},
-          body:JSON.stringify(data)
-        });
-        return r.ok;
-      } catch(e) { console.error(e); return false; }
+      const result = await dbRequest('/rest/v1/' + table, {
+        method:'POST',
+        headers: { Prefer: 'return=minimal' },
+        body: JSON.stringify(data)
+      });
+      if (!result.ok) {
+        console.error('保存数据失败:', table, result.status, result.error);
+      }
+      return result.ok;
     }
     
     async function queryDB(table, filter) {
-      try {
-        const r = await fetch(DB_URL+'/rest/v1/'+table+'?'+filter, {
-          headers:{'apikey':DB_KEY,'Authorization':'Bearer '+DB_KEY}
-        });
-        return r.ok ? await r.json() : [];
-      } catch(e) { console.error(e); return []; }
+      const query = filter ? ('?' + filter) : '';
+      const result = await dbRequest('/rest/v1/' + table + query, { method: 'GET' });
+      if (!result.ok) {
+        console.error('查询数据失败:', table, result.status, result.error);
+        return null;
+      }
+      return Array.isArray(result.data) ? result.data : [];
     }
+
+    async function checkSupabaseConnection() {
+      const result = await dbRequest('/rest/v1/users?select=id&limit=1', { method: 'GET' });
+      if (!result.ok) {
+        console.warn('Supabase连接检查失败:', result.error);
+        return false;
+      }
+      return true;
+    }
+
+    // 兼容 feedback 模块对 User/DB/APP_CONFIG 的引用
+    window.User = window.User || {};
+    Object.defineProperty(window.User, 'current', {
+      get() { return currentUser; },
+      configurable: true
+    });
+    window.DB = {
+      save: saveDB,
+      query: queryDB
+    };
+    window.APP_CONFIG = {
+      SUPABASE_URL: DB_URL,
+      SUPABASE_ANON_KEY: DB_KEY
+    };
     
     // 历史记录
     function saveHistory(hex) {
@@ -1563,19 +1656,20 @@
     }
 
     async function syncHistoryFromCloud() {
-      if(!currentUser) {
-        alert('请先登录后再同步云端记录');
-        openLogin();
-        return;
-      }
+      if(!requireLogin('同步云端记录')) return;
 
       const cloudList = await queryDB(
         'history',
         'user_id=eq.' + currentUser.id + '&select=id,hexagram_id,hexagram_name,hexagram_symbol,created_at&order=created_at.desc&limit=100'
       );
 
+      if (!Array.isArray(cloudList)) {
+        friendlyTip('云端连接暂时不可用，请稍后再试。');
+        return;
+      }
+
       if(!cloudList.length) {
-        alert('云端暂无可同步记录');
+        friendlyTip('云端暂无可同步记录。');
         return;
       }
 
@@ -1607,7 +1701,7 @@
 
       localStorage.setItem(HISTORY_KEY, JSON.stringify(merged));
       showHistoryList();
-      alert('同步完成，共载入 ' + cloudList.length + ' 条云端记录');
+      friendlyTip('同步完成，共载入 ' + cloudList.length + ' 条云端记录。');
     }
     
     function showHistoryDetail(id, name) {
@@ -1826,11 +1920,32 @@
       provider: 'deepseek',
       apiKey: 'sk-bf606612da8d4f01b16ade5070468956',
       endpoint: 'https://api.deepseek.com/v1/chat/completions',
-      model: 'deepseek-chat'
+      model: 'deepseek-chat',
+      costPoints: 3
     };
 
     function ensureAIConfig() {
-      return BUILTIN_AI_CONFIG;
+      let localConfig = null;
+      try {
+        localConfig = JSON.parse(localStorage.getItem('ai_config') || '{}');
+      } catch {
+        localConfig = {};
+      }
+      return {
+        provider: 'deepseek',
+        apiKey: localConfig?.apiKey || BUILTIN_AI_CONFIG.apiKey,
+        endpoint: localConfig?.endpoint || BUILTIN_AI_CONFIG.endpoint,
+        model: localConfig?.model || BUILTIN_AI_CONFIG.model,
+        costPoints: BUILTIN_AI_CONFIG.costPoints
+      };
+    }
+
+    function initAISettingsUI() {
+      const config = ensureAIConfig();
+      if ($('aiProvider')) $('aiProvider').value = 'deepseek';
+      if ($('aiApiKey')) $('aiApiKey').value = config.apiKey;
+      if ($('aiEndpoint')) $('aiEndpoint').value = config.endpoint;
+      if ($('aiModel')) $('aiModel').value = config.model;
     }
     
     
@@ -1839,115 +1954,62 @@
     
     // 保存AI设置
     function saveAISettings() {
-      const provider = $('aiProvider').value;
       const apiKey = $('aiApiKey').value.trim();
       const endpoint = $('aiEndpoint').value.trim();
       const model = $('aiModel').value.trim();
-      
-      if (!apiKey) {
-        alert('请输入API密钥');
-        return;
-      }
-      
-      const config = ensureAIConfig();
-      config.provider = provider;
-      config.apiKeys = config.apiKeys || {};
-      config.apiKeys[provider] = apiKey;
-      config.enabled = true;
-      
-      if (provider === 'custom') {
-        config.endpoints = config.endpoints || {};
-        config.endpoints.custom = endpoint;
-        config.models = config.models || {};
-        config.models.custom = model;
-      }
-      
-      localStorage.setItem('ai_config', JSON.stringify(config));
-      alert('设置保存成功！');
+
+      localStorage.setItem('ai_config', JSON.stringify({
+        apiKey: apiKey || BUILTIN_AI_CONFIG.apiKey,
+        endpoint: endpoint || BUILTIN_AI_CONFIG.endpoint,
+        model: model || BUILTIN_AI_CONFIG.model
+      }));
+      friendlyTip('AI 设置已保存。');
       closeModal('aiSettingsModal');
     }
     
     // 测试AI连接
     async function testAIConnection() {
-      const provider = $('aiProvider').value;
-      const apiKey = $('aiApiKey').value.trim();
-      
-      if (!apiKey) {
-        alert('请先输入API密钥');
-        return;
-      }
-      
-      alert('正在测试连接...');
-      
+      friendlyTip('正在测试 AI 连接，请稍候。');
+
       try {
         const config = ensureAIConfig();
         const endpoint = config.endpoint;
         const model = config.model;
-        
-        const endpoint = endpoints[provider];
-        const model = models[provider];
-        
-        if (provider === 'qwen') {
-          // 通义千问API格式
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-              model: model,
-              input: {
-                messages: [{ role: 'user', content: '请回复"连接成功"' }]
-              },
-              parameters: { max_tokens: 50 }
-            })
-          });
-          
-          if (response.ok) {
-            alert('✅ 连接成功！');
-          } else {
-            alert('❌ 连接失败：' + response.status);
-          }
-        } else {
-          // OpenAI兼容格式
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-              model: model,
-              messages: [{ role: 'user', content: '请回复"连接成功"' }],
-              max_tokens: 50
-            })
-          });
-          
-          if (response.ok) {
-            alert('✅ 连接成功！');
-          } else {
-            const error = await response.text();
-            alert('❌ 连接失败：' + response.status + ' - ' + error);
-          }
+        const apiKey = config.apiKey;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [{ role: 'user', content: '请回复“连接成功”。' }],
+            max_tokens: 50,
+            temperature: 0.3
+          })
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          throw new Error('连接失败：' + response.status + ' ' + error);
         }
+
+        friendlyTip('AI 连接测试成功。');
       } catch (e) {
-        alert('❌ 连接失败：' + e.message);
+        friendlyTip('AI 连接测试失败：' + e.message);
       }
     }
     
     // 获取AI解读
     async function getAIInterpretation() {
       // 检查登录状态
-      if(!currentUser) {
-        alert('请先注册/登录后使用AI解读功能');
-        openLogin();
-        return;
-      }
+      if(!requireLogin('使用 AI 解读')) return;
       
       // 检查是否有当前卦象
       if (!currentHexagram) {
-        alert('请先进行占卜');
+        friendlyTip('请先完成一次占卜，再进行 AI 解读。');
         return;
       }
       
@@ -1956,14 +2018,14 @@
       const apiKey = config.apiKey;
       
       if (!apiKey) {
-        alert('AI服务暂时不可用，请稍后再试');
+        friendlyTip('AI 服务暂时不可用，请稍后再试。');
         return;
       }
       
       // 检查积分
       const pts = getPoints();
-      if (pts < 3) {
-        alert('AI解读需要3积分，当前积分不足');
+      if (pts < config.costPoints) {
+        friendlyTip(`AI 解读需要 ${config.costPoints} 积分，当前积分不足。`);
         showRecharge();
         return;
       }
@@ -1981,7 +2043,7 @@
       }
 
       // 调用确认
-      const confirmed = confirm('✨ AI智能解读为您深度解析卦象奥秘，仅需3积分。是否立即体验？');
+      const confirmed = confirm(`✨ AI 智能解读将消耗 ${config.costPoints} 积分，是否继续？`);
       if (!confirmed) {
         return;
       }
@@ -2021,64 +2083,33 @@ ${yaoList}
 
 请用温暖而有智慧的语言回答，字数控制在500字以内。`;
         
-        let result = '';
-        
-        if (provider === 'qwen') {
-          // 通义千问API
-          const response = await fetch(endpoints.qwen, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-              model: models.qwen,
-              input: {
-                messages: [
-                  { role: 'system', content: systemPrompt },
-                  { role: 'user', content: userPrompt }
-                ]
-              },
-              parameters: { max_tokens: 1000, temperature: 0.8 }
-            })
-          });
-          
-          if (!response.ok) {
-            throw new Error('API调用失败：' + response.status);
-          }
-          
-          const data = await response.json();
-          result = data.output?.text || data.output?.choices?.[0]?.message?.content || '解读失败，请重试';
-        } else {
-          // OpenAI兼容格式
-          const response = await fetch(endpoints[provider], {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-              model: models[provider],
-              messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: userPrompt }
-              ],
-              max_tokens: 1000,
-              temperature: 0.8
-            })
-          });
-          
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error('API调用失败：' + response.status + ' - ' + errorText);
-          }
-          
-          const data = await response.json();
-          result = data.choices?.[0]?.message?.content || '解读失败，请重试';
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt }
+            ],
+            max_tokens: 1000,
+            temperature: 0.8
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error('API 调用失败：' + response.status + ' - ' + errorText);
         }
+
+        const data = await response.json();
+        const result = data.choices?.[0]?.message?.content || '解读失败，请重试';
         
         // 扣除积分
-        setPoints(pts - 3);
+        setPoints(pts - config.costPoints);
         updatePointsUI();
         
         // 缓存结果
@@ -2096,7 +2127,7 @@ ${yaoList}
         }
         
       } catch (e) {
-        alert('AI解读失败：' + e.message);
+        friendlyTip('AI 解读失败：' + e.message);
         console.error(e);
       } finally {
         aiBtn.innerHTML = originalText;
@@ -2282,6 +2313,12 @@ ${yaoList}
     
     // 初始化
     initUser();
+    initAISettingsUI();
+    checkSupabaseConnection().then((ok) => {
+      if (!ok) {
+        console.warn('当前未连接到 Supabase，登录/注册将自动回退本地模式。');
+      }
+    });
     
     // 注册 Service Worker（提升二次加载和离线可用性）
     if ('serviceWorker' in navigator) {
