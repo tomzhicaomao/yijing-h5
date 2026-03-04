@@ -1,0 +1,430 @@
+    // 生成背景
+    (function(){
+      const bg = document.getElementById('bg');
+      for(let i=0;i<60;i++){
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = Math.random()*100 + '%';
+        s.style.animationDelay = Math.random()*3 + 's';
+        bg.appendChild(s);
+      }
+    })();
+    
+    // 全局函数
+    function $(id) { return document.getElementById(id); }
+    
+    function openLogin() { $('loginModal').classList.add('show'); }
+    function openRegister() { $('registerModal').classList.add('show'); }
+    function openHistory() { 
+      showHistoryList();
+      $('historyModal').classList.add('show'); 
+    }
+    function closeModal(id) { 
+      $(id).classList.remove('show'); 
+    }
+    
+    // 点击空白处关闭弹窗
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('show');
+        }
+      });
+    });
+    
+    let isLogin = true;
+    function toggleAuth() {
+      closeModal('loginModal');
+      if(isLogin) { openRegister(); } else { openLogin(); }
+      isLogin = !isLogin;
+    }
+    
+    // 用户系统
+    let currentUser = null;
+    const HISTORY_KEY = 'yijing_history';
+    const POINTS_KEY = 'yijing_points';
+    const DEFAULT_POINTS = 10; // 新用户默认赠送10积分
+    
+    function getPoints() {
+      return parseInt(localStorage.getItem(POINTS_KEY)) || 0;
+    }
+    
+    function setPoints(n) {
+      localStorage.setItem(POINTS_KEY, n);
+    }
+    
+    function initUser() {
+      const u = localStorage.getItem('yijing_user');
+      if(u) {
+        currentUser = JSON.parse(u);
+        updateUserUI();
+      }
+      // 如果没有积分记录，初始化
+      if(!localStorage.getItem(POINTS_KEY)) {
+        setPoints(DEFAULT_POINTS);
+      }
+      updatePointsUI();
+    }
+    
+    function updatePointsUI() {
+      const pts = getPoints();
+      const ptsEl = $('userPoints');
+      if(ptsEl) {
+        ptsEl.innerHTML = '<span onclick="showRecharge()" style="cursor:pointer;">💎 ' + pts + ' 积分</span>';
+      }
+    }
+    
+    function updateUserUI() {
+      if(currentUser) {
+        $('userBar').innerHTML = '<span class="user-name">'+currentUser.username+'</span><span id="userPoints" class="points-tag"></span><button class="user-btn" onclick="logout()">退出</button>';
+        updatePointsUI();
+      } else {
+        $('userBar').innerHTML = '<button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button><span id="userPoints" class="points-tag" style="margin-left:10px;"></span>';
+        updatePointsUI();
+      }
+    }
+    
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('yijing_user');
+      updateUserUI();
+    }
+    
+    // 充值
+    function showRecharge() {
+      $('rechargeBalance').textContent = getPoints();
+      $('rechargeModal').classList.add('show');
+    }
+    
+    function doRecharge(points, price) {
+      // 演示版本：直接增加积分
+      // 实际版本：调用微信支付API
+      const current = getPoints();
+      setPoints(current + points);
+      updatePointsUI();
+      $('rechargeBalance').textContent = getPoints();
+      alert('充值成功！+' + points + '积分');
+    }
+    
+    // 登录注册
+    function doLogin() {
+      const u = $('username').value.trim();
+      const p = $('password').value;
+      if(!u || !p) { alert('请输入用户名和密码'); return; }
+      
+      queryDB('users','username=eq.'+u).then(rs => {
+        if(!rs.length || rs[0].password !== btoa(p)) {
+          alert('用户名或密码错误'); return;
+        }
+        currentUser = {id:rs[0].id, username:u};
+        localStorage.setItem('yijing_user', JSON.stringify(currentUser));
+        updateUserUI();
+        closeModal('loginModal');
+        $('username').value = '';
+        $('password').value = '';
+      });
+    }
+    
+    function doRegister() {
+      const u = $('regUser').value.trim();
+      const p = $('regPass').value;
+      const p2 = $('regPass2').value;
+      if(!u || !p) { alert('请输入用户名和密码'); return; }
+      if(p !== p2) { alert('两次密码不一致'); return; }
+      if(p.length < 6) { alert('密码至少6位'); return; }
+      
+      saveDB('users',{username:u, password:btoa(p)}).then(ok => {
+        if(ok) {
+          alert('注册成功，请登录');
+          closeModal('registerModal');
+          openLogin();
+        } else {
+          alert('注册失败，用户名可能已存在');
+        }
+      });
+    }
+    
+    // 数据库
+    const DB_URL = 'https://esmgqpttyqufbqlgxslj.supabase.co';
+    const DB_KEY = 'sb_publishable_r3jfrOsF7Jtw-mjv04iMjw_y3lKKg5P';
+    
+    async function saveDB(table, data) {
+      try {
+        const r = await fetch(DB_URL+'/rest/v1/'+table, {
+          method:'POST', headers:{'Content-Type':'application/json','apikey':DB_KEY,'Authorization':'Bearer '+DB_KEY},
+          body:JSON.stringify(data)
+        });
+        return r.ok;
+      } catch(e) { console.error(e); return false; }
+    }
+    
+    async function queryDB(table, filter) {
+      try {
+        const r = await fetch(DB_URL+'/rest/v1/'+table+'?'+filter, {
+          headers:{'apikey':DB_KEY,'Authorization':'Bearer '+DB_KEY}
+        });
+        return r.ok ? await r.json() : [];
+      } catch(e) { console.error(e); return []; }
+    }
+    
+    // 历史记录
+    function saveHistory(hex) {
+      const item = {id:Date.now(), hex_id:hex.id, hex_name:hex.name, hex_symbol:getSymbol(hex.id), time:new Date().toISOString()};
+      let list = JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+      list.unshift(item);
+      list = list.slice(0,50);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+      
+      if(currentUser) {
+        saveDB('history',{user_id:currentUser.id,hexagram_id:hex.id,hexagram_name:hex.name,hexagram_symbol:getSymbol(hex.id)});
+      }
+    }
+    
+    function getSymbol(id) {
+      const s = ['','☷','☴','☲','☳','☱','☵','☶','☰'];
+      for(let i=1;i<=8;i++){
+        for(let j=1;j<=8;j++){
+          if(i*8+j-8===id) return s[i]+s[j];
+        }
+      }
+      return '☰☷';
+    }
+    
+    function showHistoryList() {
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+      if(!list.length) {
+        $('historyList').innerHTML = '<div class="empty-text">暂无占卜记录</div>';
+        return;
+      }
+      $('historyList').innerHTML = list.map(h => 
+        '<div class="history-item" onclick="showHistoryDetail('+h.hex_id+',\''+h.hex_name+'\')">'+
+        '<div class="history-date">'+new Date(h.time).toLocaleString('zh-CN')+'</div>'+
+        '<div class="history-gua">'+(h.hex_symbol||'☰☷')+' '+h.hex_name+'</div></div>'
+      ).join('');
+    }
+    
+    function showHistoryDetail(id, name) {
+      closeModal('historyModal'); // 关闭历史列表
+      
+      let content = '';
+      if(typeof getInterp==='function') {
+        const i = getInterp(id,1);
+        content = 
+          '<div class="interp-item"><div class="interp-label">📖 整体运势</div><div class="interp-text">'+i.overall+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💼 事业发展</div><div class="interp-text">'+i.career+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💰 财运</div><div class="interp-text">'+i.fortune+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💕 爱情</div><div class="interp-text">'+i.love+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">'+i.health+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">'+i.change+'</div></div>';
+      }
+      
+      $('historyDetailTitle').textContent = getSymbol(id) + ' ' + name;
+      $('historyDetailContent').innerHTML = content || '暂无详情';
+      $('historyDetailModal').classList.add('show');
+    }
+    
+    function closeHistoryDetail() {
+      $('historyDetailModal').classList.remove('show');
+      showHistoryList();
+      $('historyModal').classList.add('show');
+    }
+    
+    // 起卦
+    function doDivination() {
+      // 检查积分
+      const pts = getPoints();
+      if(pts < 1) {
+        alert('积分不足！请先充值');
+        showRecharge();
+        return;
+      }
+      
+      if(!window.yijingData || !window.yijingData.length) {
+        alert('数据加载中，请稍等片刻再试');
+        window.loadData();
+        return;
+      }
+      
+      const n1 = parseInt($('num1').value);
+      const n2 = parseInt($('num2').value);
+      const n3 = parseInt($('num3').value);
+      
+      if(isNaN(n1)||isNaN(n2)||isNaN(n3)) { alert('请输入三个数字'); $('num1').focus(); return; }
+      if(n1<100||n1>999||n2<100||n2>999||n3<100||n3>999) { alert('请输入100-999之间的数字'); $('num1').focus(); return; }
+      
+      const xg = (n1%8)||8;
+      const sg = (n2%8)||8;
+      const dy = ((n3-1)%6)+1;
+      
+      const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      // 扣除积分
+      setPoints(pts - 1);
+      updatePointsUI();
+      
+      showResult(hex, xg, sg, dy);
+      saveHistory(hex);
+    }
+    
+    function doRandom() {
+      if(!window.yijingData || !window.yijingData.length) {
+        alert('数据加载中，请稍等片刻再试');
+        window.loadData();
+        return;
+      }
+      
+      $('num1').value = Math.floor(Math.random()*900)+100;
+      $('num2').value = Math.floor(Math.random()*900)+100;
+      $('num3').value = Math.floor(Math.random()*900)+100;
+      doDivination();
+    }
+    
+    function doReset() {
+      $('num1').value = '';
+      $('num2').value = '';
+      $('num3').value = '';
+      $('result').classList.remove('show');
+      $('num1').focus();
+    }
+    
+    // 每日
+    async function doDaily() {
+      // 检查积分
+      const pts = getPoints();
+      if(pts < 1) {
+        alert('积分不足！请先充值');
+        showRecharge();
+        return;
+      }
+      
+      // 等待数据加载
+      if(!window.yijingData || !window.yijingData.length) {
+        await window.loadData();
+        if(!window.yijingData || !window.yijingData.length) {
+          alert('数据加载失败，请刷新页面重试');
+          return;
+        }
+      }
+      
+      const key = 'yijing_daily';
+      const today = new Date().toDateString();
+      const stored = localStorage.getItem(key);
+      
+      if(stored) {
+        const d = JSON.parse(stored);
+        if(d.date === today) {
+          showDaily(d); return;
+        }
+      }
+      
+      const seed = new Date().getFullYear()*10000+(new Date().getMonth()+1)*100+new Date().getDate();
+      const n1 = Math.floor((seed*9301+49297)%233280/233280*900)+100;
+      const n2 = Math.floor((seed*9301+49297*2)%233280/233280*900)+100;
+      const n3 = Math.floor((seed*9301+49297*3)%233280/233280*900)+100;
+      
+      const xg = (n1%8)||8;
+      const sg = (n2%8)||8;
+      const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      // 扣除积分
+      setPoints(pts - 1);
+      updatePointsUI();
+      
+      const d = {date:today, name:hex.name, id:hex.id, symbol:getSymbol(hex.id), brief:hex.gua_ci?hex.gua_ci.substring(0,20):''};
+      localStorage.setItem(key, JSON.stringify(d));
+      showDaily(d);
+    }
+    
+    function showDaily(d) {
+      $('dailyGuaName').textContent = (d.symbol||'☰☷')+' '+(d.name||'—');
+      $('dailyGuaBrief').textContent = d.brief || '点击查看详情';
+      $('dailyResult').classList.add('show');
+    }
+    
+    // 显示结果
+    function showResult(hex, xg, sg, dy) {
+      $('guaName').textContent = hex.name;
+      $('guaSymbol').textContent = getSymbol(hex.id);
+      $('guaCi').textContent = hex.gua_ci;
+      
+      const dyao = hex.yao.find(y => y.position === dy);
+      $('dongYao').textContent = dyao ? '第'+dy+'爻：'+dyao.yao_ci : '';
+      
+      // 爻列表
+      $('yaoList').innerHTML = hex.yao.map(y => 
+        '<div class="yao-item'+(y.position===dy?' active':'')+'">'+
+        '<div class="yao-pos">'+['初','二','三','四','五','上'][y.position-1]+'爻</div>'+
+        '<div class="ancient" style="font-size:13px;">'+y.yao_ci+'</div></div>'
+      ).join('');
+      
+      // 解读
+      if(typeof getInterp==='function') {
+        const i = getInterp(hex.id, dy);
+        $('interpContent').innerHTML = 
+          '<div class="interp-item"><div class="interp-label">📖 整体运势</div><div class="interp-text">'+i.overall+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💼 事业发展</div><div class="interp-text">'+i.career+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💰 财运</div><div class="interp-text">'+i.fortune+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💕 爱情</div><div class="interp-text">'+i.love+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">'+i.health+'</div></div>'+
+          (dy ? '<div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">'+i.change+'</div></div>' : '');
+      }
+      
+      $('result').classList.add('show');
+      $('result').scrollIntoView({behavior:'smooth'});
+    }
+    
+    // 分享
+    function doShare() {
+      const name = $('guaName').textContent;
+      const ci = $('guaCi').textContent;
+      const symbol = $('guaSymbol').textContent;
+      const dongYao = $('dongYao').textContent;
+      
+      // 获取解读内容
+      let interpText = '';
+      if(typeof getInterp==='function' && window.yijingData) {
+        const hex = window.yijingData.find(g => g.name === name);
+        if(hex) {
+          const i = getInterp(hex.id, 1);
+          interpText = '\n\n📖【整体运势】\n' + i.overall + 
+                       '\n\n💼【事业发展】\n' + i.career + 
+                       '\n\n💰【财运分析】\n' + i.fortune + 
+                       '\n\n💕【爱情运势】\n' + i.love + 
+                       '\n\n❤️【健康提示】\n' + i.health +
+                       '\n\n⚡【变爻启示】\n' + i.change;
+        }
+      }
+      
+      const text = '🧬 易经占卜结果\n\n' + symbol + ' ' + name + '\n\n📜【卦辞】\n' + ci + (dongYao ? '\n\n⚡【动爻】\n' + dongYao : '') + interpText + '\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/\n\n——来自 易经占卜小程序';
+      
+      if(navigator.share) {
+        navigator.share({title:'易经占卜 - '+name, text:text}).catch(()=>copyText(text));
+      } else {
+        copyText(text);
+      }
+    }
+    
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(()=>alert('已复制到剪贴板')).catch(()=>alert('复制失败'));
+    }
+    
+    // 回车
+    ['num1','num2','num3'].forEach(id => {
+      $(id).addEventListener('keypress', e => { if(e.key==='Enter') doDivination(); });
+    });
+    
+    // 初始化
+    initUser();
+    
+    // 自动加载数据
+    window.loadData().then(() => {
+      console.log('数据加载完成');
+      // 加载每日
+      const dk = 'yijing_daily';
+      const ds = localStorage.getItem(dk);
+      if(ds) {
+        const d = JSON.parse(ds);
+        if(d.date === new Date().toDateString()) showDaily(d);
+      }
+    });

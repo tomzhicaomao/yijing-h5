@@ -1,0 +1,110 @@
+# yijing-h5 全面优化任务
+
+## 项目背景
+- **项目名称**: 易经占卜 H5
+- **在线地址**: https://yijing-h5.vercel.app/
+- **GitHub**: https://github.com/tomzhicaomao/yijing-h5.git
+- **服务器**: 192.168.50.126 (thomas/Thomas123)
+- **服务器项目路径**: ~/.openclaw/workspace-dev/yijing-h5
+- **技术栈**: 纯前端 H5（原生 HTML/CSS/JS）
+
+## 项目结构
+```
+yijing-h5/
+├── index.html      (1189行，含内联CSS/JS，需重构)
+├── app.js          (131行，核心逻辑)
+├── style.css       (6行)
+├── data/
+│   └── yijing.json (64卦数据)
+├── supabase-setup.sql (数据库表设计，未集成)
+├── DEPLOY.md
+└── ROADMAP.md
+```
+
+## 优化任务清单
+
+### 1. 代码架构重构 🔴 高优先级
+- [ ] 分离 index.html 中的内联 CSS 到独立文件
+- [ ] 分离 index.html 中的内联 JS 到独立文件
+- [ ] 模块化 JS 代码，使用 ES6 模块
+- [ ] 引入 Vite 作为构建工具
+- [ ] 配置生产构建（代码压缩、Tree Shaking）
+- [ ] 添加 package.json 和依赖管理
+
+### 2. Supabase 后端集成 🟡 中优先级
+- [ ] 创建 Supabase 项目配置文件
+- [ ] 实现用户注册/登录功能（使用 Supabase Auth）
+- [ ] 实现占卜历史记录保存到 Supabase
+- [ ] 实现历史记录查询和展示
+- [ ] 添加环境变量管理（.env 文件）
+
+### 3. 功能优化 🟡 中优先级
+- [ ] 优化每日一占逻辑（防重复）
+- [ ] 添加起卦动画效果
+- [ ] 优化移动端体验
+- [ ] 添加卦象收藏功能
+- [ ] 添加分享功能（分享卦象图片或链接）
+
+### 4. 性能优化 🟡 中优先级
+- [ ] 图片资源优化（如有）
+- [ ] 添加 Service Worker 支持离线访问
+- [ ] 懒加载优化
+- [ ] 添加 manifest.json 支持 PWA
+
+### 5. SEO 与可访问性 🟢 低优先级
+- [ ] 添加完整的 meta 标签（description, keywords, og:image 等）
+- [ ] 添加结构化数据（JSON-LD）
+- [ ] 添加 favicon 和 app icons
+- [ ] 优化 ARIA 标签
+
+### 6. 代码质量
+- [ ] 添加 ESLint 配置
+- [ ] 添加 Prettier 格式化配置
+- [ ] 代码注释完善
+
+## 技术要求
+- 使用 Vite 作为构建工具
+- 使用 ES6+ 语法
+- 保持与 Vercel 部署兼容
+- 确保移动端友好
+
+## Supabase 数据库 Schema
+```sql
+-- 用户表
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 历史记录表
+CREATE TABLE IF NOT EXISTS history (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  hexagram_id INTEGER NOT NULL,
+  hexagram_name TEXT NOT NULL,
+  hexagram_symbol TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+## 注意事项
+- **不要修改白话文翻译内容**（这部分不优化）
+- 保持现有功能完整性
+- 确保部署到 Vercel 后正常工作
+- 完成后需要将代码推送到 GitHub
+
+## 交付要求
+1. 完整重构后的代码
+2. 更新后的 README.md
+3. 部署测试通过
+4. 代码已推送到 GitHub
+
+## 工作目录
+项目已克隆到: ~/.openclaw/workspace-pm01/projects/yijing-h5
+
+请在该目录下进行开发，完成后：
+1. 运行 `git add . && git commit -m "feat: 全面优化重构"`
+2. 运行 `git push origin main` 推送到 GitHub
+3. Vercel 会自动部署

@@ -1,0 +1,24 @@
+{
+  "name": "yijing-h5",
+  "version": "1.0.0",
+  "description": "易经占卜 H5 应用",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "keywords": [
+    "yijing",
+    "divination",
+    "h5"
+  ],
+  "author": "Thomas",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0"
+  }
+}

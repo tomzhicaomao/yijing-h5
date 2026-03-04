@@ -1,48 +1,53 @@
-# 易经占卜 App - 部署指南
+# yijing-h5 部署与回滚指南
 
-## 方式一：Vercel（推荐）
-
+## 本地开发
 ```bash
-# 1. 安装 Vercel CLI
+cd ~/.openclaw/workspace-pm01/projects/yijing-h5
+npm install
+npm run dev
+```
+
+## 构建预览
+```bash
+npm run build
+npm run preview
+```
+
+## Vercel 部署
+
+### 方式一：Git 自动部署（推荐）
+1. 推送到 `main` 分支
+2. Vercel 自动构建并发布
+
+### 方式二：CLI 部署
+```bash
 npm i -g vercel
-
-# 2. 进入项目目录
-cd yijing-h5
-
-# 3. 一键部署
 vercel deploy
 ```
 
-## 方式二：GitHub + Vercel（自动部署）
+## 环境变量（如接入 Supabase）
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
 
-1. 推送代码到 GitHub
-2. Vercel 后台添加仓库
-3. 自动部署
+说明：
+- 仅前端可公开 `anon key`
+- `service_role` 绝不进入前端环境变量
 
-## 方式三：Netlify（拖拽部署）
+## 发布前检查清单
+- [ ] `npm run build` 成功
+- [ ] 核心流程手测通过
+- [ ] QA 无 P0/P1
+- [ ] 回滚点可用（上一个稳定版本 tag）
 
-1. 打包 `yijing-h5` 文件夹
-2. 拖拽到 https://app.netlify.com/drop
+## 回滚策略
+1. 回退到上一个稳定 tag
+2. 重新触发部署
+3. 验证核心流程
 
-## 预览
-
+示例：
 ```bash
-cd yijing-h5
-python3 -m http.server 8080
-# 打开 http://localhost:8080
+git checkout <stable-tag>
+git push origin HEAD:main --force-with-lease
 ```
 
----
-
-## 当前版本
-
-- **状态**：MVP 已完成
-- **核心功能**：起卦 + 卦辞 + 爻辞（古文）
-- **数据**：64卦 + 384爻
-- **技术**：纯前端 H5
-
-## 后续迭代
-
-- 白话文翻译
-- UI 优化
-- 新功能添加
+> 仅在确认回滚方案后执行强推。

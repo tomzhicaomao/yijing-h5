@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#c9a227">
+  <meta name="description" content="易经占卜 - 古老智慧，指点迷津。使用傅佩荣先天起卦法，以三个随机数起卦，解读64卦象。">
+  <meta name="keywords" content="易经,占卜,卦象,六十四卦,傅佩荣,先天起卦法,周易,八卦">
+  <meta name="author" content="Thomas">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="易经占卜">
+  <meta property="og:description" content="古老智慧，指点迷津 - 傅佩荣先天起卦法">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yijing-h5.vercel.app/">
+  
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c9a227'/></svg>">
+  
+  <title>易经占卜 - 古老智慧，指点迷津</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+  <!-- 背景 -->
+  <div class="bg" id="bg"></div>
+
+  <div class="container">
+    <!-- 头部 -->
+    <header class="header">
+      <div class="logo">
+        <div class="taiji"></div>
+      </div>
+      <h1 class="title">易经占卜</h1>
+      <p class="subtitle">YIJING FORTUNE</p>
+      
+      <!-- 傅佩荣简介 -->
+      <div class="intro-card">
+        <div class="intro-title">📜 先天起卦法</div>
+        <div class="intro-text">
+          著名国学大师傅佩荣先生推崇此法：以三个随机数（100-999）起卦，取其除以8之余数得上下卦，除以6之余数得动爻。此法完全凭随机数决定，排除人为意念干扰，最能反映天道自然之理。
+        </div>
+      </div>
+      
+      <div class="user-bar" id="userBar">
+        <button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button>
+      </div>
+    </header>
+
+    <!-- 今日运势 -->
+    <section class="card">
+      <div class="daily-header">
+        <div class="daily-title"><span>✦</span> 今日运势</div>
+        <button class="daily-btn" onclick="doDaily()">开始占卜</button>
+      </div>
+      <div class="daily-result" id="dailyResult">
+        <div class="daily-gua" id="dailyGuaName">—</div>
+        <div class="daily-brief" id="dailyGuaBrief">—</div>
+      </div>
+    </section>
+
+    <!-- 起卦 -->
+    <section class="card">
+      <div class="section-title">起 卦</div>
+      <div class="input-row">
+        <div class="input-item">
+          <label>数一</label>
+          <input type="number" id="num1" min="100" max="999" placeholder="100-999">
+        </div>
+        <div class="input-item">
+          <label>数二</label>
+          <input type="number" id="num2" min="100" max="999" placeholder="100-999">
+        </div>
+        <div class="input-item">
+          <label>数三</label>
+          <input type="number" id="num3" min="100" max="999" placeholder="100-999">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="doDivination()">起 卦</button>
+        <button class="btn btn-secondary" onclick="doRandom()">随 机</button>
+      </div>
+    </section>
+
+    <!-- 结果 -->
+    <section class="card result" id="result">
+      <div class="result-header">
+        <div class="gua-name" id="guaName">—</div>
+        <div class="gua-symbol" id="guaSymbol">—</div>
+      </div>
+      
+      <div class="section">
+        <div class="section-label">☰ 卦辞</div>
+        <div class="ancient" id="guaCi">—</div>
+      </div>
+      
+      <div class="section">
+        <div class="section-label">⚡ 动爻</div>
+        <div class="ancient" id="dongYao">—</div>
+      </div>
+      
+      <div class="section">
+        <div class="section-label">☷ 六爻</div>
+        <div class="yao-list" id="yaoList"></div>
+      </div>
+      
+      <div class="section" id="interpSection">
+        <div class="section-label">📖 解读</div>
+        <div id="interpContent"></div>
+      </div>
+      
+      <button class="share-btn" onclick="doShare()">📤 分享卦象</button>
+      <div class="btn-row" style="margin-top: 10px;">
+        <button class="btn btn-secondary" onclick="doReset()">重新起卦</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 历史按钮 -->
+  <div class="float-btn show" id="historyBtn" onclick="openHistory()">📜</div>
+
+  <!-- 登录弹窗 -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="loginTitle">登录</h3>
+        <div class="modal-close" onclick="closeModal('loginModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="username" class="form-input" placeholder="用户名">
+        <input type="password" id="password" class="form-input" placeholder="密码">
+        <button class="btn btn-primary" onclick="doLogin()" style="width:100%;">登 录</button>
+        <p class="link-text" style="margin-top:12px;">
+          <span id="linkText">没有账号？</span> <a href="#" onclick="toggleAuth()" id="linkBtn">点击注册</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 注册弹窗 -->
+  <div class="modal" id="registerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>注册账号</h3>
+        <div class="modal-close" onclick="closeModal('registerModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="regUser" class="form-input" placeholder="用户名">
+        <input type="password" id="regPass" class="form-input" placeholder="密码">
+        <input type="password" id="regPass2" class="form-input" placeholder="确认密码">
+        <button class="btn btn-primary" onclick="doRegister()" style="width:100%;background:linear-gradient(135deg,#4CAF50,#45a049);">注 册</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 历史弹窗 -->
+  <div class="modal" id="historyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>占卜历史</h3>
+        <div class="modal-close" onclick="closeModal('historyModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <div id="historyList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 历史详情弹窗 -->
+  <div class="modal" id="historyDetailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="historyDetailTitle">卦象详情</h3>
+        <div class="modal-close" onclick="closeHistoryDetail()">×</div>
+      </div>
+      <div class="modal-body" id="historyDetailContent"></div>
+    </div>
+  </div>
+
+  <!-- 充值弹窗 -->
+  <div class="modal" id="rechargeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>💎 充值积分</h3>
+        <div class="modal-close" onclick="closeModal('rechargeModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <div class="recharge-balance">当前积分：<span id="rechargeBalance">0</span></div>
+        <div class="recharge-options">
+          <div class="recharge-item" onclick="doRecharge(10, 1)">
+            <div class="recharge-amount">10 积分</div>
+            <div class="recharge-price">¥1</div>
+          </div>
+          <div class="recharge-item" onclick="doRecharge(30, 3)">
+            <div class="recharge-amount">30 积分</div>
+            <div class="recharge-price">¥3</div>
+          </div>
+          <div class="recharge-item" onclick="doRecharge(100, 9)">
+            <div class="recharge-amount">100 积分</div>
+            <div class="recharge-price">¥9</div>
+          </div>
+        </div>
+        <div class="recharge-tip">💡 演示版本，点击即可充值成功</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心逻辑（兼容旧版） -->
+  <script src="/app.js"></script>
+  
+  <!-- 解读数据 -->
+  <script src="/src/modules/interpretations.js"></script>
+  
+  <!-- 主入口 -->
+  <script type="module" src="/src/main.js"></script>
+  
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW注册失败:', err));
+    }
+  </script>
+</body>
+</html>
