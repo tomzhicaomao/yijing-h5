@@ -1680,9 +1680,9 @@
       openLogin();
     }
     
-    // 数据库 - 使用环境变量
-    const DB_URL = import.meta.env.VITE_SUPABASE_URL || '';
-    const DB_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+    // 数据库配置
+    const DB_URL = 'https://esmgqpttyqufbqlgxslj.supabase.co';
+    const DB_KEY = 'sb_publishable_r3jfrOsF7Jtw-mjv04iMjw_y3lKKg5P';
 
     async function dbRequest(path, options = {}) {
       const controller = new AbortController();
