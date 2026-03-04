@@ -1358,7 +1358,6 @@
     </div>
   </div>
 
-  <script src="src/js/app.js"></script>
   <script src="src/js/feedback.js"></script>
   <script>
     // 生成背景
@@ -1376,6 +1375,36 @@
     
     // 全局函数
     function $(id) { return document.getElementById(id); }
+    
+    // 数据加载
+    window.yijingData = null;
+    window.loadData = async function() {
+      if (window.yijingData) return window.yijingData;
+      try {
+        const response = await fetch('data/yijing.json');
+        const json = await response.json();
+        window.yijingData = json.hexagrams;
+        console.log('已加载 ' + window.yijingData.length + ' 卦');
+        return window.yijingData;
+      } catch (e) {
+        console.error('加载数据失败:', e);
+        return null;
+      }
+    };
+    
+    // 获取解读
+    function getInterp(id, dongYao) {
+      const hex = window.yijingData && window.yijingData.find(g => g.id === id);
+      if (!hex) return { overall: '—', career: '—', fortune: '—', love: '—', health: '—', change: '—' };
+      return {
+        overall: hex.gua_ci_modern || hex.gua_ci || '—',
+        career: '事业发展顺利',
+        fortune: '财运亨通',
+        love: '感情和谐',
+        health: '身体健康',
+        change: hex.yao && hex.yao[dongYao-1] ? hex.yao[dongYao-1].yao_ci_modern : '顺势而为'
+      };
+    }
     
     function openLogin() { $('loginModal').classList.add('show'); }
     function openRegister() { $('registerModal').classList.add('show'); }
