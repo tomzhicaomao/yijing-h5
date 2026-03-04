@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="易经八卦太极图标">
+  <defs>
+    <radialGradient id="bg" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#2a2020"/>
+      <stop offset="70%" stop-color="#191311"/>
+      <stop offset="100%" stop-color="#0f0c0b"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3d47a"/>
+      <stop offset="55%" stop-color="#c5953d"/>
+      <stop offset="100%" stop-color="#8e6628"/>
+    </linearGradient>
+    <linearGradient id="yin" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0dcc0"/>
+      <stop offset="100%" stop-color="#c8a770"/>
+    </linearGradient>
+    <linearGradient id="yang" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f1915"/>
+      <stop offset="100%" stop-color="#100d0b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="110" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="212" fill="none" stroke="url(#ring)" stroke-width="18" opacity="0.95"/>
+
+  <g transform="translate(256 256)">
+    <circle r="150" fill="url(#yin)"/>
+    <path d="M0-150A150 150 0 0 1 0 150A75 75 0 0 0 0 0A75 75 0 0 1 0-150Z" fill="url(#yang)"/>
+    <circle cy="-75" r="21" fill="url(#yin)" stroke="url(#yang)" stroke-width="9"/>
+    <circle cy="75" r="21" fill="url(#yang)" stroke="url(#yin)" stroke-width="9"/>
+  </g>
+
+  <g fill="url(#ring)">
+    <rect x="58" y="236" width="50" height="10" rx="5"/>
+    <rect x="58" y="266" width="20" height="10" rx="5"/>
+    <rect x="88" y="266" width="20" height="10" rx="5"/>
+
+    <rect x="404" y="236" width="50" height="10" rx="5"/>
+    <rect x="404" y="266" width="20" height="10" rx="5"/>
+    <rect x="434" y="266" width="20" height="10" rx="5"/>
+
+    <rect x="236" y="58" width="10" height="50" rx="5"/>
+    <rect x="266" y="58" width="10" height="20" rx="5"/>
+    <rect x="266" y="88" width="10" height="20" rx="5"/>
+
+    <rect x="236" y="404" width="10" height="50" rx="5"/>
+    <rect x="266" y="404" width="10" height="20" rx="5"/>
+    <rect x="266" y="434" width="10" height="20" rx="5"/>
+  </g>
+</svg>

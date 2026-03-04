@@ -6,27 +6,42 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>易经占卜</title>
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a1410">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     :root {
-      --primary: #1a1a2e;
-      --accent: #c9a227;
-      --accent-light: #e8c547;
-      --bg-dark: #0f0f1a;
-      --text: #ffffff;
-      --text-secondary: rgba(255,255,255,0.6);
-      --card-bg: rgba(255,255,255,0.08);
+      --bg-main: #100d0d;
+      --bg-deep: #1a1410;
+      --ink: #f8f1e3;
+      --ink-soft: rgba(248, 241, 227, 0.72);
+      --gold: #c69a4b;
+      --gold-strong: #f1ce8c;
+      --teal: #2f6d67;
+      --card-bg: rgba(28, 21, 18, 0.82);
+      --border-soft: rgba(198, 154, 75, 0.24);
+      --shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+      --accent: var(--gold);
+      --accent-light: var(--gold-strong);
+      --text: var(--ink);
+      --text-secondary: var(--ink-soft);
     }
     
     body {
-      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "PingFang SC", "Microsoft YaHei", serif;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(198, 154, 75, 0.24), transparent 45%),
+        radial-gradient(circle at 88% 12%, rgba(47, 109, 103, 0.18), transparent 35%),
+        linear-gradient(170deg, #231912 0%, #17120f 50%, #100d0d 100%);
       min-height: 100vh;
-      color: var(--text);
+      color: var(--ink);
+      letter-spacing: 0.02em;
       -webkit-overflow-scrolling: touch;
     }
     
+    /* 背景 */
     .bg {
       position: fixed;
       top: 0;
@@ -51,120 +66,125 @@
       50% { opacity: 1; }
     }
     
+    /* 主容器 */
     .container {
       position: relative;
       z-index: 1;
-      max-width: 420px;
+      max-width: 460px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 24px 20px 92px;
       min-height: 100vh;
-      padding-bottom: 80px;
     }
     
+    /* 顶部 */
     .header {
       text-align: center;
-      padding: 30px 0 20px;
+      padding: 34px 0 26px;
     }
     
     .logo {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 15px;
+      width: 108px;
+      height: 108px;
+      margin: 0 auto 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.45));
+      animation: float 5s ease-in-out infinite;
     }
     
-    .taiji {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: linear-gradient(180deg, #c9a227 50%, #e8c547 50%);
-      position: relative;
-      box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);
-    }
-    
-    .taiji::before {
-      content: '';
-      position: absolute;
-      width: 60px;
-      height: 30px;
-      top: 5px;
-      left: 5px;
-      border-radius: 30px 30px 0 0;
-      background: #e8c547;
-    }
-    
-    .taiji::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      top: 22px;
-      left: 25px;
-      background: #1a1a2e;
-      border-radius: 50%;
-      border: 3px solid #c9a227;
+    .logo-icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
     
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-6px); }
     }
     
     .title {
-      font-size: 24px;
-      font-weight: 300;
-      letter-spacing: 6px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      margin-right: -0.22em;
+      background: linear-gradient(90deg, #9b7031, var(--gold-strong), #a47a38);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     
     .subtitle {
-      font-size: 11px;
-      color: var(--text-secondary);
-      letter-spacing: 3px;
-      margin-top: 6px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      letter-spacing: 0.38em;
+      margin: 10px 0 0 0.38em;
     }
     
+    /* 简介卡片 */
     .intro-card {
-      background: rgba(201, 162, 39, 0.1);
-      border: 1px solid rgba(201, 162, 39, 0.2);
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin: 16px auto 0;
-      max-width: 90%;
+      background: linear-gradient(155deg, rgba(198, 154, 75, 0.14), rgba(20, 16, 14, 0.85));
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 18px auto 0;
+      max-width: 100%;
+      box-shadow: var(--shadow);
     }
     
     .intro-title {
-      font-size: 13px;
-      color: var(--accent);
-      margin-bottom: 6px;
-      font-weight: 500;
+      font-size: 16px;
+      color: var(--gold-strong);
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
     }
     
     .intro-text {
-      font-size: 11px;
-      color: var(--text-secondary);
-      line-height: 1.6;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.85;
       text-align: justify;
     }
+
+    .intro-list {
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .intro-list-item {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(248, 241, 227, 0.84);
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .intro-list-item::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
     
+    /* 卡片 */
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+      padding: 22px 20px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(198, 154, 75, 0.16);
+      box-shadow: var(--shadow);
     }
     
     .card:hover {
-      border-color: rgba(201, 162, 39, 0.2);
+      border-color: rgba(198, 154, 75, 0.3);
     }
     
+    /* 每日运势 */
     .daily-header {
       display: flex;
       justify-content: space-between;
@@ -173,27 +193,29 @@
     }
     
     .daily-title {
-      font-size: 14px;
-      color: var(--text-secondary);
+      font-size: 15px;
+      color: var(--ink-soft);
     }
     
-    .daily-title span { color: var(--accent); }
+    .daily-title span { color: var(--gold); }
     
     .daily-btn {
-      background: linear-gradient(135deg, var(--accent), #a88420);
-      color: #fff;
+      background: linear-gradient(135deg, #6e4d24, var(--gold));
+      color: #fdf8ef;
       border: none;
-      padding: 6px 16px;
-      border-radius: 15px;
-      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 18px;
+      font-size: 13px;
+      letter-spacing: 0.05em;
       cursor: pointer;
     }
     
     .daily-result {
-      padding: 15px;
-      background: rgba(201, 162, 39, 0.1);
-      border-radius: 12px;
-      margin-top: 12px;
+      padding: 16px;
+      background: rgba(198, 154, 75, 0.12);
+      border: 1px solid rgba(198, 154, 75, 0.24);
+      border-radius: 14px;
+      margin-top: 14px;
       display: none;
     }
     
@@ -201,21 +223,23 @@
     
     .daily-gua {
       font-size: 24px;
-      color: var(--accent-light);
+      color: var(--gold-strong);
       margin-bottom: 4px;
     }
     
     .daily-brief {
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
     }
     
+    /* 输入区 */
     .section-title {
-      font-size: 14px;
+      font-size: 15px;
       text-align: center;
-      margin-bottom: 16px;
-      letter-spacing: 4px;
-      color: var(--text-secondary);
+      margin-bottom: 18px;
+      letter-spacing: 0.3em;
+      margin-right: -0.3em;
+      color: var(--ink-soft);
     }
     
     .input-row {
@@ -230,20 +254,20 @@
     
     .input-item label {
       display: block;
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
       text-align: center;
     }
     
     .input-item input {
       width: 100%;
-      height: 48px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.1);
+      height: 50px;
+      background: rgba(8, 8, 8, 0.36);
+      border: 1px solid rgba(198, 154, 75, 0.22);
       border-radius: 12px;
       color: #fff;
-      font-size: 18px;
+      font-size: 19px;
       text-align: center;
       outline: none;
     }
@@ -252,6 +276,7 @@
       border-color: var(--accent);
     }
     
+    /* 按钮 */
     .btn-row {
       display: flex;
       gap: 10px;
@@ -259,26 +284,27 @@
     
     .btn {
       flex: 1;
-      height: 44px;
-      border-radius: 22px;
+      height: 46px;
+      border-radius: 24px;
       font-size: 14px;
       cursor: pointer;
       border: none;
-      letter-spacing: 2px;
+      letter-spacing: 0.16em;
     }
     
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      color: #1a1a2e;
+      background: linear-gradient(135deg, #8f6730, var(--gold-strong));
+      color: #241a11;
       font-weight: 600;
     }
     
     .btn-secondary {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(198, 154, 75, 0.06);
+      color: #fff5e0;
+      border: 1px solid rgba(198, 154, 75, 0.26);
     }
     
+    /* 结果 */
     .result { display: none; }
     .result.show { display: block; }
     
@@ -289,89 +315,109 @@
     
     .gua-name {
       font-size: 42px;
-      color: var(--accent-light);
-      text-shadow: 0 0 30px rgba(232, 197, 71, 0.4);
+      color: var(--gold-strong);
+      text-shadow: 0 0 30px rgba(198, 154, 75, 0.38);
     }
     
     .gua-symbol {
       font-size: 28px;
       letter-spacing: 6px;
       margin-top: 8px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
     }
     
     .section {
       margin-bottom: 14px;
       padding: 14px;
-      background: rgba(0,0,0,0.2);
+      background: rgba(8, 8, 8, 0.28);
+      border: 1px solid rgba(198, 154, 75, 0.16);
       border-radius: 12px;
     }
     
     .section-label {
       font-size: 12px;
-      color: var(--accent);
+      color: var(--gold);
       margin-bottom: 8px;
     }
     
     .ancient { font-size: 15px; line-height: 1.6; }
-    .modern { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+    .modern { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
     
+    /* 爻列表 */
     .yao-list { display: flex; flex-direction: column; gap: 8px; }
     
     .yao-item {
       padding: 10px;
-      background: rgba(0,0,0,0.15);
+      background: rgba(0, 0, 0, 0.2);
       border-radius: 8px;
-      border-left: 3px solid rgba(201, 162, 39, 0.3);
+      border-left: 3px solid rgba(198, 154, 75, 0.3);
     }
     
     .yao-item.active {
-      border-left-color: var(--accent);
-      background: rgba(201, 162, 39, 0.08);
+      border-left-color: var(--gold-strong);
+      background: rgba(198, 154, 75, 0.16);
     }
     
     .yao-pos {
       font-size: 11px;
-      color: var(--accent);
+      color: var(--gold);
     }
     
+    /* 解读 */
     .interp-item { margin-bottom: 12px; }
     .interp-item:last-child { margin-bottom: 0; }
-    .interp-label { font-size: 12px; color: var(--accent); margin-bottom: 4px; }
-    .interp-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .interp-label { font-size: 12px; color: var(--gold); margin-bottom: 4px; }
+    .interp-text { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
     
+    /* 分享 */
     .share-btn {
       width: 100%;
-      height: 40px;
-      background: linear-gradient(135deg, #4CAF50, #45a049);
+      height: 42px;
+      background: linear-gradient(135deg, var(--teal), #4c8d85);
       border: none;
-      border-radius: 20px;
+      border-radius: 22px;
       color: #fff;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
-      margin-top: 12px;
+      margin-top: 14px;
     }
     
+    /* 用户栏 */
     .user-bar {
       text-align: center;
       margin-top: 16px;
     }
     
+    .user-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+    
     .user-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(198, 154, 75, 0.08);
+      border: 1px solid rgba(198, 154, 75, 0.25);
       color: #fff;
-      padding: 6px 20px;
-      border-radius: 15px;
+      padding: 7px 18px;
+      border-radius: 18px;
       font-size: 12px;
     }
     
-    .user-name { color: var(--accent); margin-right: 8px; }
+    .user-name { color: var(--gold-strong); margin-right: 8px; }
+    
+    .invite-link {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      word-break: break-all;
+    }
     
     .points-tag {
       font-size: 12px;
-      color: #e8c547;
-      background: rgba(232, 197, 71, 0.15);
+      color: var(--gold-strong);
+      background: rgba(198, 154, 75, 0.16);
       padding: 4px 10px;
       border-radius: 12px;
     }
@@ -387,32 +433,37 @@
       margin-left: 8px;
     }
     
+    /* 浮动按钮 */
     .float-btn {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      right: 22px;
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #8c652f, var(--gold-strong));
+      border: 1px solid rgba(255, 236, 201, 0.22);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+      font-size: 22px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
       cursor: pointer;
       z-index: 100;
     }
+
+    .float-btn.history-btn { bottom: 24px; }
+    .float-btn.feedback-btn { bottom: 86px; }
     
     .float-btn.show { display: flex; }
     
+    /* 弹窗 */
     .modal {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.85);
+      background: rgba(5, 4, 4, 0.84);
       z-index: 1000;
       display: none;
       align-items: center;
@@ -424,13 +475,13 @@
     .modal.show { display: flex; }
     
     .modal-content {
-      background: #1a1a2e;
+      background: linear-gradient(180deg, #211813 0%, #17120f 100%);
       border-radius: 20px;
       width: 100%;
       max-width: 340px;
       max-height: 75vh;
       overflow-y: auto;
-      border: 1px solid rgba(201, 162, 39, 0.2);
+      border: 1px solid var(--border-soft);
     }
     
     .modal-header {
@@ -443,7 +494,7 @@
     
     .modal-header h3 {
       font-size: 16px;
-      color: var(--accent);
+      color: var(--gold-strong);
     }
     
     .modal-close {
@@ -453,17 +504,72 @@
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
       cursor: pointer;
     }
     
-    .modal-body { padding: 20px; }
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    #historyModal .modal-body,
+    #feedbackHistoryModal .modal-body {
+      max-height: min(58vh, 520px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #d8b36a rgba(15, 12, 10, 0.45);
+    }
+
+    #historyModal .modal-body::-webkit-scrollbar,
+    #feedbackHistoryModal .modal-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #historyModal .modal-body::-webkit-scrollbar-track,
+    #feedbackHistoryModal .modal-body::-webkit-scrollbar-track {
+      background: rgba(15, 12, 10, 0.45);
+      border-radius: 999px;
+    }
+
+    #historyModal .modal-body::-webkit-scrollbar-thumb,
+    #feedbackHistoryModal .modal-body::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #d8b36a 0%, #b7852f 100%);
+      border-radius: 999px;
+      border: 1px solid rgba(15, 12, 10, 0.35);
+    }
+
+    /* 滚动条美化 */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #c89a45 rgba(15, 12, 10, 0.45);
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 12, 10, 0.45);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #d8b36a 0%, #b7852f 100%);
+      border-radius: 999px;
+      border: 1px solid rgba(15, 12, 10, 0.35);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #f3d18f 0%, #d9a649 100%);
+    }
     
     .form-input {
       width: 100%;
       height: 42px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(7, 6, 6, 0.45);
+      border: 1px solid rgba(198, 154, 75, 0.2);
       border-radius: 10px;
       padding: 0 14px;
       color: #fff;
@@ -471,36 +577,44 @@
       margin-bottom: 12px;
     }
     
-    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+    .form-input::placeholder { color: rgba(255,255,255,0.32); }
     
     .link-text {
       text-align: center;
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--ink-soft);
     }
     
-    .link-text a { color: var(--accent); text-decoration: none; }
+    .link-text a { color: var(--gold-strong); text-decoration: none; }
     
+    /* 历史 */
     .history-list { display: flex; flex-direction: column; gap: 10px; }
     
     .history-item {
       padding: 12px;
-      background: rgba(0,0,0,0.2);
+      background: rgba(8, 8, 8, 0.28);
       border-radius: 10px;
       cursor: pointer;
       border-left: 3px solid transparent;
     }
     
     .history-item:hover {
-      background: rgba(201, 162, 39, 0.1);
-      border-left-color: var(--accent);
+      background: rgba(198, 154, 75, 0.14);
+      border-left-color: var(--gold);
     }
     
-    .history-date { font-size: 11px; color: var(--text-secondary); }
-    .history-gua { font-size: 16px; color: var(--accent-light); margin-top: 2px; }
+    .history-date { font-size: 11px; color: var(--ink-soft); }
+    .history-gua { font-size: 16px; color: var(--gold-strong); margin-top: 2px; }
+    .history-ai {
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(248, 241, 227, 0.78);
+      line-height: 1.6;
+    }
     
-    .empty-text { text-align: center; color: var(--text-secondary); padding: 30px; font-size: 13px; }
+    .empty-text { text-align: center; color: var(--ink-soft); padding: 30px; font-size: 13px; }
     
+    /* 充值 */
     .recharge-balance {
       text-align: center;
       font-size: 16px;
@@ -548,23 +662,421 @@
       color: var(--text-secondary);
       margin-top: 16px;
     }
+    
+    /* 反馈按钮 */
+    .feedback-btn {
+      opacity: 0.9;
+    }
+    
+    .feedback-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    /* 反馈类型选择 */
+    .feedback-types {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    
+    .feedback-type {
+      flex: 1;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .feedback-type:hover {
+      background: rgba(201, 162, 39, 0.1);
+      border-color: rgba(201, 162, 39, 0.3);
+    }
+    
+    .feedback-type.active {
+      background: rgba(201, 162, 39, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    
+    /* 反馈文本框 */
+    .form-textarea {
+      width: 100%;
+      min-height: 100px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 14px;
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+    
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    
+    .form-textarea::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+    
+    .feedback-count {
+      text-align: right;
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    
+    /* 截图上传 */
+    .feedback-screenshot {
+      margin: 12px 0;
+    }
+    
+    .screenshot-btn {
+      width: 100%;
+      height: 40px;
+      background: rgba(255,255,255,0.05);
+      border: 1px dashed rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .screenshot-btn:hover {
+      background: rgba(201, 162, 39, 0.1);
+      border-color: rgba(201, 162, 39, 0.3);
+      color: var(--accent);
+    }
+    
+    .screenshot-preview {
+      position: relative;
+      margin-top: 8px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .screenshot-preview img {
+      width: 100%;
+      max-height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .screenshot-remove {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      background: rgba(0,0,0,0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    /* 反馈历史链接 */
+    .feedback-history-link {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 12px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    
+    .feedback-history-link:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--accent);
+    }
+    
+    /* 反馈历史列表 */
+    .feedback-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .feedback-item {
+      padding: 12px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      border-left: 3px solid rgba(201, 162, 39, 0.3);
+    }
+    
+    .feedback-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    
+    .feedback-item-type {
+      font-size: 11px;
+      padding: 2px 8px;
+      background: rgba(201, 162, 39, 0.15);
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    
+    .feedback-item-status {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    
+    .feedback-item-content {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .feedback-item-time {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+    
+    .feedback-item-reply {
+      margin-top: 8px;
+      padding: 8px;
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 6px;
+      font-size: 12px;
+      color: #81c784;
+    }
+    
+    /* AI解读 */
+    .ai-btn {
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(135deg, #2e6f67, #4b8a80);
+      border: none;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    
+    .ai-btn:hover {
+      opacity: 0.9;
+    }
+    
+    .ai-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .ai-interpretation {
+      padding: 15px;
+      background: rgba(47, 109, 103, 0.12);
+      border-radius: 12px;
+      margin-top: 12px;
+      border-left: 3px solid var(--teal);
+    }
+    
+    .ai-interpretation h3 {
+      font-size: 14px;
+      color: var(--gold-strong);
+      margin-bottom: 8px;
+    }
+    
+    .ai-interpretation h4 {
+      font-size: 13px;
+      color: var(--gold);
+      margin: 10px 0 5px;
+    }
+    
+    .ai-interpretation p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    
+    .ai-interpretation li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-left: 15px;
+      list-style-type: disc;
+    }
+    
+    .ai-interpretation strong {
+      color: var(--gold-strong);
+    }
+    
+    .ai-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 20px;
+      color: var(--text-secondary);
+    }
+    
+    .ai-loading::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--teal);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(198, 154, 75, 0.16);
+      color: var(--gold-strong);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      margin-left: 6px;
+    }
+    
+    .ai-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(198, 154, 75, 0.36);
+    }
+    
+    /* 设置表单 */
+    .form-select {
+      width: 100%;
+      height: 42px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 0 14px;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 12px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+    
+    .form-select option {
+      background: #1a1a2e;
+      color: #fff;
+    }
+    
+    .form-hint {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: -8px;
+      margin-bottom: 12px;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    
+    .form-row .form-input {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .history-actions {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .history-sync-tip {
+      font-size: 12px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 18px 14px 86px;
+      }
+
+      .title {
+        font-size: 30px;
+      }
+
+      .intro-card {
+        padding: 14px;
+      }
+
+      .card {
+        padding: 18px 16px;
+      }
+
+      .btn {
+        letter-spacing: 0.1em;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- 背景 -->
   <div class="bg" id="bg"></div>
 
   <div class="container">
+    <!-- 头部 -->
     <header class="header">
       <div class="logo">
-        <div class="taiji"></div>
+        <img class="logo-icon" src="icons/logo-bagua.svg" alt="易经八卦太极图标">
       </div>
       <h1 class="title">易经占卜</h1>
       <p class="subtitle">YIJING FORTUNE</p>
       
+      <!-- 傅佩荣简介 -->
       <div class="intro-card">
-        <div class="intro-title">📜 先天起卦法</div>
+        <div class="intro-title">先天起卦法 · 学术依据</div>
         <div class="intro-text">
-          著名国学大师傅佩荣先生推崇此法：以三个随机数（100-999）起卦，取其除以8之余数得上下卦，除以6之余数得动爻。此法完全凭随机数决定，排除人为意念干扰，最能反映天道自然之理。
+          本应用采用傅佩荣教授长期讲授与推广的先天起卦思路：以三个随机数（100-999）起卦，前两数取八卦之象，第三数定动爻。该方法强调“随机即天机”，尽可能排除主观预设，更贴近《易经》以象数观变的核心精神。
+        </div>
+        <div class="intro-list">
+          <div class="intro-list-item">方法公开、公式清晰，具备可复核性与教学一致性。</div>
+          <div class="intro-list-item">以象、数、理三层并进，兼顾古典义理与现代思维。</div>
+          <div class="intro-list-item">适合个人决策反思，不替代医学、法律与投资专业建议。</div>
+        </div>
+      </div>
+
+      <div class="intro-card">
+        <div class="intro-title">傅佩荣教授 · 权威简介</div>
+        <div class="intro-list">
+          <div class="intro-list-item">学历背景：台湾大学哲学系毕业，后赴耶鲁大学深造并获哲学博士学位。</div>
+          <div class="intro-list-item">学术成就：长期任教于台湾大学并曾任哲学系主任，持续推动中国哲学与《易经》现代诠释。</div>
+          <div class="intro-list-item">著作与课程：出版《易经》导读及中国哲学相关作品，并通过公开课程与讲座广泛普及国学。</div>
+          <div class="intro-list-item">社会影响：以严谨学术训练连接传统经典与当代生活，提升大众对《易经》理性学习与实践的接受度。</div>
         </div>
       </div>
       
@@ -573,6 +1085,7 @@
       </div>
     </header>
 
+    <!-- 今日运势 -->
     <section class="card">
       <div class="daily-header">
         <div class="daily-title"><span>✦</span> 今日运势</div>
@@ -584,6 +1097,7 @@
       </div>
     </section>
 
+    <!-- 起卦 -->
     <section class="card">
       <div class="section-title">起 卦</div>
       <div class="input-row">
@@ -606,6 +1120,7 @@
       </div>
     </section>
 
+    <!-- 结果 -->
     <section class="card result" id="result">
       <div class="result-header">
         <div class="gua-name" id="guaName">—</div>
@@ -632,15 +1147,30 @@
         <div id="interpContent"></div>
       </div>
       
-      <button class="share-btn" onclick="doShare()">📤 分享卦象</button>
+      <!-- AI智能解读区域 -->
+      <div class="ai-section" id="aiSection" style="display:none;">
+        <div class="section-label">🤖 AI智能解读<span class="ai-badge">深度</span></div>
+        <div id="aiContent"></div>
+      </div>
+      
+      <button class="ai-btn" id="aiBtn" onclick="getAIInterpretation()">
+        <span>🤖</span> AI智能解读
+      </button>
+      
+      <button class="share-btn" onclick="doShare()" title="分享给好友注册后，你可获得5积分奖励">📤 分享卦象 <span style="font-size:11px;opacity:0.8;">(分享得5积分)</span></button>
       <div class="btn-row" style="margin-top: 10px;">
         <button class="btn btn-secondary" onclick="doReset()">重新起卦</button>
       </div>
     </section>
   </div>
 
-  <div class="float-btn show" id="historyBtn" onclick="openHistory()">📜</div>
+  <!-- 历史按钮 -->
+  <div class="float-btn history-btn show" id="historyBtn" onclick="openHistory()">📜</div>
 
+  <!-- 反馈按钮 -->
+  <div class="float-btn feedback-btn" id="feedbackBtn" onclick="openFeedback()">💬</div>
+
+  <!-- 登录弹窗 -->
   <div class="modal" id="loginModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -658,6 +1188,7 @@
     </div>
   </div>
 
+  <!-- 注册弹窗 -->
   <div class="modal" id="registerModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -673,6 +1204,7 @@
     </div>
   </div>
 
+  <!-- 历史弹窗 -->
   <div class="modal" id="historyModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -680,11 +1212,18 @@
         <div class="modal-close" onclick="closeModal('historyModal')">×</div>
       </div>
       <div class="modal-body">
+        <div class="history-actions">
+          <button class="btn btn-secondary" onclick="syncHistoryFromCloud()" style="height:36px;font-size:12px;">同步云端记录</button>
+        </div>
         <div id="historyList"></div>
+        <div class="history-sync-tip">
+          说明：当前默认本机 localStorage 存储；登录后可将历史写入 Supabase，并在此手动拉取到本机，实现多端同步。
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- 历史详情弹窗 -->
   <div class="modal" id="historyDetailModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -695,6 +1234,7 @@
     </div>
   </div>
 
+  <!-- 充值弹窗 -->
   <div class="modal" id="rechargeModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -722,6 +1262,1326 @@
     </div>
   </div>
 
-  <script type="module" src="/src/main.js"></script>
+  <!-- AI设置弹窗 -->
+  <div class="modal" id="aiSettingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>🤖 AI解读设置</h3>
+        <div class="modal-close" onclick="closeModal('aiSettingsModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <select id="aiProvider" class="form-select" onchange="onProviderChange()">
+          <option value="deepseek">DeepSeek</option>
+          <option value="qwen">通义千问 (阿里云)</option>
+          <option value="openai">OpenAI</option>
+          <option value="custom">自定义API</option>
+        </select>
+        
+        <input type="password" id="aiApiKey" class="form-input" placeholder="API密钥">
+        <p class="form-hint">
+          <span id="apiKeyHint">获取密钥：<a href="https://platform.deepseek.com/" target="_blank" style="color:var(--accent);">DeepSeek开放平台</a></span>
+        </p>
+        
+        <input type="text" id="aiEndpoint" class="form-input" placeholder="API端点（自定义时需要）" style="display:none;">
+        <input type="text" id="aiModel" class="form-input" placeholder="模型名称（自定义时需要）" style="display:none;">
+        
+        <div class="btn-row" style="margin-top:16px;">
+          <button class="btn btn-secondary" onclick="testAIConnection()">测试连接</button>
+          <button class="btn btn-primary" onclick="saveAISettings()">保存设置</button>
+        </div>
+        
+        <div style="margin-top:16px;padding:12px;background:rgba(47,109,103,0.12);border-radius:10px;font-size:12px;color:var(--text-secondary);line-height:1.6;">
+          <strong style="color:var(--accent-light);">💡 使用说明：</strong><br>
+          • AI解读每次消耗3积分<br>
+          • 解读结果会缓存7天<br>
+          • 支持多种AI服务商<br>
+          • 您的占卜数据不会被发送到第三方
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 反馈弹窗 -->
+  <div class="modal" id="feedbackModal">
+    <div class="modal-content" style="max-width: 360px;">
+      <div class="modal-header">
+        <h3>💬 用户反馈</h3>
+        <div class="modal-close" onclick="closeModal('feedbackModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <!-- 反馈类型 -->
+        <div class="feedback-types" id="feedbackTypes">
+          <div class="feedback-type active" data-type="bug" onclick="selectFeedbackType(this)">🐛 Bug</div>
+          <div class="feedback-type" data-type="suggest" onclick="selectFeedbackType(this)">💡 建议</div>
+          <div class="feedback-type" data-type="other" onclick="selectFeedbackType(this)">📝 其他</div>
+        </div>
+        
+        <!-- 反馈内容 -->
+        <textarea id="feedbackContent" class="form-textarea" placeholder="请描述您遇到的问题或建议...&#10;&#10;例如：&#10;- 点击某按钮无反应&#10;- 希望增加某功能&#10;- 其他想法和建议" rows="5" maxlength="1000"></textarea>
+        <div class="feedback-count"><span id="feedbackCharCount">0</span>/1000</div>
+        
+        <!-- 截图上传 -->
+        <div class="feedback-screenshot">
+          <button class="screenshot-btn" onclick="captureAndUpload()">
+            📷 添加截图（可选）
+          </button>
+          <div id="screenshotPreview" class="screenshot-preview" style="display:none;">
+            <img id="screenshotImg" src="" alt="截图预览">
+            <div class="screenshot-remove" onclick="removeScreenshot()">×</div>
+          </div>
+        </div>
+        
+        <!-- 联系方式 -->
+        <input type="text" id="feedbackContact" class="form-input" placeholder="联系方式（可选，方便我们回复您）">
+        
+        <!-- 提交按钮 -->
+        <button class="btn btn-primary" onclick="submitFeedback()" style="width:100%; margin-top:12px;" id="feedbackSubmitBtn">提交反馈</button>
+        
+        <!-- 反馈历史入口 -->
+        <div class="feedback-history-link" onclick="openFeedbackHistory()">
+          📋 查看我的反馈历史
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 反馈历史弹窗 -->
+  <div class="modal" id="feedbackHistoryModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>📋 反馈历史</h3>
+        <div class="modal-close" onclick="closeModal('feedbackHistoryModal')">×</div>
+      </div>
+      <div class="modal-body">
+        <div id="feedbackHistoryList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="src/js/feedback.js"></script>
+  <script>
+    // 生成背景
+    (function(){
+      const bg = document.getElementById('bg');
+      for(let i=0;i<60;i++){
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = Math.random()*100 + '%';
+        s.style.animationDelay = Math.random()*3 + 's';
+        bg.appendChild(s);
+      }
+    })();
+    
+    // 全局函数
+    function $(id) { return document.getElementById(id); }
+    
+    function openLogin() { $('loginModal').classList.add('show'); }
+    function openRegister() { $('registerModal').classList.add('show'); }
+    function openHistory() {
+      if (!requireLogin('查看历史记录')) return;
+      showHistoryList();
+      $('historyModal').classList.add('show');
+    }
+    function closeModal(id) { 
+      $(id).classList.remove('show'); 
+    }
+    
+    // 点击空白处关闭弹窗
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('show');
+        }
+      });
+    });
+    
+    let isLogin = true;
+    function toggleAuth() {
+      closeModal('loginModal');
+      if(isLogin) { openRegister(); } else { openLogin(); }
+      isLogin = !isLogin;
+    }
+    
+    // 用户系统
+    let currentUser = null;
+    // 检查登录状态并提示
+    function friendlyTip(message) {
+      alert(message);
+    }
+
+    function requireLogin(actionName) {
+      if(!currentUser) {
+        friendlyTip(`请先登录后再${actionName}，登录后我会继续为你服务。`);
+        openLogin();
+        return false;
+      }
+      return true;
+    }
+
+    const HISTORY_KEY = 'yijing_history';
+    const POINTS_KEY = 'yijing_points';
+    const PENDING_REF_KEY = 'yijing_pending_ref';
+    const DEFAULT_POINTS = 10; // 新用户默认赠送10积分
+    const REFERRAL_BONUS_POINTS = 5;
+
+    let currentHistoryId = null;
+    let currentCloudHistoryId = null;
+    
+    function getPoints() {
+      return parseInt(localStorage.getItem(POINTS_KEY)) || 0;
+    }
+    
+    function setPoints(n) {
+      localStorage.setItem(POINTS_KEY, n);
+    }
+    
+    function initUser() {
+      const u = localStorage.getItem('yijing_user');
+      if(u) {
+        currentUser = JSON.parse(u);
+        updateUserUI();
+      }
+      // 如果没有积分记录，初始化
+      if(!localStorage.getItem(POINTS_KEY)) {
+        setPoints(DEFAULT_POINTS);
+      }
+      updatePointsUI();
+    }
+    
+    function updatePointsUI() {
+      const pts = getPoints();
+      const ptsEl = $('userPoints');
+      if(ptsEl) {
+        ptsEl.innerHTML = '<span onclick="showRecharge()" style="cursor:pointer;">💎 ' + pts + ' 积分</span>';
+      }
+    }
+    
+    function updateUserUI() {
+      if(currentUser) {
+        const link = getShareLink();
+        $('userBar').innerHTML = '<div class="user-meta"><span class="user-name">'+currentUser.username+'</span><span id="userPoints" class="points-tag"></span><button class="user-btn" onclick="shareInviteLink()">邀请得分</button><button class="user-btn" onclick="logout()">退出</button></div>' +
+          (link ? '<div class="invite-link">邀请链接：' + link + '</div>' : '');
+        updatePointsUI();
+      } else {
+        // 未登录时不显示积分
+        $('userBar').innerHTML = '<button class="user-btn" id="loginBtn" onclick="openLogin()">登录</button>';
+      }
+    }
+    
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('yijing_user');
+      updateUserUI();
+    }
+    
+    // 充值
+    function showRecharge() {
+      $('rechargeBalance').textContent = getPoints();
+      $('rechargeModal').classList.add('show');
+    }
+    
+    function doRecharge(points, price) {
+      // 演示版本：直接增加积分
+      // 实际版本：调用微信支付API
+      const current = getPoints();
+      setPoints(current + points);
+      updatePointsUI();
+      $('rechargeBalance').textContent = getPoints();
+      alert('充值成功！+' + points + '积分');
+    }
+    
+    function getLocalUsers() {
+      try {
+        return JSON.parse(localStorage.getItem('yijing_local_users') || '[]');
+      } catch {
+        return [];
+      }
+    }
+    
+    function getPendingInviteCode() {
+      return localStorage.getItem(PENDING_REF_KEY) || '';
+    }
+
+    function extractInviteCodeFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const ref = (params.get('ref') || '').trim();
+      return ref;
+    }
+
+    function initReferralFromUrl() {
+      const ref = extractInviteCodeFromUrl();
+      if (!ref) return;
+      localStorage.setItem(PENDING_REF_KEY, ref);
+      friendlyTip('已记录邀请信息，注册成功后将给邀请者赠送 5 积分。');
+    }
+
+    function generateInviteCode(seed = '') {
+      const cleaned = String(seed).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4) || 'YJ';
+      const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
+      return `${cleaned}${suffix}`;
+    }
+
+    async function ensureUniqueInviteCode(seed = '') {
+      for (let i = 0; i < 8; i++) {
+        const code = generateInviteCode(seed);
+        const exists = await queryDB('users', `invite_code=eq.${encodeURIComponent(code)}&select=id&limit=1`);
+        if (Array.isArray(exists) && exists.length === 0) return code;
+      }
+      return `${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+    }
+
+    function getShareLink() {
+      if (!currentUser?.invite_code) return '';
+      return `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(currentUser.invite_code)}`;
+    }
+
+    async function shareInviteLink() {
+      if (!currentUser?.invite_code) {
+        friendlyTip('请先登录后再分享邀请链接。');
+        return;
+      }
+      const link = getShareLink();
+      const text = `我在用易经占卜，送你注册链接：${link}`;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: '易经占卜邀请', text });
+          return;
+        } catch (_) {}
+      }
+      copyText(text);
+    }
+
+    // 登录注册
+    async function doLogin() {
+      const u = $('username').value.trim();
+      const p = $('password').value;
+      if(!u || !p) { friendlyTip('请输入用户名和密码。'); return; }
+      
+      const rs = await queryDB('users', 'username=eq.' + encodeURIComponent(u) + '&select=id,username,password,invite_code,points&limit=1');
+      if (Array.isArray(rs)) {
+        if(!rs.length || rs[0].password !== btoa(p)) {
+          friendlyTip('用户名或密码不正确，请再试一次。');
+          return;
+        }
+        currentUser = {
+          id: rs[0].id,
+          username: rs[0].username || u,
+          invite_code: rs[0].invite_code || ''
+        };
+        if (typeof rs[0].points === 'number') {
+          setPoints(rs[0].points);
+        }
+        if (!currentUser.invite_code) {
+          const inviteCode = await ensureUniqueInviteCode(currentUser.username);
+          const updated = await updateDB('users', `id=eq.${currentUser.id}`, { invite_code: inviteCode });
+          if (updated) currentUser.invite_code = inviteCode;
+        }
+      } else {
+        // Supabase 不可用时使用本地模式兜底
+        const localUsers = getLocalUsers();
+        const user = localUsers.find(item => item.username === u && item.password === btoa(p));
+        if (!user) {
+          friendlyTip('当前网络连接不稳定，且未找到本地账号。请稍后重试或先注册。');
+          return;
+        }
+        currentUser = {id:user.id, username:u, invite_code:user.invite_code || ''};
+        friendlyTip('已使用本地模式登录，云端同步将在网络恢复后可用。');
+      }
+
+      localStorage.setItem('yijing_user', JSON.stringify(currentUser));
+      updateUserUI();
+      closeModal('loginModal');
+      $('username').value = '';
+      $('password').value = '';
+    }
+    
+    async function doRegister() {
+      const u = $('regUser').value.trim();
+      const p = $('regPass').value;
+      const p2 = $('regPass2').value;
+      if(!u || !p) { friendlyTip('请输入用户名和密码。'); return; }
+      if(p !== p2) { friendlyTip('两次密码不一致，请确认后重试。'); return; }
+      if(p.length < 6) { friendlyTip('密码至少需要 6 位。'); return; }
+
+      const pendingRef = getPendingInviteCode();
+      let inviterId = null;
+      if (pendingRef) {
+        const inviterRows = await queryDB('users', `invite_code=eq.${encodeURIComponent(pendingRef)}&select=id&limit=1`);
+        if (Array.isArray(inviterRows) && inviterRows.length) {
+          inviterId = inviterRows[0].id;
+        }
+      }
+
+      const inviteCode = await ensureUniqueInviteCode(u);
+      const createdUser = await insertDB('users', {
+        username: u,
+        password: btoa(p),
+        invite_code: inviteCode,
+        invited_by: inviterId,
+        points: DEFAULT_POINTS
+      }, 'id,username,invite_code,invited_by');
+      if (createdUser) {
+        if (inviterId) {
+          const inviterRows = await queryDB('users', `id=eq.${inviterId}&select=id,points&limit=1`);
+          if (Array.isArray(inviterRows) && inviterRows.length) {
+            const newPoints = (parseInt(inviterRows[0].points, 10) || 0) + REFERRAL_BONUS_POINTS;
+            await updateDB('users', `id=eq.${inviterId}`, { points: newPoints });
+          }
+          localStorage.removeItem(PENDING_REF_KEY);
+        }
+        friendlyTip(inviterId ? '注册成功，邀请者已获得 5 积分奖励，请登录。' : '注册成功，请登录。');
+        closeModal('registerModal');
+        openLogin();
+        return;
+      }
+
+      // 云端失败时，本地模式兜底
+      const localUsers = getLocalUsers();
+      if(localUsers.find(u2 => u2.username === u)) {
+        friendlyTip('用户名已存在，请更换后再试。');
+        return;
+      }
+      const newUser = {id: 'local_' + Date.now(), username: u, password: btoa(p), invite_code: generateInviteCode(u)};
+      localUsers.push(newUser);
+      localStorage.setItem('yijing_local_users', JSON.stringify(localUsers));
+      friendlyTip('已在本地模式注册成功，你现在可以直接登录。');
+      closeModal('registerModal');
+      openLogin();
+    }
+    
+    // 数据库 - 使用环境变量
+    const DB_URL = import.meta.env.VITE_SUPABASE_URL || '';
+    const DB_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+    async function dbRequest(path, options = {}) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+      try {
+        const response = await fetch(DB_URL + path, {
+          ...options,
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': DB_KEY,
+            'Authorization': 'Bearer ' + DB_KEY,
+            ...(options.headers || {})
+          },
+          signal: controller.signal
+        });
+
+        const text = await response.text();
+        const payload = text ? JSON.parse(text) : null;
+        return {
+          ok: response.ok,
+          status: response.status,
+          data: payload,
+          error: response.ok ? null : (payload?.message || payload?.hint || payload?.details || text || '请求失败')
+        };
+      } catch (error) {
+        return {
+          ok: false,
+          status: 0,
+          data: null,
+          error: error.name === 'AbortError' ? '请求超时，请检查网络后重试' : (error.message || '网络异常')
+        };
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+    
+    async function saveDB(table, data) {
+      const result = await dbRequest('/rest/v1/' + table, {
+        method:'POST',
+        headers: { Prefer: 'return=minimal' },
+        body: JSON.stringify(data)
+      });
+      if (!result.ok) {
+        console.error('保存数据失败:', table, result.status, result.error);
+      }
+      return result.ok;
+    }
+
+    async function insertDB(table, data, select = '*') {
+      const result = await dbRequest(`/rest/v1/${table}?select=${encodeURIComponent(select)}`, {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify(data)
+      });
+      if (!result.ok || !Array.isArray(result.data) || !result.data.length) {
+        console.error('插入数据失败:', table, result.status, result.error);
+        return null;
+      }
+      return result.data[0];
+    }
+    
+    async function queryDB(table, filter) {
+      const query = filter ? ('?' + filter) : '';
+      const result = await dbRequest('/rest/v1/' + table + query, { method: 'GET' });
+      if (!result.ok) {
+        console.error('查询数据失败:', table, result.status, result.error);
+        return null;
+      }
+      return Array.isArray(result.data) ? result.data : [];
+    }
+
+    async function updateDB(table, filter, data) {
+      const result = await dbRequest(`/rest/v1/${table}?${filter}`, {
+        method: 'PATCH',
+        headers: { Prefer: 'return=minimal' },
+        body: JSON.stringify(data)
+      });
+      if (!result.ok) {
+        console.error('更新数据失败:', table, result.status, result.error);
+      }
+      return result.ok;
+    }
+
+    async function checkSupabaseConnection() {
+      const result = await dbRequest('/rest/v1/users?select=id&limit=1', { method: 'GET' });
+      if (!result.ok) {
+        console.warn('Supabase连接检查失败:', result.error);
+        return false;
+      }
+      return true;
+    }
+
+    // 兼容 feedback 模块对 User/DB/APP_CONFIG 的引用
+    window.User = window.User || {};
+    Object.defineProperty(window.User, 'current', {
+      get() { return currentUser; },
+      configurable: true
+    });
+    window.DB = {
+      save: saveDB,
+      query: queryDB,
+      update: updateDB
+    };
+    window.APP_CONFIG = {
+      SUPABASE_URL: DB_URL,
+      SUPABASE_ANON_KEY: DB_KEY
+    };
+    
+    function escapeHtml(text = '') {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatAIText(text = '') {
+      return escapeHtml(text)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/###\s*(.+)/g, '<h4>$1</h4>')
+        .replace(/##\s*(.+)/g, '<h3>$1</h3>')
+        .replace(/^\d+\.\s*(.+)$/gm, '<li>$1</li>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+    }
+
+    function updateCurrentHistoryAI(aiText) {
+      if (!currentHistoryId) return;
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      const index = list.findIndex(item => String(item.id) === String(currentHistoryId));
+      if (index === -1) return;
+      list[index].ai_interpretation = aiText;
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+
+      if (currentUser) {
+        if (currentCloudHistoryId) {
+          updateDB('history', `id=eq.${currentCloudHistoryId}`, { ai_interpretation: aiText });
+        } else {
+          updateDB('history', `user_id=eq.${currentUser.id}&hexagram_id=eq.${list[index].hex_id}`, { ai_interpretation: aiText });
+        }
+      }
+    }
+
+    // 历史记录
+    async function saveHistory(hex) {
+      const item = {
+        id: Date.now(),
+        hex_id: hex.id,
+        hex_name: hex.name,
+        hex_symbol: getSymbol(hex.id),
+        time: new Date().toISOString(),
+        ai_interpretation: null,
+        cloud_id: null
+      };
+      currentHistoryId = item.id;
+      currentCloudHistoryId = null;
+
+      let list = JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+      list.unshift(item);
+      list = list.slice(0,50);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+      
+      if(currentUser) {
+        const cloudRecord = await insertDB('history', {
+          user_id: currentUser.id,
+          hexagram_id: hex.id,
+          hexagram_name: hex.name,
+          hexagram_symbol: getSymbol(hex.id),
+          ai_interpretation: null
+        }, 'id');
+        if (cloudRecord?.id) {
+          currentCloudHistoryId = cloudRecord.id;
+          list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+          const localIndex = list.findIndex(history => String(history.id) === String(item.id));
+          if (localIndex !== -1) {
+            list[localIndex].cloud_id = cloudRecord.id;
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+          }
+        }
+      }
+    }
+    
+    function getSymbol(id) {
+      const s = ['','☷','☴','☲','☳','☱','☵','☶','☰'];
+      for(let i=1;i<=8;i++){
+        for(let j=1;j<=8;j++){
+          if(i*8+j-8===id) return s[i]+s[j];
+        }
+      }
+      return '☰☷';
+    }
+    
+    function showHistoryList() {
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+      if(!list.length) {
+        $('historyList').innerHTML = '<div class="empty-text">暂无占卜记录</div>';
+        return;
+      }
+      $('historyList').innerHTML = list.map(h => 
+        '<div class="history-item" onclick="showHistoryDetail(\''+encodeURIComponent(String(h.id))+'\','+h.hex_id+',\''+encodeURIComponent(h.hex_name || '')+'\')">'+
+        '<div class="history-date">'+new Date(h.time).toLocaleString('zh-CN')+'</div>'+
+        '<div class="history-gua">'+(h.hex_symbol||'☰☷')+' '+(h.hex_name || '')+'</div>' +
+        (h.ai_interpretation ? '<div class="history-ai">🤖 已保存AI解读</div>' : '') +
+        '</div>'
+      ).join('');
+    }
+
+    async function syncHistoryFromCloud() {
+      if(!requireLogin('同步云端记录')) return;
+
+      const cloudList = await queryDB(
+        'history',
+        'user_id=eq.' + currentUser.id + '&select=id,hexagram_id,hexagram_name,hexagram_symbol,ai_interpretation,created_at&order=created_at.desc&limit=100'
+      );
+
+      if (!Array.isArray(cloudList)) {
+        friendlyTip('云端连接暂时不可用，请稍后再试。');
+        return;
+      }
+
+      if(!cloudList.length) {
+        friendlyTip('云端暂无可同步记录。');
+        return;
+      }
+
+      const localList = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      const mergedMap = new Map();
+
+      localList.forEach(item => {
+        const key = [item.hex_id, item.hex_name, item.time].join('|');
+        mergedMap.set(key, item);
+      });
+
+      cloudList.forEach(item => {
+        const normalized = {
+          id: 'cloud_' + item.id,
+          cloud_id: item.id,
+          hex_id: item.hexagram_id,
+          hex_name: item.hexagram_name,
+          hex_symbol: item.hexagram_symbol || getSymbol(item.hexagram_id),
+          time: item.created_at || new Date().toISOString(),
+          ai_interpretation: item.ai_interpretation || null
+        };
+        const key = [normalized.hex_id, normalized.hex_name, normalized.time].join('|');
+        if(!mergedMap.has(key)) {
+          mergedMap.set(key, normalized);
+        } else if (normalized.ai_interpretation) {
+          const merged = mergedMap.get(key);
+          if (!merged.ai_interpretation) {
+            merged.ai_interpretation = normalized.ai_interpretation;
+            mergedMap.set(key, merged);
+          }
+        }
+      });
+
+      const merged = Array.from(mergedMap.values())
+        .sort((a, b) => new Date(b.time) - new Date(a.time))
+        .slice(0, 100);
+
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(merged));
+      showHistoryList();
+      friendlyTip('同步完成，共载入 ' + cloudList.length + ' 条云端记录。');
+    }
+    
+    function showHistoryDetail(historyId, id, encodedName) {
+      closeModal('historyModal'); // 关闭历史列表
+      const name = decodeURIComponent(encodedName || '');
+      const list = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      const historyItem = list.find(item => String(item.id) === decodeURIComponent(historyId || ''));
+      
+      let content = '';
+      if(typeof getInterp==='function') {
+        const i = getInterp(id,1);
+        content = 
+          '<div class="interp-item"><div class="interp-label">📖 整体运势</div><div class="interp-text">'+i.overall+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💼 事业发展</div><div class="interp-text">'+i.career+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💰 财运</div><div class="interp-text">'+i.fortune+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💕 爱情</div><div class="interp-text">'+i.love+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">'+i.health+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">'+i.change+'</div></div>';
+      }
+
+      if (historyItem?.ai_interpretation) {
+        content += '<div class="interp-item ai-section"><div class="interp-label">🤖 AI智能解读</div><div class="interp-text">' +
+          formatAIText(historyItem.ai_interpretation) +
+          '</div></div>';
+      }
+      
+      $('historyDetailTitle').textContent = getSymbol(id) + ' ' + name;
+      $('historyDetailContent').innerHTML = content || '暂无详情';
+      $('historyDetailModal').classList.add('show');
+    }
+    
+    function closeHistoryDetail() {
+      $('historyDetailModal').classList.remove('show');
+      showHistoryList();
+      $('historyModal').classList.add('show');
+    }
+    
+    // 起卦
+    function doDivination() {
+      // 检查登录状态
+      if(!requireLogin('进行占卜')) return;
+      
+      // 检查积分
+      const pts = getPoints();
+      if(pts < 1) {
+        alert('积分不足！请先充值');
+        showRecharge();
+        return;
+      }
+      
+      if(!window.yijingData || !window.yijingData.length) {
+        alert('数据加载中，请稍等片刻再试');
+        window.loadData();
+        return;
+      }
+      
+      const n1 = parseInt($('num1').value);
+      const n2 = parseInt($('num2').value);
+      const n3 = parseInt($('num3').value);
+      
+      if(isNaN(n1)||isNaN(n2)||isNaN(n3)) { alert('请输入三个数字'); $('num1').focus(); return; }
+      if(n1<100||n1>999||n2<100||n2>999||n3<100||n3>999) { alert('请输入100-999之间的数字'); $('num1').focus(); return; }
+      
+      const xg = (n1%8)||8;
+      const sg = (n2%8)||8;
+      const dy = ((n3-1)%6)+1;
+      
+      const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      // 扣除积分
+      setPoints(pts - 1);
+      updatePointsUI();
+      
+      showResult(hex, xg, sg, dy);
+      saveHistory(hex);
+    }
+    
+    function doRandom() {
+      if(!window.yijingData || !window.yijingData.length) {
+        alert('数据加载中，请稍等片刻再试');
+        window.loadData();
+        return;
+      }
+      
+      $('num1').value = Math.floor(Math.random()*900)+100;
+      $('num2').value = Math.floor(Math.random()*900)+100;
+      $('num3').value = Math.floor(Math.random()*900)+100;
+      doDivination();
+    }
+    
+    function doReset() {
+      $('num1').value = '';
+      $('num2').value = '';
+      $('num3').value = '';
+      $('result').classList.remove('show');
+      $('num1').focus();
+    }
+    
+    // 每日
+    async function doDaily() {
+      // 检查积分
+      const pts = getPoints();
+      if(pts < 1) {
+        alert('积分不足！请先充值');
+        showRecharge();
+        return;
+      }
+      
+      // 等待数据加载
+      if(!window.yijingData || !window.yijingData.length) {
+        await window.loadData();
+        if(!window.yijingData || !window.yijingData.length) {
+          alert('数据加载失败，请刷新页面重试');
+          return;
+        }
+      }
+      
+      const key = 'yijing_daily';
+      const today = new Date().toDateString();
+      const stored = localStorage.getItem(key);
+      
+      if(stored) {
+        const d = JSON.parse(stored);
+        if(d.date === today) {
+          showDaily(d); return;
+        }
+      }
+      
+      const seed = new Date().getFullYear()*10000+(new Date().getMonth()+1)*100+new Date().getDate();
+      const n1 = Math.floor((seed*9301+49297)%233280/233280*900)+100;
+      const n2 = Math.floor((seed*9301+49297*2)%233280/233280*900)+100;
+      const n3 = Math.floor((seed*9301+49297*3)%233280/233280*900)+100;
+      
+      const xg = (n1%8)||8;
+      const sg = (n2%8)||8;
+      const hex = window.yijingData.find(g => g.id === sg*8+xg-8) || window.yijingData[0];
+      
+      // 扣除积分
+      setPoints(pts - 1);
+      updatePointsUI();
+      
+      const d = {date:today, name:hex.name, id:hex.id, symbol:getSymbol(hex.id), brief:hex.gua_ci?hex.gua_ci.substring(0,20):''};
+      localStorage.setItem(key, JSON.stringify(d));
+      showDaily(d);
+    }
+    
+    function showDaily(d) {
+      $('dailyGuaName').textContent = (d.symbol||'☰☷')+' '+(d.name||'—');
+      $('dailyGuaBrief').textContent = d.brief || '点击查看详情';
+      $('dailyResult').classList.add('show');
+    }
+    
+    // 显示结果
+    function showResult(hex, xg, sg, dy) {
+      $('guaName').textContent = hex.name;
+      $('guaSymbol').textContent = getSymbol(hex.id);
+      $('guaCi').textContent = hex.gua_ci;
+      
+      const dyao = hex.yao.find(y => y.position === dy);
+      $('dongYao').textContent = dyao ? '第'+dy+'爻：'+dyao.yao_ci : '';
+      
+      // 爻列表
+      $('yaoList').innerHTML = hex.yao.map(y => 
+        '<div class="yao-item'+(y.position===dy?' active':'')+'">'+
+        '<div class="yao-pos">'+['初','二','三','四','五','上'][y.position-1]+'爻</div>'+
+        '<div class="ancient" style="font-size:13px;">'+y.yao_ci+'</div></div>'
+      ).join('');
+      
+      // 解读
+      if(typeof getInterp==='function') {
+        const i = getInterp(hex.id, dy);
+        $('interpContent').innerHTML = 
+          '<div class="interp-item"><div class="interp-label">📖 整体运势</div><div class="interp-text">'+i.overall+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💼 事业发展</div><div class="interp-text">'+i.career+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💰 财运</div><div class="interp-text">'+i.fortune+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">💕 爱情</div><div class="interp-text">'+i.love+'</div></div>'+
+          '<div class="interp-item"><div class="interp-label">❤️ 健康</div><div class="interp-text">'+i.health+'</div></div>'+
+          (dy ? '<div class="interp-item"><div class="interp-label">⚡ 变爻启示</div><div class="interp-text">'+i.change+'</div></div>' : '');
+      }
+      
+      $('result').classList.add('show');
+      $('result').scrollIntoView({behavior:'smooth'});
+    }
+    
+    // 分享
+    function doShare() {
+      const name = $('guaName').textContent;
+      const ci = $('guaCi').textContent;
+      const symbol = $('guaSymbol').textContent;
+      const dongYao = $('dongYao').textContent;
+      
+      // 获取解读内容
+      let interpText = '';
+      if(typeof getInterp==='function' && window.yijingData) {
+        const hex = window.yijingData.find(g => g.name === name);
+        if(hex) {
+          const i = getInterp(hex.id, 1);
+          interpText = '\n\n📖【整体运势】\n' + i.overall + 
+                       '\n\n💼【事业发展】\n' + i.career + 
+                       '\n\n💰【财运分析】\n' + i.fortune + 
+                       '\n\n💕【爱情运势】\n' + i.love + 
+                       '\n\n❤️【健康提示】\n' + i.health +
+                       '\n\n⚡【变爻启示】\n' + i.change;
+        }
+      }
+      
+      // 添加AI解读结果
+      let aiText = '';
+      if (currentAIInterpretation) {
+        // 清理Markdown格式，转换为纯文本
+        aiText = '\n\n🤖【AI智能解读】\n' + currentAIInterpretation
+          .replace(/\*\*([^*]+)\*\*/g, '$1')
+          .replace(/###+\s*/g, '')
+          .replace(/##\s*/g, '')
+          .replace(/\n{3,}/g, '\n\n');
+      }
+      
+      // 添加邀请链接
+      let inviteText = '';
+      if (currentUser?.invite_code) {
+        const shareLink = getShareLink();
+        inviteText = '\n\n🎁【邀请福利】\n注册即送10积分！通过此链接注册：' + shareLink + '\n(邀请好友注册，你可得5积分奖励)';
+      }
+      
+      const text = '🧬 易经占卜结果\n\n' + symbol + ' ' + name + '\n\n📜【卦辞】\n' + ci + (dongYao ? '\n\n⚡【动爻】\n' + dongYao : '') + interpText + aiText + inviteText + '\n\n🔗 体验更多易经占卜：https://yijing-h5.vercel.app/\n\n——来自 易经占卜小程序';
+      
+      if(navigator.share) {
+        navigator.share({title:'易经占卜 - '+name, text:text}).catch(()=>copyText(text));
+      } else {
+        copyText(text);
+      }
+    }
+    
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(()=>alert('已复制到剪贴板')).catch(()=>alert('复制失败'));
+    }
+    
+    // ==================== AI智能解读 ====================
+    
+    // 存储当前卦象数据供AI解读使用
+    let currentHexagram = null;
+    let currentDongYao = 1;
+    let currentAIInterpretation = null;
+
+    // 内置AI配置（网站提供，用户无需配置）
+    const BUILTIN_AI_CONFIG = {
+      provider: 'deepseek',
+      apiKey: 'sk-bf606612da8d4f01b16ade5070468956',
+      endpoint: 'https://api.deepseek.com/v1/chat/completions',
+      model: 'deepseek-chat',
+      costPoints: 3
+    };
+
+    function ensureAIConfig() {
+      let localConfig = null;
+      try {
+        localConfig = JSON.parse(localStorage.getItem('ai_config') || '{}');
+      } catch {
+        localConfig = {};
+      }
+      return {
+        provider: 'deepseek',
+        apiKey: localConfig?.apiKey || BUILTIN_AI_CONFIG.apiKey,
+        endpoint: localConfig?.endpoint || BUILTIN_AI_CONFIG.endpoint,
+        model: localConfig?.model || BUILTIN_AI_CONFIG.model,
+        costPoints: BUILTIN_AI_CONFIG.costPoints
+      };
+    }
+
+    function initAISettingsUI() {
+      const config = ensureAIConfig();
+      if ($('aiProvider')) $('aiProvider').value = 'deepseek';
+      if ($('aiApiKey')) $('aiApiKey').value = config.apiKey;
+      if ($('aiEndpoint')) $('aiEndpoint').value = config.endpoint;
+      if ($('aiModel')) $('aiModel').value = config.model;
+    }
+    
+    
+    
+    
+    
+    // 保存AI设置
+    function saveAISettings() {
+      const apiKey = $('aiApiKey').value.trim();
+      const endpoint = $('aiEndpoint').value.trim();
+      const model = $('aiModel').value.trim();
+
+      localStorage.setItem('ai_config', JSON.stringify({
+        apiKey: apiKey || BUILTIN_AI_CONFIG.apiKey,
+        endpoint: endpoint || BUILTIN_AI_CONFIG.endpoint,
+        model: model || BUILTIN_AI_CONFIG.model
+      }));
+      friendlyTip('AI 设置已保存。');
+      closeModal('aiSettingsModal');
+    }
+    
+    // 测试AI连接
+    async function testAIConnection() {
+      friendlyTip('正在测试 AI 连接，请稍候。');
+
+      try {
+        const config = ensureAIConfig();
+        const endpoint = config.endpoint;
+        const model = config.model;
+        const apiKey = config.apiKey;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [{ role: 'user', content: '请回复“连接成功”。' }],
+            max_tokens: 50,
+            temperature: 0.3
+          })
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          throw new Error('连接失败：' + response.status + ' ' + error);
+        }
+
+        friendlyTip('AI 连接测试成功。');
+      } catch (e) {
+        friendlyTip('AI 连接测试失败：' + e.message);
+      }
+    }
+    
+    // 获取AI解读
+    async function getAIInterpretation() {
+      // 检查登录状态
+      if(!requireLogin('使用 AI 解读')) return;
+      
+      // 检查是否有当前卦象
+      if (!currentHexagram) {
+        friendlyTip('请先完成一次占卜，再进行 AI 解读。');
+        return;
+      }
+      
+      // 检查AI配置
+      const config = ensureAIConfig();
+      const apiKey = config.apiKey;
+      
+      if (!apiKey) {
+        friendlyTip('AI 服务暂时不可用，请稍后再试。');
+        return;
+      }
+      
+      // 检查积分
+      const pts = getPoints();
+      if (pts < config.costPoints) {
+        friendlyTip(`AI 解读需要 ${config.costPoints} 积分，当前积分不足。`);
+        showRecharge();
+        return;
+      }
+      
+      // 检查缓存
+      const cacheKey = `ai_interp_${currentHexagram.id}_${currentDongYao}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const cacheData = JSON.parse(cached);
+        // 缓存7天有效
+        if (Date.now() - cacheData.time < 7 * 24 * 60 * 60 * 1000) {
+          showAIResult(cacheData.result);
+          return;
+        }
+      }
+
+      // 调用确认
+      const confirmed = confirm(`✨ AI 智能解读将消耗 ${config.costPoints} 积分，是否继续？`);
+      if (!confirmed) {
+        return;
+      }
+      
+      // 显示加载状态
+      const aiBtn = $('aiBtn');
+      const originalText = aiBtn.innerHTML;
+      aiBtn.innerHTML = '<span class="ai-loading"></span> 正在生成解读...';
+      aiBtn.disabled = true;
+      
+      try {
+        const endpoint = config.endpoint;
+        const model = config.model;
+        
+        // 构建提示词
+        const hex = currentHexagram;
+        const dongYaoText = hex.yao?.find(y => y.position === currentDongYao)?.yao_ci || '';
+        const yaoList = hex.yao?.map(y => `${['初','二','三','四','五','上'][y.position-1]}爻：${y.yao_ci}`).join('\\n') || '';
+        
+        const systemPrompt = '你是一位精通易经的智者，擅长用现代语言解读卦象，给人指引和启发。请用温暖、智慧的语言，结合求卦者的具体情况，给出有深度的解读。解读要求：1. 整体基调：温和而不说教，指引而不强制 2. 语言风格：通俗易懂，避免生涩术语 3. 内容深度：结合卦象特点，给出切实可行的建议 4. 尊重隐私：不要追问敏感信息 5. 格式清晰：分点陈述，易于阅读';
+        
+        const userPrompt = `请为我解读以下卦象：
+
+【卦名】${hex.name}
+【卦辞】${hex.gua_ci}
+【动爻】第${currentDongYao}爻：${dongYaoText}
+
+【六爻】
+${yaoList}
+
+请从以下几个方面给出解读：
+1. **核心启示**：这个卦象的核心含义是什么？
+2. **时机判断**：现在是否是行动的好时机？
+3. **具体建议**：针对事业、感情、健康分别有什么建议？
+4. **注意事项**：需要特别留意什么？
+5. **心态指引**：应该保持怎样的心态？
+
+请用温暖而有智慧的语言回答，字数控制在500字以内。`;
+        
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt }
+            ],
+            max_tokens: 1000,
+            temperature: 0.8
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error('API 调用失败：' + response.status + ' - ' + errorText);
+        }
+
+        const data = await response.json();
+        const result = data.choices?.[0]?.message?.content || '解读失败，请重试';
+        
+        // 扣除积分（在成功获取结果后）
+        const currentPts = getPoints();
+        setPoints(currentPts - config.costPoints);
+        updatePointsUI();
+        console.log('AI解读扣除积分:', config.costPoints, '剩余:', getPoints());
+        
+        // 缓存结果
+        localStorage.setItem(cacheKey, JSON.stringify({
+          result: result,
+          time: Date.now()
+        }));
+        
+        // 显示结果
+        showAIResult(result);
+        
+      } catch (e) {
+        friendlyTip('AI 解读失败：' + e.message);
+        console.error(e);
+      } finally {
+        aiBtn.innerHTML = originalText;
+        aiBtn.disabled = false;
+      }
+    }
+    
+    // 显示AI解读结果
+    function showAIResult(text) {
+      // 保存AI解读结果用于分享
+      currentAIInterpretation = text;
+      updateCurrentHistoryAI(text);
+      // 格式化显示
+      let html = formatAIText(text);
+      
+      $('aiContent').innerHTML = `<div class="ai-interpretation"><p>${html}</p></div>`;
+      $('aiSection').style.display = 'block';
+      $('aiSection').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // 修改showResult以保存当前卦象
+    const originalShowResult = showResult;
+    showResult = function(hex, xg, sg, dy) {
+      currentHexagram = hex;
+      currentDongYao = dy;
+      // 清空并隐藏AI解读区域
+      currentAIInterpretation = null;
+      $('aiSection').style.display = 'none';
+      $('aiContent').innerHTML = '';
+      originalShowResult(hex, xg, sg, dy);
+    };
+    
+    // 回车
+    ['num1','num2','num3'].forEach(id => {
+      $(id).addEventListener('keypress', e => { if(e.key==='Enter') doDivination(); });
+    });
+    
+    // ========== 反馈系统 ==========
+    let currentFeedbackType = 'bug';
+    let currentScreenshot = null;
+    
+    function openFeedback() {
+      $('feedbackModal').classList.add('show');
+      // 重置表单
+      $('feedbackContent').value = '';
+      $('feedbackContact').value = '';
+      currentScreenshot = null;
+      $('screenshotPreview').style.display = 'none';
+      updateFeedbackCharCount();
+    }
+    
+    function selectFeedbackType(el) {
+      document.querySelectorAll('.feedback-type').forEach(e => e.classList.remove('active'));
+      el.classList.add('active');
+      currentFeedbackType = el.dataset.type;
+    }
+    
+    function updateFeedbackCharCount() {
+      const content = $('feedbackContent').value || '';
+      $('feedbackCharCount').textContent = content.length;
+    }
+    
+    // 监听输入
+    $('feedbackContent').addEventListener('input', updateFeedbackCharCount);
+    
+    async function captureAndUpload() {
+      // 尝试截图
+      if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+        try {
+          const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+          const video = document.createElement('video');
+          video.srcObject = stream;
+          await video.play();
+          
+          await new Promise(r => setTimeout(r, 100));
+          
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0);
+          
+          stream.getTracks().forEach(t => t.stop());
+          
+          currentScreenshot = canvas.toDataURL('image/png');
+          $('screenshotImg').src = currentScreenshot;
+          $('screenshotPreview').style.display = 'block';
+        } catch (e) {
+          console.log('截图取消或失败', e);
+        }
+      } else {
+        // 创建文件选择
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              currentScreenshot = ev.target.result;
+              $('screenshotImg').src = currentScreenshot;
+              $('screenshotPreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          }
+        };
+        input.click();
+      }
+    }
+    
+    function removeScreenshot() {
+      currentScreenshot = null;
+      $('screenshotPreview').style.display = 'none';
+    }
+    
+    async function submitFeedback() {
+      const content = $('feedbackContent').value.trim();
+      const contact = $('feedbackContact').value.trim();
+      
+      if (!content || content.length < 5) {
+        alert('请输入至少5个字的反馈内容');
+        return;
+      }
+      
+      const btn = $('feedbackSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = '提交中...';
+      
+      try {
+        const result = await Feedback.submit({
+          type: currentFeedbackType,
+          content: content,
+          screenshot: currentScreenshot,
+          contact: contact
+        });
+        
+        if (result.success) {
+          alert(result.message);
+          closeModal('feedbackModal');
+          $('feedbackContent').value = '';
+          $('feedbackContact').value = '';
+          removeScreenshot();
+        } else {
+          alert(result.message);
+        }
+      } catch (e) {
+        console.error('提交反馈失败', e);
+        alert('提交失败，请稍后重试');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '提交反馈';
+      }
+    }
+    
+    async function openFeedbackHistory() {
+      closeModal('feedbackModal');
+      const list = await Feedback.getHistory();
+      
+      if (!list.length) {
+        $('feedbackHistoryList').innerHTML = '<div class="empty-text">暂无反馈记录</div>';
+      } else {
+        const typeLabels = { bug: '🐛 Bug', suggest: '💡 建议', other: '📝 其他' };
+        $('feedbackHistoryList').innerHTML = '<div class="feedback-list">' + 
+          list.map(item => `
+            <div class="feedback-item">
+              <div class="feedback-item-header">
+                <span class="feedback-item-type">${typeLabels[item.type] || item.type}</span>
+                <span class="feedback-item-status">${Feedback.getStatusLabel(item.status)}</span>
+              </div>
+              <div class="feedback-item-content">${item.content}</div>
+              <div class="feedback-item-time">${new Date(item.time).toLocaleString('zh-CN')}</div>
+              ${item.adminReply ? `<div class="feedback-item-reply">📢 ${item.adminReply}</div>` : ''}
+            </div>
+          `).join('') + '</div>';
+      }
+      
+      $('feedbackHistoryModal').classList.add('show');
+    }
+    
+    // 初始化
+    initReferralFromUrl();
+    initUser();
+    initAISettingsUI();
+    checkSupabaseConnection().then((ok) => {
+      if (!ok) {
+        console.warn('当前未连接到 Supabase，登录/注册将自动回退本地模式。');
+      }
+    });
+    
+    // 注册 Service Worker（提升二次加载和离线可用性）
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => {
+          console.warn('Service Worker 注册失败:', err);
+        });
+      });
+    }
+    
+    // 自动加载数据
+    window.loadData().then(() => {
+      console.log('数据加载完成');
+      // 加载每日
+      const dk = 'yijing_daily';
+      const ds = localStorage.getItem(dk);
+      if(ds) {
+        const d = JSON.parse(ds);
+        if(d.date === new Date().toDateString()) showDaily(d);
+      }
+    });
+  </script>
 </body>
 </html>

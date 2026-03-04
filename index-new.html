@@ -5,23 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#c9a227">
-  <meta name="description" content="易经占卜 - 古老智慧，指点迷津。使用傅佩荣先天起卦法，以三个随机数起卦，解读64卦象。">
-  <meta name="keywords" content="易经,占卜,卦象,六十四卦,傅佩荣,先天起卦法,周易,八卦">
-  <meta name="author" content="Thomas">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="易经占卜">
-  <meta property="og:description" content="古老智慧，指点迷津 - 傅佩荣先天起卦法">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yijing-h5.vercel.app/">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="description" content="易经占卜 - 先天起卦法，传承千年智慧">
+  <meta name="keywords" content="易经,占卜,卦象,六十四卦,傅佩荣,先天起卦">
   
   <!-- PWA -->
-  <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c9a227'/></svg>">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-title" content="易经占卜">
   
-  <title>易经占卜 - 古老智慧，指点迷津</title>
-  <link rel="stylesheet" href="/src/styles/main.css">
+  <title>易经占卜</title>
+  
+  <!-- 样式 -->
+  <link rel="stylesheet" href="src/css/main.css">
+  
+  <!-- 预加载关键资源 -->
+  <link rel="preload" href="data/yijing.json" as="fetch" crossorigin>
 </head>
 <body>
   <!-- 背景 -->
@@ -67,15 +66,15 @@
       <div class="input-row">
         <div class="input-item">
           <label>数一</label>
-          <input type="number" id="num1" min="100" max="999" placeholder="100-999">
+          <input type="number" id="num1" min="100" max="999" placeholder="100-999" inputmode="numeric" pattern="[0-9]*">
         </div>
         <div class="input-item">
           <label>数二</label>
-          <input type="number" id="num2" min="100" max="999" placeholder="100-999">
+          <input type="number" id="num2" min="100" max="999" placeholder="100-999" inputmode="numeric" pattern="[0-9]*">
         </div>
         <div class="input-item">
           <label>数三</label>
-          <input type="number" id="num3" min="100" max="999" placeholder="100-999">
+          <input type="number" id="num3" min="100" max="999" placeholder="100-999" inputmode="numeric" pattern="[0-9]*">
         </div>
       </div>
       <div class="btn-row">
@@ -125,15 +124,15 @@
   <div class="modal" id="loginModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="loginTitle">登录</h3>
+        <h3>登录</h3>
         <div class="modal-close" onclick="closeModal('loginModal')">×</div>
       </div>
       <div class="modal-body">
-        <input type="text" id="username" class="form-input" placeholder="用户名">
-        <input type="password" id="password" class="form-input" placeholder="密码">
+        <input type="text" id="username" class="form-input" placeholder="用户名" autocomplete="username">
+        <input type="password" id="password" class="form-input" placeholder="密码" autocomplete="current-password">
         <button class="btn btn-primary" onclick="doLogin()" style="width:100%;">登 录</button>
         <p class="link-text" style="margin-top:12px;">
-          <span id="linkText">没有账号？</span> <a href="#" onclick="toggleAuth()" id="linkBtn">点击注册</a>
+          <span>没有账号？</span> <a href="#" onclick="toggleAuth()">点击注册</a>
         </p>
       </div>
     </div>
@@ -147,10 +146,13 @@
         <div class="modal-close" onclick="closeModal('registerModal')">×</div>
       </div>
       <div class="modal-body">
-        <input type="text" id="regUser" class="form-input" placeholder="用户名">
-        <input type="password" id="regPass" class="form-input" placeholder="密码">
-        <input type="password" id="regPass2" class="form-input" placeholder="确认密码">
+        <input type="text" id="regUser" class="form-input" placeholder="用户名" autocomplete="username">
+        <input type="password" id="regPass" class="form-input" placeholder="密码" autocomplete="new-password">
+        <input type="password" id="regPass2" class="form-input" placeholder="确认密码" autocomplete="new-password">
         <button class="btn btn-primary" onclick="doRegister()" style="width:100%;background:linear-gradient(135deg,#4CAF50,#45a049);">注 册</button>
+        <p class="link-text" style="margin-top:12px;">
+          <span>已有账号？</span> <a href="#" onclick="toggleAuth()">点击登录</a>
+        </p>
       </div>
     </div>
   </div>
@@ -207,20 +209,13 @@
     </div>
   </div>
 
-  <!-- 核心逻辑（兼容旧版） -->
-  <script src="/app.js"></script>
-  
-  <!-- 解读数据 -->
-  <script src="/src/modules/interpretations.js"></script>
-  
-  <!-- 主入口 -->
-  <script type="module" src="/src/main.js"></script>
-  
-  <!-- Service Worker -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW注册失败:', err));
-    }
-  </script>
+  <!-- 脚本 -->
+  <script src="src/js/config.js"></script>
+  <script src="src/js/storage.js"></script>
+  <script src="src/js/db.js"></script>
+  <script src="src/js/yijing.js"></script>
+  <script src="src/js/user.js"></script>
+  <script src="src/js/ui.js"></script>
+  <script src="src/js/app.js"></script>
 </body>
 </html>
