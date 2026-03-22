@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;700&family=Inter:wght@300;400;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Noto Serif SC", serif;
+  --font-cursive: "Ma Shan Zheng", cursive;
+  
+  --color-mystic-bg: #0A0C10;
+  --color-mystic-card: #14171E;
+  --color-mystic-accent: #D4AF37;
+  --color-mystic-text: #F0F0F0;
+  --color-mystic-muted: #8E9299;
+  --color-mystic-glow: rgba(212, 175, 55, 0.2);
+}
+
+@layer base {
+  body {
+    @apply bg-mystic-bg text-mystic-text font-serif antialiased overflow-hidden;
+    background-image: 
+      radial-gradient(circle at 50% -20%, rgba(212, 175, 55, 0.1), transparent 50%),
+      radial-gradient(circle at 0% 100%, rgba(212, 175, 55, 0.05), transparent 40%);
+  }
+}
+
+@layer components {
+  .app-container {
+    @apply relative h-screen w-full max-w-md mx-auto flex flex-col overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)];
+    background-color: var(--color-mystic-bg);
+  }
+
+  .app-container::before {
+    content: '';
+    @apply absolute inset-0 opacity-[0.03] pointer-events-none;
+    background-image: radial-gradient(var(--color-mystic-accent) 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+  }
+
+  .scroll-area {
+    @apply flex-1 overflow-y-auto pb-32 scroll-smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .glass-card {
+    @apply bg-mystic-card border border-mystic-accent/10 rounded-[32px] shadow-[0_20px_40px_rgba(0,0,0,0.3)];
+  }
+
+  .hexagram-line {
+    @apply h-3 bg-mystic-text rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(255,255,255,0.1)];
+  }
+
+  .hexagram-line.yin {
+    background: linear-gradient(to right, var(--color-mystic-text) 40%, transparent 40%, transparent 60%, var(--color-mystic-text) 60%);
+  }
+
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 h-24 bg-mystic-bg/90 backdrop-blur-2xl border-t border-mystic-accent/10 flex items-center justify-around px-6 z-50 max-w-md mx-auto;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .nav-item {
+    @apply flex flex-col items-center gap-1.5 transition-all duration-300 text-mystic-muted font-sans font-semibold text-[11px];
+  }
+
+  .nav-item.active {
+    @apply text-mystic-accent -translate-y-0.5;
+  }
+
+  .nav-icon-wrapper {
+    @apply w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 relative overflow-hidden;
+  }
+
+  .nav-item.active .nav-icon-wrapper {
+    @apply bg-mystic-accent text-mystic-bg shadow-[0_0_20px_rgba(212,175,55,0.3)];
+  }
+
+  .title-decoration {
+    @apply h-px w-24 bg-gradient-to-r from-transparent via-mystic-accent to-transparent my-4 opacity-50;
+  }
+
+  .input-mystic {
+    @apply bg-white/5 border border-mystic-accent/10 text-mystic-text transition-all duration-300;
+  }
+
+  .input-mystic:focus {
+    @apply border-mystic-accent bg-white/10 shadow-[0_0_15px_rgba(212,175,55,0.2)];
+  }
+}
