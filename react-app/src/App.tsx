@@ -15,7 +15,11 @@ import {
   Star,
   ShieldCheck,
   MessageSquare,
-  Zap
+  Zap,
+  Dices,
+  TrendingUp,
+  Lightbulb,
+  RotateCcw
 } from 'lucide-react';
 import { cn } from './lib/utils';
 import { getHexagramFromLines, Hexagram } from './constants/iching';
@@ -29,11 +33,24 @@ interface HistoryRecord {
   id: string;
   date: string;
   question: string;
+  divinationType: DivinationType;
   hexagram: Hexagram;
   transformedHexagram?: Hexagram;
   movingLines: number[];
   interpretation: string;
+  masterAdvice?: string;
+  luckScore?: number;
 }
+
+type DivinationType = 'wealth' | 'love' | 'health' | 'career' | 'other';
+
+const DIVINATION_TYPES: { value: DivinationType; label: string; icon: string }[] = [
+  { value: 'wealth', label: '财运', icon: '💰' },
+  { value: 'love', label: '感情', icon: '💕' },
+  { value: 'health', label: '健康', icon: '💪' },
+  { value: 'career', label: '学业', icon: '📚' },
+  { value: 'other', label: '其他', icon: '🔮' },
+];
 
 // Custom Thematic Icon Component
 const ThematicIcon = ({ icon: Icon, active, className }: { icon: any, active?: boolean, className?: string }) => (
@@ -84,13 +101,17 @@ const TaijiLogo = ({ className, showFrame = false, size = "w-10 h-10" }: { class
 export default function App() {
   const [activeView, setActiveView] = useState<View>('home');
   const [numberInputs, setNumberInputs] = useState<string[]>(['', '', '']);
+  const [isRolling, setIsRolling] = useState(false);
   const [lines, setLines] = useState<number[]>([]); // 0: yin, 1: yang
   const [movingLines, setMovingLines] = useState<number[]>([]); // indices of moving lines (0-5)
   const [currentResult, setCurrentResult] = useState<Hexagram | null>(null);
   const [transformedResult, setTransformedResult] = useState<Hexagram | null>(null);
   const [aiInterpretation, setAiInterpretation] = useState<string>('');
+  const [masterAdvice, setMasterAdvice] = useState<string>('');
+  const [luckScore, setLuckScore] = useState<number>(50);
   const [isLoadingAi, setIsLoadingAi] = useState(false);
   const [question, setQuestion] = useState('');
+  const [divinationType, setDivinationType] = useState<DivinationType>('other');
   const [history, setHistory] = useState<HistoryRecord[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<HistoryRecord | null>(null);
 
@@ -188,10 +209,13 @@ export default function App() {
         id: Date.now().toString(),
         date: new Date().toLocaleString(),
         question: userQuestion || '近期运势',
+        divinationType: divinationType,
         hexagram: hex,
         transformedHexagram: transHex || undefined,
         movingLines: movingIdx,
-        interpretation: text
+        interpretation: text,
+        masterAdvice: masterAdvice,
+        luckScore: luckScore
       };
       saveToHistory(record);
       setActiveView('result');
@@ -429,7 +453,7 @@ export default function App() {
               <div className="bg-mystic-accent text-mystic-bg p-10 rounded-[40px] shadow-2xl relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent_60%)]" />
                 <h3 className="text-2xl font-cursive mb-8 flex items-center gap-3 relative z-10">
-                   智慧启示
+                  <Sparkles className="w-6 h-6" /> 智慧启示
                 </h3>
                 {isLoadingAi ? (
                   <div className="space-y-4 relative z-10">
@@ -442,6 +466,50 @@ export default function App() {
                     <p className="text-base leading-loose font-serif whitespace-pre-wrap">
                       {aiInterpretation || selectedRecord?.interpretation}
                     </p>
+                    
+                    {(masterAdvice || selectedRecord?.masterAdvice) && (
+                      <div className="p-6 bg-mystic-bg/20 rounded-3xl border border-mystic-bg/10">
+                        <h4 className="text-sm font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                          <Lightbulb className="w-4 h-4" /> 大师建议
+                        </h4>
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap font-serif">
+                          {masterAdvice || selectedRecord?.masterAdvice}
+                        </p>
+                      </div>
+                    )}
+                    
+                    <div className="p-6 bg-mystic-bg/20 rounded-3xl border border-mystic-bg/10">
+                      <h4 className="text-sm font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4" /> 吉凶指数
+                      </h4>
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1 h-4 bg-mystic-bg/30 rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${luckScore || selectedRecord?.luckScore || 50}%` }}
+                            transition={{ duration: 1, delay: 0.3 }}
+                            className={cn(
+                              "h-full rounded-full",
+                              (luckScore || selectedRecord?.luckScore || 50) >= 70 ? "bg-gradient-to-r from-green-400 to-emerald-500" :
+                              (luckScore || selectedRecord?.luckScore || 50) >= 40 ? "bg-gradient-to-r from-yellow-400 to-orange-500" :
+                              "bg-gradient-to-r from-red-400 to-rose-500"
+                            )}
+                          />
+                        </div>
+                        <span className="text-2xl font-bold font-cursive">
+                          {luckScore || selectedRecord?.luckScore || 50}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={() => fetchAiInterpretation(currentResult || selectedRecord!.hexagram, transformedResult || selectedRecord?.transformedHexagram || null, movingLines || selectedRecord?.movingLines || [], question || selectedRecord?.question || '')}
+                      disabled={isLoadingAi}
+                      className="w-full py-3 bg-mystic-bg/30 hover:bg-mystic-bg/50 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                    >
+                      <RotateCcw className="w-4 h-4" /> 重新生成解读
+                    </button>
+                    
                     <div className="pt-8 border-t border-mystic-bg/10 flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.2em]">
                       <div className="flex items-center gap-2">
                         <ShieldCheck className="w-4 h-4" /> 傅氏易学
