@@ -8,6 +8,16 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          supabase: ['@supabase/supabase-js'],
+          ui: ['motion', 'lucide-react'],
+          ai: ['@google/genai']
+        }
+      }
+    }
   },
   server: {
     port: 3000,
