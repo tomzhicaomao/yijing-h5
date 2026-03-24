@@ -725,3 +725,76 @@ export const HEXAGRAMS: Hexagram[] = [
 export function getHexagramFromLines(lines: number[]): Hexagram | undefined {
   return HEXAGRAMS.find(h => h.lines.every((l, i) => l === lines[i]));
 }
+
+// 吉凶指数计算（根据卦辞和卦象）
+export function calculateLuckScore(hexagram: Hexagram, movingLines: number[]): number {
+  // 吉卦列表（根据传统解读）
+  const auspiciousHexagrams = [
+    1,  // 乾 - 大吉
+    2,  // 坤 - 大吉
+    11, // 泰 - 通达
+    13, // 同人 - 团结
+    14, // 大有 - 收获
+    15, // 谦 - 谦虚受益
+    16, // 豫 - 愉悦
+    20, // 观 - 观察
+    26, // 大畜 - 积蓄
+    42, // 益 - 增益
+    50, // 鼎 - 稳固
+    57, // 巽 - 顺利
+    61  // 中孚 - 诚信
+  ];
+  
+  // 凶卦列表
+  const inauspiciousHexagrams = [
+    3,  // 屯 - 初生之难
+    6,  // 讼 - 争讼
+    12, // 否 - 闭塞
+    23, // 剥 - 剥落
+    29, // 坎 - 险阻
+    33, // 遁 - 退避
+    36, // 明夷 - 受损
+    39, // 蹇 - 艰难
+    47  // 困 - 困顿
+  ];
+  
+  // 根据卦象确定基础分数
+  let baseScore = 50;
+  
+  if (auspiciousHexagrams.includes(hexagram.id)) {
+    baseScore = 70 + (hexagram.id % 5) * 5; // 70-90
+  } else if (inauspiciousHexagrams.includes(hexagram.id)) {
+    baseScore = 30 + (hexagram.id % 5) * 5; // 30-50
+  } else {
+    baseScore = 45 + (hexagram.id % 8) * 5; // 45-80
+  }
+  
+  // 根据卦辞关键词调整
+  const judgment = hexagram.judgment;
+  
+  // 吉利关键词
+  if (judgment.includes('吉')) baseScore += 10;
+  if (judgment.includes('亨')) baseScore += 5;
+  if (judgment.includes('利')) baseScore += 5;
+  if (judgment.includes('元吉')) baseScore += 10;
+  if (judgment.includes('元亨')) baseScore += 5;
+  
+  // 凶险关键词
+  if (judgment.includes('凶')) baseScore -= 15;
+  if (judgment.includes('吝')) baseScore -= 10;
+  if (judgment.includes('厉')) baseScore -= 5;
+  if (judgment.includes('悔')) baseScore -= 5;
+  if (judgment.includes('无攸利')) baseScore -= 10;
+  
+  // 动爻影响：动爻越少越稳定
+  if (movingLines.length === 0) {
+    baseScore += 3; // 无动爻，稳定
+  } else if (movingLines.length === 1) {
+    baseScore += 2; // 一动爻，变化明确
+  } else if (movingLines.length >= 4) {
+    baseScore -= 8; // 动爻太多，变动大
+  }
+  
+  // 确保分数在 0-100 范围内
+  return Math.min(100, Math.max(0, baseScore));
+}

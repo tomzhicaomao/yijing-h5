@@ -22,7 +22,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { cn } from './lib/utils';
-import { getHexagramFromLines, Hexagram } from './constants/iching';
+import { getHexagramFromLines, Hexagram, calculateLuckScore } from './constants/iching';
 import { GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
@@ -222,7 +222,7 @@ export default function App() {
         const text_content = `【本卦】${hex.name}卦\n\n【卦辞】${hex.judgment}\n\n【象曰】${hex.image}\n\n【解读】${hex.meaning}\n\n${movingLinesText ? `【变卦】${transHex?.name}卦 - ${transHex?.meaning}` : ''}`;
         setAiInterpretation(text_content);
         advice = `建议：${hex.meaning.split('。')[0] || '顺势而为，待机而动。'}`;
-        score = 50 + Math.floor(Math.random() * 20);
+        score = calculateLuckScore(hex, movingIdx);
         setMasterAdvice(advice);
         setLuckScore(score);
       }
@@ -249,7 +249,7 @@ export default function App() {
       const fallbackText = `【本卦】${hex.name}卦\n\n【卦辞】${hex.judgment}\n\n【象曰】${hex.image}\n\n【解读】${hex.meaning}${movingLinesText ? `\n\n【变卦】${transHex?.name}卦` : ''}`;
       setAiInterpretation(fallbackText);
       setMasterAdvice(`建议：${hex.meaning.split('。')[0] || '顺势而为，待机而动。'}`);
-      setLuckScore(50 + Math.floor(Math.random() * 20));
+      setLuckScore(calculateLuckScore(hex, movingIdx));
       setActiveView('result');
     } finally {
       setIsLoadingAi(false);
