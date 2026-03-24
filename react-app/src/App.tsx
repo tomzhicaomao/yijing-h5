@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Compass, 
-  ScrollText, 
-  Sparkles, 
-  History, 
+import {
+  Compass,
+  ScrollText,
+  Sparkles,
+  History,
   User,
   Home,
-  ChevronRight, 
+  ChevronRight,
   RefreshCw,
   Share2,
   Trash2,
@@ -66,7 +66,7 @@ const ThematicIcon = ({ icon: Icon, active, className }: { icon: any, active?: b
 // Custom Taiji Logo Component
 const TaijiLogo = ({ className, showFrame = false, size = "w-10 h-10" }: { className?: string, showFrame?: boolean, size?: string }) => (
   <div className={cn("relative flex items-center justify-center", size, className)}>
-    <motion.div 
+    <motion.div
       animate={{ rotate: 360 }}
       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       className="absolute inset-0"
@@ -74,20 +74,20 @@ const TaijiLogo = ({ className, showFrame = false, size = "w-10 h-10" }: { class
       <svg viewBox="0 0 100 100" className="w-full h-full">
         {/* Background Circle (White Fish) */}
         <circle cx="50" cy="50" r="50" fill="white" />
-        
+
         {/* Black Fish */}
-        <path 
-          d="M 50 0 
-             A 50 50 0 0 1 50 100 
-             A 25 25 0 0 1 50 50 
-             A 25 25 0 0 0 50 0" 
-          fill="black" 
+        <path
+          d="M 50 0
+             A 50 50 0 0 1 50 100
+             A 25 25 0 0 1 50 50
+             A 25 25 0 0 0 50 0"
+          fill="black"
         />
-        
+
         {/* The Dots (Eyes) */}
         {/* Black dot on the white fish (top) */}
         <circle cx="50" cy="25" r="10" fill="black" />
-        
+
         {/* White dot on the black fish (bottom) */}
         <circle cx="50" cy="75" r="10" fill="white" />
       </svg>
@@ -132,6 +132,15 @@ export default function App() {
     localStorage.setItem('iching_history', JSON.stringify(newHistory));
   };
 
+  const handleRandomGenerate = () => {
+    const newInputs = [
+      Math.floor(Math.random() * 900) + 100,
+      Math.floor(Math.random() * 900) + 100,
+      Math.floor(Math.random() * 900) + 100,
+    ].map(String);
+    setNumberInputs(newInputs);
+  };
+
   const calculateFromNumbers = () => {
     // Validate inputs
     const isValid = numberInputs.every(val => /^[1-9]\d{2}$/.test(val));
@@ -174,15 +183,15 @@ export default function App() {
     if (lines.length === 6) {
       const hex = getHexagramFromLines(lines);
       setCurrentResult(hex);
-      
+
       // Calculate transformed hexagram
-      const transformedLines = lines.map((line, idx) => 
+      const transformedLines = lines.map((line, idx) =>
         movingLines.includes(idx) ? (line === 1 ? 0 : 1) : line
       );
-      
+
       const transHex = movingLines.length > 0 ? getHexagramFromLines(transformedLines) : null;
       setTransformedResult(transHex);
-      
+
       fetchAiInterpretation(hex, transHex, movingLines, question);
     }
   }, [lines, movingLines]);
@@ -190,13 +199,13 @@ export default function App() {
   const fetchAiInterpretation = async (hex: Hexagram, transHex: Hexagram | null, movingIdx: number[], userQuestion: string) => {
     setIsLoadingAi(true);
     try {
-      const movingLinesText = movingIdx.length > 0 
+      const movingLinesText = movingIdx.length > 0
         ? `动爻为：第${movingIdx.map(i => i + 1).join('、')}爻。变卦为：${transHex?.name}卦。`
         : "无动爻。";
 
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
-        contents: `作为一名深研易经的大师（遵循傅佩荣教授的易经哲学），请针对用户的问题：“${userQuestion || '近期运势'}”，解读其通过数字占卜法占得的卦象。
+        contents: `作为一名深研易经的大师（遵循傅佩荣教授的易经哲学），请针对用户的问题："${userQuestion || '近期运势'}"，解读其通过数字占卜法占得的卦象。
         本卦：${hex.name}卦（${hex.pinyin}）。卦辞：${hex.judgment}。象曰：${hex.image}。
         ${movingLinesText}
         请根据傅佩荣教授的解读规则（无动爻看本卦卦辞，一动爻看该爻辞，多动爻综合分析）提供深度的、充满哲学智慧且令人信服的分析。
@@ -204,7 +213,7 @@ export default function App() {
       });
       const text = response.text || '解析失败，请重试。';
       setAiInterpretation(text);
-      
+
       const record: HistoryRecord = {
         id: Date.now().toString(),
         date: new Date().toLocaleString(),
@@ -267,7 +276,7 @@ export default function App() {
       <div className="scroll-area">
         <AnimatePresence mode="wait">
           {activeView === 'home' && (
-            <motion.div 
+            <motion.div
               key="home"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -289,14 +298,14 @@ export default function App() {
               <div className="relative p-[1px] bg-gradient-to-br from-mystic-accent/30 via-transparent to-mystic-accent/10 rounded-[48px] overflow-hidden group">
                 <div className="bg-mystic-card rounded-[47px] p-12 flex flex-col items-center text-center space-y-10 shadow-2xl relative">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08),transparent_70%)]" />
-                  
+
                   <div className="bagua-frame max-w-[220px] relative">
-                    <motion.div 
+                    <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
                       className="absolute inset-0 border border-mystic-accent/20 rounded-full"
                     />
-                    <motion.div 
+                    <motion.div
                       animate={{ rotate: -360 }}
                       transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
                       className="absolute inset-4 border border-mystic-accent/10 rounded-full border-dashed"
@@ -306,7 +315,7 @@ export default function App() {
                       <TaijiLogo size="w-20 h-20" />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4 relative z-10">
                     <h3 className="text-3xl font-serif font-bold tracking-tight text-mystic-text text-glow">诚心起卦</h3>
                     <p className="text-sm text-mystic-muted leading-relaxed px-4 font-serif">
@@ -315,7 +324,7 @@ export default function App() {
                     </p>
                   </div>
 
-                  <button 
+                  <button
                     onClick={startNewDivine}
                     className="w-full bg-mystic-accent text-mystic-bg py-6 rounded-2xl font-bold text-base tracking-[0.4em] shadow-[0_15px_40px_rgba(212,175,55,0.3)] active:scale-95 transition-all flex items-center justify-center gap-3 hover:brightness-110 hover:shadow-mystic-accent/40"
                   >
@@ -349,7 +358,7 @@ export default function App() {
           )}
 
           {activeView === 'divine' && (
-            <motion.div 
+            <motion.div
               key="divine"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -363,9 +372,9 @@ export default function App() {
               </div>
 
               <div className="w-full mb-10">
-                <input 
-                  type="text" 
-                  placeholder="输入您的问题（可选）" 
+                <input
+                  type="text"
+                  placeholder="输入您的问题（可选）"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   className="w-full px-6 py-5 rounded-2xl input-mystic text-center text-sm outline-none transition-all placeholder:text-mystic-muted/30 font-serif"
@@ -379,7 +388,7 @@ export default function App() {
                       <label className="text-[10px] text-mystic-muted uppercase tracking-widest text-center block font-bold">
                         {i === 0 ? "上卦数" : i === 1 ? "下卦数" : "动爻数"}
                       </label>
-                      <input 
+                      <input
                         type="number"
                         maxLength={3}
                         placeholder="100"
@@ -397,10 +406,17 @@ export default function App() {
 
                 <div className="p-6 bg-mystic-accent/5 rounded-2xl border border-mystic-accent/10 w-full">
                   <p className="text-[11px] text-mystic-muted font-serif text-center leading-relaxed italic">
-                    “诚则灵，敬则通”<br />
+                    "诚则灵，敬则通"<br />
                     请输入三组三位数字（100-999），首位不可为0。
                   </p>
                 </div>
+
+                <button 
+                  onClick={handleRandomGenerate}
+                  className="w-full py-4 rounded-2xl bg-mystic-accent/10 border border-mystic-accent/20 font-bold text-sm tracking-[0.3em] flex items-center justify-center gap-2 transition-all text-mystic-accent hover:bg-mystic-accent/20"
+                >
+                  <Dices className="w-4 h-4" /> 随机起卦
+                </button>
 
                 <button 
                   onClick={calculateFromNumbers}
@@ -413,7 +429,7 @@ export default function App() {
           )}
 
           {activeView === 'result' && (currentResult || selectedRecord) && (
-            <motion.div 
+            <motion.div
               key="result"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -423,14 +439,14 @@ export default function App() {
                 <div className="absolute top-0 right-0 p-6 opacity-[0.03]">
                   <Sparkles className="w-32 h-32 text-mystic-accent" />
                 </div>
-                
+
                 <div className="flex justify-center gap-12 mb-10">
                   <div className="flex flex-col items-center">
                     <div className="text-7xl mb-4 text-mystic-text drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">{(currentResult || selectedRecord?.hexagram)?.symbol}</div>
                     <h2 className="text-3xl font-cursive text-mystic-accent">{(currentResult || selectedRecord?.hexagram)?.name}卦</h2>
                     <p className="text-[10px] tracking-widest text-mystic-muted uppercase mt-1">本卦</p>
                   </div>
-                  
+
                   {(transformedResult || selectedRecord?.transformedHexagram) && (
                     <div className="flex flex-col items-center">
                       <div className="text-7xl mb-4 text-mystic-muted opacity-80">{(transformedResult || selectedRecord?.transformedHexagram)?.symbol}</div>
@@ -439,7 +455,7 @@ export default function App() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="title-decoration mx-auto" />
 
                 <div className="text-left space-y-6 mt-10">
@@ -466,7 +482,7 @@ export default function App() {
                     <p className="text-base leading-loose font-serif whitespace-pre-wrap">
                       {aiInterpretation || selectedRecord?.interpretation}
                     </p>
-                    
+
                     {(masterAdvice || selectedRecord?.masterAdvice) && (
                       <div className="p-6 bg-mystic-bg/20 rounded-3xl border border-mystic-bg/10">
                         <h4 className="text-sm font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
@@ -477,14 +493,14 @@ export default function App() {
                         </p>
                       </div>
                     )}
-                    
+
                     <div className="p-6 bg-mystic-bg/20 rounded-3xl border border-mystic-bg/10">
                       <h4 className="text-sm font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                         <TrendingUp className="w-4 h-4" /> 吉凶指数
                       </h4>
                       <div className="flex items-center gap-4">
                         <div className="flex-1 h-4 bg-mystic-bg/30 rounded-full overflow-hidden">
-                          <motion.div 
+                          <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${luckScore || selectedRecord?.luckScore || 50}%` }}
                             transition={{ duration: 1, delay: 0.3 }}
@@ -501,7 +517,7 @@ export default function App() {
                         </span>
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={() => fetchAiInterpretation(currentResult || selectedRecord!.hexagram, transformedResult || selectedRecord?.transformedHexagram || null, movingLines || selectedRecord?.movingLines || [], question || selectedRecord?.question || '')}
                       disabled={isLoadingAi}
@@ -509,7 +525,7 @@ export default function App() {
                     >
                       <RotateCcw className="w-4 h-4" /> 重新生成解读
                     </button>
-                    
+
                     <div className="pt-8 border-t border-mystic-bg/10 flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.2em]">
                       <div className="flex items-center gap-2">
                         <ShieldCheck className="w-4 h-4" /> 傅氏易学
@@ -522,7 +538,7 @@ export default function App() {
                 )}
               </div>
 
-              <button 
+              <button
                 onClick={startNewDivine}
                 className="w-full py-6 rounded-2xl bg-mystic-card border border-mystic-accent/20 font-bold text-sm tracking-[0.4em] flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all text-mystic-accent"
               >
@@ -532,7 +548,7 @@ export default function App() {
           )}
 
           {activeView === 'history' && (
-            <motion.div 
+            <motion.div
               key="history"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -542,7 +558,7 @@ export default function App() {
                 <h2 className="text-4xl font-cursive text-mystic-text">占卜记录</h2>
                 <span className="text-[10px] text-mystic-accent font-bold uppercase tracking-widest">{history.length} 条记录</span>
               </div>
-              
+
               {history.length === 0 ? (
                 <div className="text-center py-40 text-mystic-muted/20">
                   <div className="relative w-20 h-20 mx-auto mb-8 flex items-center justify-center">
@@ -554,7 +570,7 @@ export default function App() {
               ) : (
                 <div className="space-y-5">
                   {history.map((record) => (
-                    <div 
+                    <div
                       key={record.id}
                       onClick={() => {
                         setSelectedRecord(record);
@@ -572,7 +588,7 @@ export default function App() {
                           {record.date} · {record.hexagram.name}卦
                         </p>
                       </div>
-                      <button 
+                      <button
                         onClick={(e) => {
                           e.stopPropagation();
                           deleteHistory(record.id);
@@ -589,7 +605,7 @@ export default function App() {
           )}
 
           {activeView === 'profile' && (
-            <motion.div 
+            <motion.div
               key="profile"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -633,28 +649,28 @@ export default function App() {
 
       {/* Bottom Navigation */}
       <nav className="bottom-nav">
-        <button 
+        <button
           onClick={() => setActiveView('home')}
           className={cn("nav-item", activeView === 'home' && "active")}
         >
           <ThematicIcon icon={Home} active={activeView === 'home'} />
           <span>首页</span>
         </button>
-        <button 
+        <button
           onClick={startNewDivine}
           className={cn("nav-item", activeView === 'divine' && "active")}
         >
           <ThematicIcon icon={Compass} active={activeView === 'divine'} />
           <span>起卦</span>
         </button>
-        <button 
+        <button
           onClick={() => setActiveView('history')}
           className={cn("nav-item", activeView === 'history' && "active")}
         >
           <ThematicIcon icon={History} active={activeView === 'history'} />
           <span>记录</span>
         </button>
-        <button 
+        <button
           onClick={() => setActiveView('profile')}
           className={cn("nav-item", activeView === 'profile' && "active")}
         >
