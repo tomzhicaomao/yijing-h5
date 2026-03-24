@@ -211,6 +211,21 @@ export default function App() {
         请根据傅佩荣教授的解读规则（无动爻看本卦卦辞，一动爻看该爻辞，多动爻综合分析）提供深度的、充满哲学智慧且令人信服的分析。
         字数约300字，语气庄重、儒雅。`,
       });
+      // 检查是否有 API key
+      const hasApiKey = process.env.VITE_GEMINI_API_KEY && process.env.VITE_GEMINI_API_KEY !== 'your_gemini_api_key_here';
+      
+      let advice = '';
+      let score = 50;
+      
+      if (!hasApiKey) {
+        // Fallback: 使用卦辞和象曰作为解读
+        const text_content = `【本卦】${hex.name}卦\n\n【卦辞】${hex.judgment}\n\n【象曰】${hex.image}\n\n【解读】${hex.meaning}\n\n${movingLinesText ? `【变卦】${transHex?.name}卦 - ${transHex?.meaning}` : ''}`;
+        setAiInterpretation(text_content);
+        advice = `建议：${hex.meaning.split('。')[0] || '顺势而为，待机而动。'}`;
+        score = 50 + Math.floor(Math.random() * 20);
+        setMasterAdvice(advice);
+        setLuckScore(score);
+      }
       const text = response.text || '解析失败，请重试。';
       setAiInterpretation(text);
 
@@ -223,14 +238,18 @@ export default function App() {
         transformedHexagram: transHex || undefined,
         movingLines: movingIdx,
         interpretation: text,
-        masterAdvice: masterAdvice,
-        luckScore: luckScore
+        masterAdvice: advice,
+        luckScore: score
       };
       saveToHistory(record);
       setActiveView('result');
     } catch (error) {
       console.error(error);
-      setAiInterpretation('天机不可泄露，请再次尝试。');
+      // Fallback: 使用卦辞和象曰作为解读
+      const fallbackText = `【本卦】${hex.name}卦\n\n【卦辞】${hex.judgment}\n\n【象曰】${hex.image}\n\n【解读】${hex.meaning}${movingLinesText ? `\n\n【变卦】${transHex?.name}卦` : ''}`;
+      setAiInterpretation(fallbackText);
+      setMasterAdvice(`建议：${hex.meaning.split('。')[0] || '顺势而为，待机而动。'}`);
+      setLuckScore(50 + Math.floor(Math.random() * 20));
       setActiveView('result');
     } finally {
       setIsLoadingAi(false);
