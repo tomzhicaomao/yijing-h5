@@ -192,6 +192,7 @@ export default function App() {
   };
 
   const calculateFromNumbers = () => {
+    console.log('[DEBUG] calculateFromNumbers called, numberInputs:', numberInputs);
     // Validate inputs
     const isValid = numberInputs.every(val => /^[1-9]\d{2}$/.test(val));
     if (!isValid) {
