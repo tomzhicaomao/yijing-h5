@@ -22,6 +22,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { cn } from './lib/utils';
+import { supabase, auth, history as historyAPI } from './lib/supabase';
 import { getHexagramFromLines, Hexagram, calculateLuckScore } from './constants/iching';
 // DeepSeek API 配置
 const DEEPSEEK_API_KEY = (import.meta as any).env.VITE_DEEPSEEK_API_KEY || '';
@@ -116,7 +117,31 @@ export default function App() {
   const [history, setHistory] = useState<HistoryRecord[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<HistoryRecord | null>(null);
 
+  // 从 Supabase 加载历史记录
   useEffect(() => {
+    loadHistoryFromSupabase();
+  }, []);
+
+  const loadHistoryFromSupabase = async () => {
+    try {
+      // 尝试从云端加载
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await historyAPI.load(user.id, 100);
+        if (!error && data) {
+          setHistory(data.map((item: any) => ({
+            ...item,
+            hexagram: { id: item.hexagram_id, name: item.hexagram_name, symbol: '', lines: [], judgment: '', image: '', meaning: '', trigrams: { upper: '', lower: '' } },
+            transformedHexagram: item.transformed_hexagram_id ? { id: item.transformed_hexagram_id, name: item.transformed_hexagram_name, symbol: '', lines: [], judgment: '', image: '', meaning: '', trigrams: { upper: '', lower: '' } } : undefined
+          })));
+          return;
+        }
+      }
+    } catch (e) {
+      console.error("Supabase 加载失败，使用 localStorage", e);
+    }
+    
+    // Fallback: 从 localStorage 加载
     const saved = localStorage.getItem('iching_history');
     if (saved) {
       try {
@@ -125,11 +150,35 @@ export default function App() {
         console.error("Failed to parse history", e);
       }
     }
-  }, []);
+  };
 
-  const saveToHistory = (record: HistoryRecord) => {
+  const saveToHistory = async (record: HistoryRecord) => {
     const newHistory = [record, ...history];
     setHistory(newHistory);
+    
+    // 保存到 Supabase
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await historyAPI.save({
+          user_id: user.id,
+          question: record.question,
+          divination_type: record.divinationType,
+          hexagram_id: record.hexagram.id,
+          hexagram_name: record.hexagram.name,
+          transformed_hexagram_id: record.transformedHexagram?.id,
+          transformed_hexagram_name: record.transformedHexagram?.name,
+          moving_lines: record.movingLines,
+          interpretation: record.interpretation,
+          master_advice: record.masterAdvice,
+          luck_score: record.luckScore
+        });
+      }
+    } catch (e) {
+      console.error("Supabase 保存失败", e);
+    }
+    
+    // 同时保存到 localStorage 作为缓存
     localStorage.setItem('iching_history', JSON.stringify(newHistory));
   };
 
