@@ -23,9 +23,10 @@ import {
 } from 'lucide-react';
 import { cn } from './lib/utils';
 import { getHexagramFromLines, Hexagram, calculateLuckScore } from './constants/iching';
-import { GoogleGenAI } from "@google/genai";
+// DeepSeek API 配置
+const DEEPSEEK_API_KEY = (import.meta as any).env.VITE_DEEPSEEK_API_KEY || '';
+const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 type View = 'home' | 'divine' | 'history' | 'profile' | 'result';
 
