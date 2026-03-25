@@ -241,7 +241,7 @@ export default function App() {
         movingLines.includes(idx) ? (line === 1 ? 0 : 1) : line
       );
 
-      const transHex = movingLines.length > 0 ? (getHexagramFromLines(transformedLines) || null) : null;
+      const transHex = movingLines.length > 0 ? getHexagramFromLines(transformedLines) : null;
       setTransformedResult(transHex);
 
       fetchAiInterpretation(hex, transHex, movingLines, question);
@@ -250,37 +250,63 @@ export default function App() {
 
   const fetchAiInterpretation = async (hex: Hexagram, transHex: Hexagram | null, movingIdx: number[], userQuestion: string) => {
     setIsLoadingAi(true);
-    
-    const movingLinesText = movingIdx.length > 0
-      ? `动爻为：第${movingIdx.map(i => i + 1).join('、')}爻。变卦为：${transHex?.name}卦。`
-      : "无动爻。";
-    
-    // 使用传统卦辞解读（移除 Gemini AI 依赖）
-    const aiText = `【本卦】${hex.name}卦\n\n【卦辞】${hex.judgment}\n\n【象曰】${hex.image}\n\n【解读】${hex.meaning}\n\n${movingLinesText ? `【变卦】${transHex?.name}卦 - ${transHex?.meaning}` : ''}`;
-    
-    setAiInterpretation(aiText);
-    const advice = `建议：${hex.meaning.split('。')[0] || '顺势而为，待机而动。'}`;
-    const score = calculateLuckScore(hex, movingIdx);
-    setMasterAdvice(advice);
-    setLuckScore(score);
+    try {
+      const movingLinesText = movingIdx.length > 0
+        ? `动爻为：第${movingIdx.map(i => i + 1).join('、')}爻。变卦为：${transHex?.name}卦。`
+        : "无动爻。";
 
-    const record: HistoryRecord = {
-      id: Date.now().toString(),
-      date: new Date().toLocaleString(),
-      question: userQuestion || '近期运势',
-      divinationType: divinationType,
-      hexagram: hex,
-      transformedHexagram: transHex || undefined,
-      movingLines: movingIdx,
-      interpretation: aiText,
-      masterAdvice: advice,
-      luckScore: score
-    };
-    saveToHistory(record);
-    setActiveView('result');
-    setIsLoadingAi(false);
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: `作为一名深研易经的大师（遵循傅佩荣教授的易经哲学），请针对用户的问题："${userQuestion || '近期运势'}"，解读其通过数字占卜法占得的卦象。
+        本卦：${hex.name}卦（${hex.pinyin}）。卦辞：${hex.judgment}。象曰：${hex.image}。
+        ${movingLinesText}
+        请根据傅佩荣教授的解读规则（无动爻看本卦卦辞，一动爻看该爻辞，多动爻综合分析）提供深度的、充满哲学智慧且令人信服的分析。
+        字数约300字，语气庄重、儒雅。`,
+      });
+      // 检查是否有 API key
+      const hasApiKey = process.env.VITE_GEMINI_API_KEY && process.env.VITE_GEMINI_API_KEY !== 'your_gemini_api_key_here';
+      
+      let advice = '';
+      let score = 50;
+      
+      if (!hasApiKey) {
+        // Fallback: 使用卦辞和象曰作为解读
+        const text_content = `【本卦】${hex.name}卦\n\n【卦辞】${hex.judgment}\n\n【象曰】${hex.image}\n\n【解读】${hex.meaning}\n\n${movingLinesText ? `【变卦】${transHex?.name}卦 - ${transHex?.meaning}` : ''}`;
+        setAiInterpretation(text_content);
+        advice = `建议：${hex.meaning.split('。')[0] || '顺势而为，待机而动。'}`;
+        score = calculateLuckScore(hex, movingIdx);
+        setMasterAdvice(advice);
+        setLuckScore(score);
+      }
+      const text = response.text || '解析失败，请重试。';
+      setAiInterpretation(text);
+
+      const record: HistoryRecord = {
+        id: Date.now().toString(),
+        date: new Date().toLocaleString(),
+        question: userQuestion || '近期运势',
+        divinationType: divinationType,
+        hexagram: hex,
+        transformedHexagram: transHex || undefined,
+        movingLines: movingIdx,
+        interpretation: text,
+        masterAdvice: advice,
+        luckScore: score
+      };
+      saveToHistory(record);
+      setActiveView('result');
+    } catch (error) {
+      console.error(error);
+      // Fallback: 使用卦辞和象曰作为解读
+      const fallbackText = `【本卦】${hex.name}卦\n\n【卦辞】${hex.judgment}\n\n【象曰】${hex.image}\n\n【解读】${hex.meaning}${movingLinesText ? `\n\n【变卦】${transHex?.name}卦` : ''}`;
+      setAiInterpretation(fallbackText);
+      setMasterAdvice(`建议：${hex.meaning.split('。')[0] || '顺势而为，待机而动。'}`);
+      setLuckScore(calculateLuckScore(hex, movingIdx));
+      setActiveView('result');
+    } finally {
+      setIsLoadingAi(false);
+    }
   };
-
 
   const startNewDivine = () => {
     setLines([]);
