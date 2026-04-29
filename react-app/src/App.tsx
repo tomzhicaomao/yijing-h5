@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, useRef, useEffect, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Toaster } from 'sonner';
 import { Compass, History, User, Home, Share2 } from 'lucide-react';
@@ -66,6 +66,7 @@ const TaijiLogo = ({ className, showFrame = false, size = "w-10 h-10" }: { class
 export default function App() {
   const [activeView, setActiveView] = useState<View>('home');
   const [selectedRecord, setSelectedRecordState] = useState<HistoryRecord | null>(null);
+  const autoFetchRef = useRef(false);
 
   const {
     currentResult,
@@ -97,7 +98,6 @@ export default function App() {
   };
 
   const calculateFromNumbers = () => {
-    // Validate inputs
     const isValid = validateNumberInputs(numberInputs);
     if (!isValid) {
       toast.error("请输入三组三位数，且首位不能为 0。");
@@ -106,13 +106,26 @@ export default function App() {
 
     const result = calculateFromNumbersHook(numberInputs);
     if (result.success) {
-      // useDivination 中的 useEffect 会在 lines 变化时自动设置 currentResult
-      // 使用较长的延迟确保 React 状态更新完成
+      autoFetchRef.current = true;
       setTimeout(() => {
         setActiveView('result');
       }, 1000);
     }
   };
+
+  // 起卦完成后自动触发 AI 解读
+  useEffect(() => {
+    if (autoFetchRef.current && currentResult && !isLoadingAi) {
+      autoFetchRef.current = false;
+      fetchAiInterpretationHook(
+        currentResult,
+        transformedResult,
+        movingLines,
+        question,
+        divinationType
+      );
+    }
+  }, [currentResult, isLoadingAi]);
 
   const fetchAiInterpretation = async (
     hex: Hexagram,
