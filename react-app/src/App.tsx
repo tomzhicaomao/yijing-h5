@@ -220,15 +220,13 @@ export default function App() {
                   onNavigateToResult={() => setActiveView('result')}
                 />
               )}
+              {activeView === 'profile' && (
+                <Profile />
+              )}
             </Suspense>
           </ErrorBoundary>
         </AnimatePresence>
       </div>
-
-      {/* Profile View */}
-      {activeView === 'profile' && (
-        <Profile user={null} onLogin={() => {}} onLogout={() => {}} />
-      )}
 
       {/* Bottom Navigation */}
       <nav className="bottom-nav">

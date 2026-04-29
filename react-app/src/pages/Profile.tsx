@@ -1,26 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, LogOut, Settings, ShieldCheck, Mail, Lock } from 'lucide-react';
 import { toast } from 'sonner';
-import { cn } from '../lib/utils';
 import { auth } from '../lib/supabase';
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
 
 interface UserProfile {
   email?: string;
 }
 
-interface ProfileProps {
-  user: UserProfile | null;
-  onLogin: () => void;
-  onLogout: () => void;
-}
-
-export const Profile = React.memo<ProfileProps>(({ user, onLogin, onLogout }) => {
+export const Profile = React.memo(function Profile() {
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // 监听认证状态
+  useEffect(() => {
+    auth.getUser().then(({ data }) => {
+      if (data.user) {
+        setUser({ email: data.user.email });
+      }
+    });
+
+    const { data: { subscription } } = auth.onAuthStateChange(
+      (event: AuthChangeEvent, session: Session | null) => {
+        if (session?.user) {
+          setUser({ email: session.user.email });
+        } else {
+          setUser(null);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +68,7 @@ export const Profile = React.memo<ProfileProps>(({ user, onLogin, onLogout }) =>
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      onLogout();
+      setUser(null);
     } catch (err) {
       console.error('登出失败', err);
     }
@@ -60,8 +76,8 @@ export const Profile = React.memo<ProfileProps>(({ user, onLogin, onLogout }) =>
 
   if (!user) {
     return (
-      <div className="space-y-8">
-        <div className="text-center py-12">
+      <div className="p-8 flex flex-col items-center justify-center min-h-[60vh]">
+        <div className="text-center">
           <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-mystic-accent/10 flex items-center justify-center">
             <User className="w-12 h-12 text-mystic-accent" />
           </div>
@@ -153,7 +169,7 @@ export const Profile = React.memo<ProfileProps>(({ user, onLogin, onLogout }) =>
   }
 
   return (
-    <div className="space-y-8">
+    <div className="p-8 space-y-8">
       <div className="glass-card p-8">
         <div className="flex items-center gap-6 mb-8">
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-mystic-accent to-yellow-600 flex items-center justify-center text-mystic-bg text-2xl font-bold">
