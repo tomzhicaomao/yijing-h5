@@ -55,7 +55,7 @@ CREATE INDEX idx_divination_history_created_at ON divination_history(created_at 
 | 变量名 | 值 | 环境 |
 |--------|-----|------|
 | `VITE_SUPABASE_URL` | `https://esmgqpttyqufbqlgxslj.supabase.co` | Production |
-| `VITE_SUPABASE_ANON_KEY` | `sb_publishable_r3jfrOsF7Jtw-mjv04iMjw_y3lKKg5P` | Production |
+| `VITE_SUPABASE_ANON_KEY` | `your-supabase-anon-key` | Production |
 | `VITE_DEEPSEEK_API_KEY` | `sk-your-api-key` | Production (可选) |
 
 ## 3️⃣ 启用 Supabase 认证（可选）

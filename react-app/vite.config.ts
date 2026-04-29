@@ -8,13 +8,16 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
+    cssMinify: true,
+    minify: 'esbuild',
+    target: 'es2020',
+    chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
           supabase: ['@supabase/supabase-js'],
           ui: ['motion', 'lucide-react'],
-          ai: ['@google/genai']
         }
       }
     }

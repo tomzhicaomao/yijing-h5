@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
-const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY || ''
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -19,7 +20,7 @@ export const auth = {
   getUser: async () => {
     return await supabase.auth.getUser()
   },
-  onAuthStateChange: (callback: (event: string, session: any) => void) => {
+  onAuthStateChange: (callback: (event: AuthChangeEvent, session: Session | null) => void) => {
     return supabase.auth.onAuthStateChange(callback)
   }
 }

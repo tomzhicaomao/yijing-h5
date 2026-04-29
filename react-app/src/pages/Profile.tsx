@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { User, LogOut, Settings, ShieldCheck, Mail, Lock } from 'lucide-react';
+import { toast } from 'sonner';
 import { cn } from '../lib/utils';
 import { auth } from '../lib/supabase';
 
+interface UserProfile {
+  email?: string;
+}
+
 interface ProfileProps {
-  user: any | null;
+  user: UserProfile | null;
   onLogin: () => void;
   onLogout: () => void;
 }
 
-export const Profile: React.FC<ProfileProps> = ({ user, onLogin, onLogout }) => {
+export const Profile = React.memo<ProfileProps>(({ user, onLogin, onLogout }) => {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,16 +31,19 @@ export const Profile: React.FC<ProfileProps> = ({ user, onLogin, onLogout }) => 
       if (isSignUp) {
         const { error } = await auth.signUp(email, password);
         if (error) throw error;
-        alert('注册成功！请查收邮箱验证邮件。');
+        toast.success('注册成功！请查收邮箱验证邮件。');
       } else {
         const { error } = await auth.signIn(email, password);
         if (error) throw error;
+        toast.success('登录成功！');
       }
       setShowLogin(false);
       setEmail('');
       setPassword('');
-    } catch (err: any) {
-      setError(err.message || '操作失败，请重试');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : '操作失败，请重试';
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -59,7 +67,7 @@ export const Profile: React.FC<ProfileProps> = ({ user, onLogin, onLogout }) => 
           </div>
           <h2 className="text-2xl font-cursive text-mystic-text mb-2">未登录</h2>
           <p className="text-mystic-muted mb-8">登录后可云端同步占卜记录</p>
-          
+
           <button
             onClick={() => setShowLogin(true)}
             className="px-8 py-4 bg-gradient-to-r from-mystic-accent to-yellow-600 text-mystic-bg font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all"
@@ -77,6 +85,7 @@ export const Profile: React.FC<ProfileProps> = ({ user, onLogin, onLogout }) => 
                   setError('');
                 }}
                 className="absolute top-4 right-4 text-mystic-muted hover:text-mystic-text"
+                aria-label="关闭"
               >
                 ✕
               </button>
@@ -182,4 +191,6 @@ export const Profile: React.FC<ProfileProps> = ({ user, onLogin, onLogout }) => 
       </div>
     </div>
   );
-};
+});
+
+Profile.displayName = 'Profile';
